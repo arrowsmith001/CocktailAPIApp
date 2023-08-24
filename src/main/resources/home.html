@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cocktail App</title>
+    <style>
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+        }
+
+        li {
+            display: inline;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Home</h1>
+</header>
+
+<h2>Browse Cocktails by Letter</h2>
+
+
+    <ul>
+        {% for letter in index %}
+
+        <form action="index" method="get">
+            <input type="hidden" name="letter" value="{{ letter }}">
+            <button type="submit" >{{letter}}</button>
+        </form>
+
+        {% endfor %}
+    </ul>
+
+
+
+<main>
+    {% block content %}
+    <!-- Default content goes here -->
+    {% endblock %}
+</main>
+
+<footer>
+
+</footer>
+</body>
+</html>
+
+
+

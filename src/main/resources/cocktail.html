@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random cocktail:</title>
+    <title>Cocktail App</title>
 </head>
 <body>
+
 <header>
-    <h1>{{ cocktailName }}!</h1>
+    <h1>{{ cocktail.name }}</h1>
 </header>
 
-<nav>
-    <ul>
-        {% for item in navigation_items %}
-<!--        <li><a href="{{ item.url }}">{{ item.label }}</a></li>-->
-<!--        {% endfor %}-->
-    </ul>
-</nav>
+<!--<nav>-->
+<ul>
+    {% for ingredient in cocktail.ingredients %}
+    <p>{{ ingredient.name }} ({{ ingredient.measure }})</p>
+    {% endfor %}
+</ul>
+<!--</nav>-->
 
 <main>
     {% block content %}
@@ -25,10 +26,8 @@
 </main>
 
 <footer>
-    <p>&copy; {{ current_year }}. All rights reserved.</p>
+
 </footer>
 </body>
 </html>
-
-
 
