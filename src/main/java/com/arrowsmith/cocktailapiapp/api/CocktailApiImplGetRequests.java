@@ -20,6 +20,11 @@ public class CocktailApiImplGetRequests {
     private String baseCocktailByIdLookup = "/lookup.php?i=";
     private String baseCocktailSearchByIngredientName = "/filter.php?i=";
 
+    private String replaceWhitespace(String term)
+    {
+        return String.join("+", term.split(" "));
+    }
+
     public String getSearchByLetterRequest(char c) {
         return getRequestUrl(baseSearchByFirstLetter) + Character.toString(c).toLowerCase();
     }
@@ -29,11 +34,11 @@ public class CocktailApiImplGetRequests {
     }
 
     public String getSearchByName(String term) {
-        return getRequestUrl(baseSearchCocktailByName) + term;
+        return getRequestUrl(baseSearchCocktailByName) + replaceWhitespace(term);
     }
 
     public String getSearchCocktailByIngredientName(String term) {
-        return getRequestUrl(baseCocktailSearchByIngredientName) + term;
+        return getRequestUrl(baseCocktailSearchByIngredientName) + replaceWhitespace(term);
     }
 
     public String getRandom() {
@@ -44,6 +49,6 @@ public class CocktailApiImplGetRequests {
         return getRequestUrl(baseCocktailByIdLookup) + id;
     }
     public String getIngredientByName(String term) {
-        return getRequestUrl(baseSearchIngredientByName) + term;
+        return getRequestUrl(baseSearchIngredientByName) + replaceWhitespace(term);
     }
 }
