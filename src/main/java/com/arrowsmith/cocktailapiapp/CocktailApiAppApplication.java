@@ -25,6 +25,8 @@ import java.util.logging.Logger;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 @RestController
 public class CocktailApiAppApplication {
+	public static final String COCKTAIL = "cocktail";
+	public static final String COCKTAILS = "cocktails";
 
 	// TODO: Place apikey in config file
 	final CocktailApi api = new CocktailApiImpl("1");
@@ -55,9 +57,9 @@ public class CocktailApiAppApplication {
 		final Cocktail randomCocktail = api.getRandomCocktail();
 
 		Map<String, Object> context = Maps.newHashMap();
-		context.put("cocktail", randomCocktail);
+		context.put(COCKTAIL, randomCocktail);
 
-		return renderTemplate("cocktail", context);
+		return renderTemplate(COCKTAIL, context);
 	}
 
 	@GetMapping("/search")
@@ -67,7 +69,7 @@ public class CocktailApiAppApplication {
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("term", term);
-		context.put("cocktails", cocktails);
+		context.put(COCKTAILS, cocktails);
 
 		return renderTemplate("listing", context);
 	}
@@ -78,9 +80,9 @@ public class CocktailApiAppApplication {
 		final Cocktail cocktail = api.getCocktailById(id);
 
 		Map<String, Object> context = Maps.newHashMap();
-		context.put("cocktail", cocktail);
+		context.put(COCKTAIL, cocktail);
 
-		return renderTemplate("cocktail", context);
+		return renderTemplate(COCKTAIL, context);
 	}
 
 	@GetMapping("/index")
@@ -90,7 +92,7 @@ public class CocktailApiAppApplication {
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("letter", letter);
-		context.put("cocktails", cocktails);
+		context.put(COCKTAILS, cocktails);
 
 		return renderTemplate("index", context);
 	}
@@ -104,7 +106,7 @@ public class CocktailApiAppApplication {
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("term", term);
 		context.put("ingredient", ingredient);
-		context.put("cocktails", cocktails);
+		context.put(COCKTAILS, cocktails);
 
 		return renderTemplate("ingredient", context);
 	}
@@ -117,7 +119,7 @@ public class CocktailApiAppApplication {
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("ingredientName", ingredientName);
-		context.put("cocktails", cocktails);
+		context.put(COCKTAILS, cocktails);
 
 		return renderTemplate("listing", context);
 	}
