@@ -94,7 +94,7 @@ public class CocktailApiAppApplication {
 
 		return renderTemplate("index", context);
 	}
-
+	//
 	@GetMapping("/ingredient")
 	public String goToIngredientAndCocktailList(@RequestParam String term) {
 
