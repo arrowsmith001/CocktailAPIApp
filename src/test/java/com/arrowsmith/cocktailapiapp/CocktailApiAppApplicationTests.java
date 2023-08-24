@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 
+import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 @SpringBootTest
@@ -30,6 +31,17 @@ class CocktailApiAppApplicationTests {
 
 		assertNotNull("Random cocktail is null", randomCocktail);
 		assertNotNull("Random cocktail name is null", randomCocktail.getName());
+	}
+
+	@Test
+	@DisplayName("Search for the id of a random cocktail returns the same cocktail")
+	void testCocktailById()
+	{
+		final CocktailApi api = new CocktailApiImpl(apiKey);
+		final Cocktail randomCocktail = api.getRandomCocktail();
+		final Cocktail sameCocktail = api.getCocktailById(randomCocktail.getId());
+
+		assertEquals("Cocktail names not equal",randomCocktail.getName(), sameCocktail.getName());
 	}
 
 }

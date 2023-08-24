@@ -30,14 +30,14 @@
     <ul>
         {% for cocktail in cocktails %}
 
-        <form action="cocktail" method="get">
-            <input type="hidden" name="id" value="{{ cocktail.id }}">
+        <a href="cocktail?id={{ cocktail.id }}">
+
             <li>
                 <p>{{ cocktail.name }}</p>
                 <img src="{{ cocktail.imageUrl }}">
-                <button type="submit" >Go to Page</button>
             </li>
-        </form>
+
+        </a>
         {% endfor %}
 </ul>
 
