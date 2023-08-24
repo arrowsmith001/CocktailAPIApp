@@ -1,6 +1,7 @@
 package com.arrowsmith.cocktailapiapp.api;
 
-import com.arrowsmith.cocktailapiapp.CocktailDTO;
+import com.arrowsmith.cocktailapiapp.dto.CocktailDTO;
+import com.arrowsmith.cocktailapiapp.dto.IngredientDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -9,5 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class CocktailApiResponse {
 
     public CocktailDTO[] drinks;
+
+    public IngredientDTO[] ingredients;
 
 }

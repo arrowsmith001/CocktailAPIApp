@@ -4,25 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cocktail App</title>
+    <style>
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+        }
+
+        li {
+            margin-left: 20px;
+            margin-right: 10px;
+        }
+        img {
+            width: 300px;
+            height: 300px;
+        }
+
+        .inline{
+           display: inline;
+        }
+    </style>
 </head>
 <body>
+
+<main>
 
 <header>
     <h1>{{ cocktail.name }}</h1>
 </header>
 
-<!--<nav>-->
-<ul>
-    {% for ingredient in cocktail.ingredients %}
-    <p>{{ ingredient.name }} ({{ ingredient.measure }})</p>
-    {% endfor %}
-</ul>
-<!--</nav>-->
+<img src="{{ cocktail.imageUrl }}">
 
-<main>
-    {% block content %}
-    <!-- Default content goes here -->
-    {% endblock %}
+<h2>Ingredients</h2>
+
+{% for ingredient in cocktail.ingredients %}
+<ul>
+    <li>
+        <div class="parent">
+            <a class="child inline" href="/ingredient?term={{ ingredient.getSearchTerm() }}">{{ ingredient.name }}</a>
+            <p class="child inline" > ({{ ingredient.measure }})</p>
+        </div>
+    </li>
+</ul>
+{% endfor %}
+
+
+<h2>Preparation</h2>
+
+    <p>{{ cocktail.instructions }}</p>
+
 </main>
 
 <footer>

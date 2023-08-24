@@ -3,6 +3,7 @@ package com.arrowsmith.cocktailapiapp;
 import com.arrowsmith.cocktailapiapp.api.CocktailApi;
 import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
+import com.arrowsmith.cocktailapiapp.model.Ingredient;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
@@ -25,7 +26,8 @@ import java.util.logging.Logger;
 @RestController
 public class CocktailApiAppApplication {
 
-	final CocktailApi api = new CocktailApiImpl();
+	// TODO: Place apikey in config file
+	final CocktailApi api = new CocktailApiImpl("1");
 
 	static Logger logger = Logger.getLogger(CocktailApiAppApplication.class.getName());
 
@@ -58,10 +60,22 @@ public class CocktailApiAppApplication {
 		return renderTemplate("cocktail", context);
 	}
 
+	@GetMapping("/search")
+	public String searchForCocktailByName(@RequestParam String term) {
+
+		final List<Cocktail> cocktails = api.searchForCocktailByName(term);
+
+		Map<String, Object> context = Maps.newHashMap();
+		context.put("term", term);
+		context.put("cocktails", cocktails);
+
+		return renderTemplate("listing", context);
+	}
+
 	@GetMapping("/cocktail")
 	public String getCocktailById(@RequestParam Integer id) {
 
-		final Cocktail cocktail = api.getCocktailById();
+		final Cocktail cocktail = api.getCocktailById(id);
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("cocktail", cocktail);
@@ -81,7 +95,32 @@ public class CocktailApiAppApplication {
 		return renderTemplate("index", context);
 	}
 
+	@GetMapping("/ingredient")
+	public String goToIngredientAndCocktailList(@RequestParam String term) {
 
+		final Ingredient ingredient = api.searchForIngredientByName(term).get(0);
+		final List<Cocktail> cocktails = api.listCocktailsByIngredient(ingredient);
+
+		Map<String, Object> context = Maps.newHashMap();
+		context.put("term", term);
+		context.put("ingredient", ingredient);
+		context.put("cocktails", cocktails);
+
+		return renderTemplate("ingredient", context);
+	}
+
+
+	@GetMapping("/cocktailsByIngredient")
+	public String listCocktailsByIngredient(@RequestParam String ingredientName) {
+
+		final List<Cocktail> cocktails = api.listCocktailsByIngredient(ingredientName);
+
+		Map<String, Object> context = Maps.newHashMap();
+		context.put("ingredientName", ingredientName);
+		context.put("cocktails", cocktails);
+
+		return renderTemplate("listing", context);
+	}
 
 	private String[] getIndex() {
 		final String[] index = new String[alphabet.length()];

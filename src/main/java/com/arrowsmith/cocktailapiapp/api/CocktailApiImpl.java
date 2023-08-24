@@ -1,8 +1,12 @@
 package com.arrowsmith.cocktailapiapp.api;
 
 import com.arrowsmith.cocktailapiapp.CocktailApiAppApplication;
-import com.arrowsmith.cocktailapiapp.CocktailDTO;
+import com.arrowsmith.cocktailapiapp.dto.CocktailDTO;
+import com.arrowsmith.cocktailapiapp.dto.DTOMapper;
+import com.arrowsmith.cocktailapiapp.dto.IngredientDTO;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
+import com.arrowsmith.cocktailapiapp.model.Ingredient;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -15,47 +19,26 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class CocktailApiImpl implements CocktailApi {
-
     static Logger logger = Logger.getLogger(CocktailApiAppApplication.class.getName());
-
-    private final String baseUrl = "https://www.thecocktaildb.com/api/json/v1/";
-    private final String apiKey = "1";
-
-    private String getBaseUrlWithApiKey(String append) {
-        return baseUrl + apiKey + append;
+    public CocktailApiImpl(String apiKey)
+    {
+        requests = new CocktailApiImplGetRequests(apiKey);
     }
 
-    private String random = "/random.php";
-    private String baseSearch = "/search.php?f=";
-    private String baseIdSearch = "/lookup.php?i=";
-    private String getSearchByLetter(char c) {
-        return  baseSearch + Character.toString(c).toLowerCase();
-    }
-    private String getSearchById(Object id) {
-        return  baseIdSearch + id.toString();
-    }
+    final CocktailApiImplGetRequests requests;
+    final ObjectMapper mapper = new ObjectMapper();
 
-    private String makeGetRequest(String url) throws IOException, InterruptedException {
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
-
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
-    }
 
     @Override
     public Cocktail getRandomCocktail() {
         try {
-            final String response = makeGetRequest(getBaseUrlWithApiKey(random));
-            System.out.println(response.toString());
+            final String response = makeGetRequest(requests.getRandom());
 
-            final ObjectMapper mapper = new ObjectMapper();
-            final CocktailApiResponse cocktailApiResponse = mapper.readValue(response, CocktailApiResponse.class);
+            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
-            return cocktailApiResponse.drinks[0].toModel();
+            final CocktailDTO dto = cocktailApiResponse.drinks[0];
+
+            return DTOMapper.cocktailDTOtoModel(dto);
 
         } catch (Exception e) {
             System.out.println(e);
@@ -64,22 +47,22 @@ public class CocktailApiImpl implements CocktailApi {
 
     }
 
+    private CocktailApiResponse deserializeResponse(String response) throws JsonProcessingException {
+        return mapper.readValue(response, CocktailApiResponse.class);
+    }
+
     @Override
     public List<Cocktail> getCocktailsStartingWithLetter(char startingLetter) {
 
         try {
-            final String response = makeGetRequest(getBaseUrlWithApiKey(getSearchByLetter(startingLetter)));
-            System.out.println(response.toString());
+            final String response = makeGetRequest(requests.getSearchByLetterRequest(startingLetter));
 
-            final ObjectMapper mapper = new ObjectMapper();
-            final CocktailApiResponse cocktailApiResponse = mapper.readValue(response, CocktailApiResponse.class);
+            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
             return Arrays.stream(cocktailApiResponse.drinks).map(dto -> {
                 try {
-                    return dto.toModel();
-                } catch (NoSuchFieldException e) {
-                    throw new RuntimeException(e);
-                } catch (IllegalAccessException e) {
+                    return DTOMapper.cocktailDTOtoModel(dto);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
             }).toList();
@@ -93,17 +76,118 @@ public class CocktailApiImpl implements CocktailApi {
     @Override
     public Cocktail getCocktailById(Object id) {
         try {
-            final String response = makeGetRequest(getBaseUrlWithApiKey(getSearchById(id)));
-            System.out.println(response.toString());
+            final String response = makeGetRequest(requests.getSearchById(id));
 
-            final ObjectMapper mapper = new ObjectMapper();
-            final CocktailApiResponse cocktailApiResponse = mapper.readValue(response, CocktailApiResponse.class);
+            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
-            return cocktailApiResponse.drinks[0].toModel();
+            final CocktailDTO dto = cocktailApiResponse.drinks[0];
+
+            return DTOMapper.cocktailDTOtoModel(dto);
 
         } catch (Exception e) {
             System.out.println(e);
             return null;
         }
     }
+
+    @Override
+    public Ingredient getIngredientById(Object id) {
+        try {
+            final String response = makeGetRequest(requests.getIngredientById(id));
+
+            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
+
+            final IngredientDTO dto = cocktailApiResponse.ingredients[0];
+
+            return DTOMapper.ingredientDTOtoModel(dto);
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<Cocktail> searchForCocktailByName(String term) {
+        try {
+            final String response = makeGetRequest(requests.getSearchByName(term));
+
+            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
+
+            return Arrays.stream(cocktailApiResponse.drinks).map(dto -> {
+                try {
+                    return DTOMapper.cocktailDTOtoModel(dto);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }).toList();
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<Ingredient> searchForIngredientByName(String term) {
+        try {
+            final String formattedTerm = String.join("+", term.split(" "));
+
+            final String response = makeGetRequest(requests.getIngredientByName(formattedTerm));
+
+            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
+
+            return Arrays.stream(cocktailApiResponse.ingredients).map(dto -> {
+                try {
+                    return DTOMapper.ingredientDTOtoModel(dto);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }).toList();
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<Cocktail> listCocktailsByIngredient(Object ingredient) {
+        try {
+            String ingredientName;
+            if(ingredient instanceof Ingredient) ingredientName = ((Ingredient) ingredient).getName();
+            else ingredientName = ingredient.toString();
+
+            ingredientName = String.join("+", ingredientName.split(" "));
+
+            final String response = makeGetRequest(requests.getSearchCocktailByIngredientName((String) ingredientName));
+
+            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
+
+            return Arrays.stream(cocktailApiResponse.drinks).map(dto -> {
+                try {
+                    return DTOMapper.cocktailDTOtoModel(dto);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }).toList();
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+
+    private String makeGetRequest(String url) throws IOException, InterruptedException {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
+    }
+
 }

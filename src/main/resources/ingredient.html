@@ -25,21 +25,30 @@
 <body>
 
 <header>
-    <h1>{{ letter }}</h1>
+    <h2>{{ ingredient.name }}</h2>
 </header>
-    <ul>
-        {% for cocktail in cocktails %}
 
-        <form action="cocktail" method="get">
-            <input type="hidden" name="id" value="{{ cocktail.id }}">
-            <li>
-                <p>{{ cocktail.name }}</p>
-                <img src="{{ cocktail.imageUrl }}">
-                <button type="submit" >Go to Page</button>
-            </li>
-        </form>
-        {% endfor %}
+<p>{{ ingredient.description }}</p>
+
+<h2>Cocktails containing "{{ ingredient.name }}"</h2>
+
+<ul>
+    {% for cocktail in cocktails %}
+
+    <form action="cocktail" method="get">
+        <input type="hidden" name="id" value="{{ cocktail.id }}">
+        <li>
+            <p>{{ cocktail.name }}</p>
+            <img src="{{ cocktail.imageUrl }}">
+            <button type="submit" >Go to Page</button>
+        </li>
+    </form>
+
+
+    {% endfor %}
+
 </ul>
+
 
 <main>
     {% block content %}
