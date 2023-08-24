@@ -19,11 +19,14 @@
 </head>
 <body>
 
+<main>
+
+
 <header>
     <h1>Home</h1>
 </header>
 
-<h2>Browse Cocktails by Letter</h2>
+<h2>Browse Cocktails by Letter:</h2>
 
 
     <ul>
@@ -38,17 +41,19 @@
     </ul>
 
 
-<h2>Search Cocktail by Name</h2>
+    <h2>Search Cocktail by Name:</h2>
 
-<form action="search" method="get">
-    <input type="text" name="term">
-    <button type="submit" >Search</button>
-</form>
+    <form action="search" method="get">
+        <input type="text" name="term">
+        <button type="submit" >Search</button>
+    </form>
 
-<main>
-    {% block content %}
-    <!-- Default content goes here -->
-    {% endblock %}
+    <h2>Get Random Cocktail:</h2>
+
+    <form action="random" method="get">
+        <button type="submit" >Surprise me</button>
+    </form>
+
 </main>
 
 <footer>

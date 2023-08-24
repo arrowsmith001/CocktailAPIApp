@@ -9,11 +9,6 @@ import com.arrowsmith.cocktailapiapp.model.Ingredient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -22,17 +17,19 @@ public class CocktailApiImpl implements CocktailApi {
     static Logger logger = Logger.getLogger(CocktailApiAppApplication.class.getName());
     public CocktailApiImpl(String apiKey)
     {
-        requests = new CocktailApiImplGetRequests(apiKey);
+        requester = new TheCocktailDBRequester(apiKey);
     }
 
-    final CocktailApiImplGetRequests requests;
+
+    final CocktailApiRequester requester;
     final ObjectMapper mapper = new ObjectMapper();
+
 
 
     @Override
     public Cocktail getRandomCocktail() {
         try {
-            final String response = makeGetRequest(requests.getRandom());
+            final String response = requester.getRandomCocktail();
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
@@ -55,7 +52,7 @@ public class CocktailApiImpl implements CocktailApi {
     public List<Cocktail> getCocktailsStartingWithLetter(char startingLetter) {
 
         try {
-            final String response = makeGetRequest(requests.getSearchByLetterRequest(startingLetter));
+            final String response =  requester.searchCocktailsByLetter(startingLetter);
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
@@ -76,7 +73,7 @@ public class CocktailApiImpl implements CocktailApi {
     @Override
     public Cocktail getCocktailById(Object id) {
         try {
-            final String response = makeGetRequest(requests.getSearchById(id));
+            final String response = requester.getCocktailById(id);
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
@@ -93,7 +90,7 @@ public class CocktailApiImpl implements CocktailApi {
     @Override
     public Ingredient getIngredientById(Object id) {
         try {
-            final String response = makeGetRequest(requests.getIngredientById(id));
+            final String response = requester.getIngredientById(id);
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
@@ -110,7 +107,8 @@ public class CocktailApiImpl implements CocktailApi {
     @Override
     public List<Cocktail> searchForCocktailByName(String term) {
         try {
-            final String response = makeGetRequest(requests.getSearchByName(term));
+
+            final String response = requester.searchCocktailByName(term);
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
@@ -131,9 +129,8 @@ public class CocktailApiImpl implements CocktailApi {
     @Override
     public List<Ingredient> searchForIngredientByName(String term) {
         try {
-            final String formattedTerm = String.join("+", term.split(" "));
 
-            final String response = makeGetRequest(requests.getIngredientByName(formattedTerm));
+            final String response =requester.getIngredientByName(term);
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
@@ -155,12 +152,11 @@ public class CocktailApiImpl implements CocktailApi {
     public List<Cocktail> listCocktailsByIngredient(Object ingredient) {
         try {
             String ingredientName;
+
             if(ingredient instanceof Ingredient) ingredientName = ((Ingredient) ingredient).getName();
             else ingredientName = ingredient.toString();
 
-            ingredientName = String.join("+", ingredientName.split(" "));
-
-            final String response = makeGetRequest(requests.getSearchCocktailByIngredientName((String) ingredientName));
+            final String response = requester.searchCocktailsByIngredientName((String) ingredientName);
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
@@ -179,15 +175,6 @@ public class CocktailApiImpl implements CocktailApi {
     }
 
 
-    private String makeGetRequest(String url) throws IOException, InterruptedException {
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
-
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
-    }
 
 }
