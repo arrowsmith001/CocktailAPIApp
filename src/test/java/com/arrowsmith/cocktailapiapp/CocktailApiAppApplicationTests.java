@@ -21,9 +21,8 @@ import static org.springframework.test.util.AssertionErrors.*;
 @SpringBootTest
 class CocktailApiAppApplicationTests {
 
-	//@Value("${THE_COCKTAILDB_API_KEY}")
-	// TODO: Externalize
-	final String apiKey = "1";
+	@Value("${THE_COCKTAIL_DB_API_KEY}")
+	String apiKey;
 
 	final CocktailApi api = new CocktailApiImpl(apiKey);
 
@@ -63,12 +62,12 @@ class CocktailApiAppApplicationTests {
 
 	}
 
-	// TODO: Make more tests
-	@Test
-	@DisplayName("")
-	void newTest()
-	{
-
-	}
+//	// TODO: Make more tests
+//	@Test
+//	@DisplayName("")
+//	void newTest()
+//	{
+//
+//	}
 
 }
