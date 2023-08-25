@@ -21,7 +21,6 @@ import static org.springframework.test.util.AssertionErrors.*;
 @SpringBootTest
 class CocktailApiAppApplicationTests {
 
-	String apiKey = "1";
 
 	final CocktailApi api = new CocktailApiImpl(System.getenv().get("THE_COCKTAIL_DB_API_KEY"));
 
@@ -29,7 +28,6 @@ class CocktailApiAppApplicationTests {
 	@DisplayName("Random cocktail returns a cocktail with a valid name")
 	void testRandomCocktail()
 	{
-		final CocktailApi api = new CocktailApiImpl(apiKey);
 		final Cocktail randomCocktail = api.getRandomCocktail();
 
 		assertNotNull("Random cocktail is null", randomCocktail);
@@ -40,7 +38,6 @@ class CocktailApiAppApplicationTests {
 	@DisplayName("Search for the id of a random cocktail returns the same cocktail")
 	void testCocktailById()
 	{
-		final CocktailApi api = new CocktailApiImpl(apiKey);
 		final Cocktail randomCocktail = api.getRandomCocktail();
 		final Cocktail sameCocktail = api.getCocktailById(randomCocktail.getId());
 
@@ -61,27 +58,27 @@ class CocktailApiAppApplicationTests {
 
 	}
 
-//	@Test
-//	@DisplayName("Random cocktail retrieved from a search by ingredient (vodka) actually does contain vodka when searched for")
-//	void testRandomVodkaCocktail()
-//	{
-//		final List<Cocktail> vodkaCocktails = api.listCocktailsByIngredient("vodka");
-//		final int index = (int) (Math.random() * vodkaCocktails.size());
-//
-//		final Cocktail randomCocktail = vodkaCocktails.get(index);
-//		final Cocktail randomCocktailFull = api.getCocktailById(randomCocktail.getId());
-//
-//		boolean vodkaFound = false;
-//		for(Ingredient ingredient : randomCocktailFull.getIngredients())
-//		{
-//			if(ingredient.getName().toUpperCase() == "VODKA")
-//			{
-//				vodkaFound = true;
-//			}
-//		}
-//
-//		assertTrue("Vodka not found", vodkaFound);
-//
-//	}
+	@Test
+	@DisplayName("Random cocktail retrieved from a search by ingredient (vodka) actually does contain vodka when searched for")
+	void testRandomVodkaCocktail()
+	{
+		final List<Cocktail> vodkaCocktails = api.listCocktailsByIngredient("vodka");
+		final int index = (int) (Math.random() * vodkaCocktails.size());
+
+		final Cocktail randomCocktail = vodkaCocktails.get(index);
+		final Cocktail randomCocktailFull = api.getCocktailById(randomCocktail.getId());
+
+		boolean vodkaFound = false;
+		for(Ingredient ingredient : randomCocktailFull.getIngredients())
+		{
+			if(ingredient.getName().toUpperCase() == "VODKA")
+			{
+				vodkaFound = true;
+			}
+		}
+
+		assertTrue("Vodka not found", vodkaFound);
+
+	}
 
 }
