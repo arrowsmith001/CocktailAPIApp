@@ -30,19 +30,17 @@ public class DTOMapper {
             Field measureField = CocktailDTO.class.getDeclaredField("strMeasure" + i);
             final Object measure = measureField.get(dto);
 
-            if(ingredient != null)
+            if(ingredient != null && measure != null)
             {
                 final String nameString = ((String) ingredient).trim();
                 newIngredient.setName(nameString);
-            }
 
-            if(measure != null)
-            {
                 final String measureString = ((String) measure).trim();
                 newIngredient.setMeasure(measureString);
+
+                ingredients.add(newIngredient);
             }
 
-            ingredients.add(newIngredient);
         }
 
         out.setIngredients(ingredients);

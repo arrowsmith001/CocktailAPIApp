@@ -91,9 +91,11 @@ public class CocktailApiAppApplication {
 	@GetMapping("/index")
 	public String listCocktailsByLetter(@RequestParam Character letter) {
 
+		final String[] index = getIndex();
 		final List<Cocktail> cocktails = api.getCocktailsStartingWithLetter(letter);
 
 		Map<String, Object> context = Maps.newHashMap();
+		context.put("index", index);
 		context.put("letter", letter);
 		context.put(COCKTAILS, cocktails);
 

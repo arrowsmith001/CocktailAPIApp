@@ -154,6 +154,7 @@ public class CocktailApiImpl implements CocktailApi {
             String ingredientName;
 
             if(ingredient instanceof Ingredient) ingredientName = ((Ingredient) ingredient).getName();
+            else if(ingredient instanceof String) ingredientName = (String) ingredient;
             else ingredientName = ingredient.toString();
 
             final String response = requester.searchCocktailsByIngredientName(ingredientName);

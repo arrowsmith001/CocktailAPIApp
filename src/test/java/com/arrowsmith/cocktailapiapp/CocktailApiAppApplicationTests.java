@@ -21,10 +21,9 @@ import static org.springframework.test.util.AssertionErrors.*;
 @SpringBootTest
 class CocktailApiAppApplicationTests {
 
-	@Value("${env.THE_COCKTAIL_DB_API_KEY}")
-	String apiKey;
+	String apiKey = "1";
 
-	final CocktailApi api = new CocktailApiImpl(apiKey);
+	final CocktailApi api = new CocktailApiImpl(System.getenv().get("THE_COCKTAIL_DB_API_KEY"));
 
 	@Test
 	@DisplayName("Random cocktail returns a cocktail with a valid name")
@@ -62,11 +61,26 @@ class CocktailApiAppApplicationTests {
 
 	}
 
-//	// TODO: Make more tests
 //	@Test
-//	@DisplayName("")
-//	void newTest()
+//	@DisplayName("Random cocktail retrieved from a search by ingredient (vodka) actually does contain vodka when searched for")
+//	void testRandomVodkaCocktail()
 //	{
+//		final List<Cocktail> vodkaCocktails = api.listCocktailsByIngredient("vodka");
+//		final int index = (int) (Math.random() * vodkaCocktails.size());
+//
+//		final Cocktail randomCocktail = vodkaCocktails.get(index);
+//		final Cocktail randomCocktailFull = api.getCocktailById(randomCocktail.getId());
+//
+//		boolean vodkaFound = false;
+//		for(Ingredient ingredient : randomCocktailFull.getIngredients())
+//		{
+//			if(ingredient.getName().toUpperCase() == "VODKA")
+//			{
+//				vodkaFound = true;
+//			}
+//		}
+//
+//		assertTrue("Vodka not found", vodkaFound);
 //
 //	}
 
