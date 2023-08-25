@@ -22,24 +22,27 @@ public class DTOMapper {
 
         for (int i = 1; i <= 15; i++) {
 
+            final Ingredient newIngredient = new Ingredient();
+
             Field ingredientField = CocktailDTO.class.getDeclaredField("strIngredient" + i);
             final Object ingredient = ingredientField.get(dto);
 
             Field measureField = CocktailDTO.class.getDeclaredField("strMeasure" + i);
             final Object measure = measureField.get(dto);
 
-            if(ingredient != null && measure != null)
+            if(ingredient != null)
             {
-                final Ingredient newIngredient = new Ingredient();
-
                 final String nameString = ((String) ingredient).trim();
-                final String measureString = ((String) measure).trim();
-
                 newIngredient.setName(nameString);
-                newIngredient.setMeasure(measureString);
-
-                ingredients.add(newIngredient);
             }
+
+            if(measure != null)
+            {
+                final String measureString = ((String) measure).trim();
+                newIngredient.setMeasure(measureString);
+            }
+
+            ingredients.add(newIngredient);
         }
 
         out.setIngredients(ingredients);

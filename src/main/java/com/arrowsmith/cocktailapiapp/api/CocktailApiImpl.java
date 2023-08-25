@@ -15,11 +15,11 @@ import java.util.logging.Logger;
 
 public class CocktailApiImpl implements CocktailApi {
     static Logger logger = Logger.getLogger(CocktailApiAppApplication.class.getName());
+
     public CocktailApiImpl(String apiKey)
     {
         requester = new TheCocktailDBRequester(apiKey);
     }
-
 
     final CocktailApiRequester requester;
     final ObjectMapper mapper = new ObjectMapper();
@@ -156,7 +156,7 @@ public class CocktailApiImpl implements CocktailApi {
             if(ingredient instanceof Ingredient) ingredientName = ((Ingredient) ingredient).getName();
             else ingredientName = ingredient.toString();
 
-            final String response = requester.searchCocktailsByIngredientName((String) ingredientName);
+            final String response = requester.searchCocktailsByIngredientName(ingredientName);
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 

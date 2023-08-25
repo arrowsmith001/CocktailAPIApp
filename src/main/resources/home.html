@@ -5,37 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cocktail App</title>
     <style>
-        ul {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
+
+
+        header {
+            color: rgba(255,255,255,1);
+            font-size: 36;
+            text-align-last: center;
         }
 
-        li {
-            display: inline;
-            margin-right: 10px;
+        body {
+            background-image: url('https://images.unsplash.com/photo-1597290282695-edc43d0e7129?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2075&q=80');
+        }
+
+        main {
+            background-color: rgba(235,235,235, 0.75);
+            margin-left: 20%;
+            margin-right: 20%;
+            padding: 50px;
+            text-align-last: center;
+        }
+
+        .decoration {
+            max-width: 100%;
+        }
+
+        .letter {
+            margin-right: 3px;
+            margin-left: 3px;
+            font-size: 24px;
+            padding: 8px;
+            background-color : #d1d1d1;
+            text-align: center;
+        }
+
+        .letterList {
+              display: flex;
+              justify-content: center;
+            list-style-type: none;
+            flex-wrap: wrap;
         }
     </style>
 </head>
 <body>
 
+<header>
+    <h1>The Cocktail DB</h1>
+</header>
+
 <main>
 
-
-<header>
-    <h1>Home</h1>
-</header>
+<img class="decoration" src="https://ginsociety.com/wp-content/uploads/2020/12/Classic-American-Cocktails.jpg">
 
 <h2>Browse Cocktails by Letter:</h2>
 
 
-    <ul>
+    <ul class="letterList">
         {% for letter in index %}
 
-        <form action="index" method="get">
-            <input type="hidden" name="letter" value="{{ letter }}">
-            <button type="submit" >{{letter}}</button>
-        </form>
+        <li>
+            <a href="/index?letter={{ letter }}">
+                <p class="letter">{{ letter }}</p>
+            </a>
+        </li>
 
         {% endfor %}
     </ul>

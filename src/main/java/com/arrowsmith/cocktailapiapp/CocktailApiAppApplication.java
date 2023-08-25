@@ -28,13 +28,16 @@ public class CocktailApiAppApplication {
 	public static final String COCKTAIL = "cocktail";
 	public static final String COCKTAILS = "cocktails";
 
-	// TODO: Place apikey in config file
-	final CocktailApi api = new CocktailApiImpl("1");
+	private static CocktailApi api;
 
 	static Logger logger = Logger.getLogger(CocktailApiAppApplication.class.getName());
 
 	public static void main(String[] args) {
+
+		api = new CocktailApiImpl(args[0]);
+
 		SpringApplication.run(CocktailApiAppApplication.class, args);
+
 	}
 
 	final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

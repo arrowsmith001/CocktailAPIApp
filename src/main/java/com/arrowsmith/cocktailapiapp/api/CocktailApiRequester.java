@@ -13,7 +13,7 @@ public interface CocktailApiRequester {
 
     String searchCocktailByName(String term);
 
-    String getIngredientByName(String formattedTerm);
+    String getIngredientByName(String term);
 
     String searchCocktailsByIngredientName(String ingredientName);
 }
