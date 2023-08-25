@@ -77,8 +77,51 @@ class CocktailApiAppApplicationTests {
 				vodkaFound = true;
 			}
 		}
-
 		assertTrue("Vodka not found", vodkaFound);
+	}
+
+
+	@Test
+	@DisplayName("Searching for margarita should return cocktails with the word margarita in their name")
+	void testSearchForMargaritas()
+	{
+		final List<Cocktail> margaritas = api.searchForCocktailByName("margarita");
+
+		boolean nonMargaritaCocktailFound = false;
+		for(Cocktail cocktail : margaritas)
+		{
+			if(cocktail.getName().toUpperCase().trim().contains("MARGARITA"))
+			{
+				// Cocktail is a margarita
+			}
+			else nonMargaritaCocktailFound = true;
+		}
+
+		assertFalse("Non-margarita cocktail found", nonMargaritaCocktailFound);
+	}
+
+	@Test
+	@DisplayName("Searching for ice as an ingredient should return an ingredient called ice")
+	void testIngredientByName()
+	{
+		final List<Ingredient> ingredient = api.searchForIngredientByName("ice");
+
+		final String formattedName = ingredient.get(0).getName().toUpperCase().trim();
+
+		assertEquals("Not ice", "ICE", formattedName);
+
+	}
+
+	@Test
+	@DisplayName("Searching for ice as an ingredient should return an ingredient called ice")
+	void testIngredientById()
+	{
+		final Ingredient ingredient = api.searchForIngredientByName("ice").get(0);
+		final Ingredient ingredientById = api.getIngredientById(ingredient.getId());
+
+		final boolean idsMatch = ingredient.getId() == ingredientById.getId();
+
+		assertTrue("Ids don't match", idsMatch);
 
 	}
 

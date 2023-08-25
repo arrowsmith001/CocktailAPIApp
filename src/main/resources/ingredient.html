@@ -6,20 +6,41 @@
     <title>Cocktail App</title>
     <style>
 
-        ul {
-            display: flex;
-            flex-wrap: wrap;
-        }
+        header {
+               color: rgba(255,255,255,1);
+               background-color: rgba(0,0,0,1);
+               padding: 25px;
+               margin-bottom: 25px;
+               font-size: 36;
+               text-align-last: center;
+           }
 
-        li {
-            display: block;
-            margin-left: 20px;
-            margin-right: 10px;
-        }
-        img {
-            width: 200px;
-            height: 200px;
-        }
+           body {
+               background-image: url('https://images.unsplash.com/photo-1597290282695-edc43d0e7129?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2075&q=80');
+           }
+
+           main {
+               background-color: rgba(235,235,235, 0.75);
+               margin-left: 20%;
+               margin-right: 20%;
+               padding: 50px;
+               text-align-last: center;
+           }
+
+           ul {
+               display: flex;
+               flex-wrap: wrap;
+           }
+
+           li {
+               display: block;
+               margin-left: 20px;
+               margin-right: 10px;
+           }
+           img {
+               width: 200px;
+               height: 200px;
+           }
     </style>
 </head>
 <body>
@@ -27,6 +48,8 @@
 <header>
     <h2>{{ ingredient.name }}</h2>
 </header>
+
+<main>
 
 <p>{{ ingredient.description }}</p>
 
@@ -50,10 +73,6 @@
 </ul>
 
 
-<main>
-    {% block content %}
-    <!-- Default content goes here -->
-    {% endblock %}
 </main>
 
 <footer>
