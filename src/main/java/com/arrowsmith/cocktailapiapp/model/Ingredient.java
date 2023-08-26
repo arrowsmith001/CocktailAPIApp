@@ -1,7 +1,17 @@
 package com.arrowsmith.cocktailapiapp.model;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+
 // TODO: Image url https://www.thecocktaildb.com/images/ingredients/blueberries-Small.png
 public class Ingredient {
+
+    public Ingredient(){}
+
+    public Ingredient(String name)
+    {
+        setName(name);
+    }
+
     private int id;
     private String name;
     private String measure;
