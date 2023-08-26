@@ -3,6 +3,7 @@ package com.arrowsmith.cocktailapiapp;
 import com.arrowsmith.cocktailapiapp.api.CocktailApi;
 import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
+import com.arrowsmith.cocktailapiapp.model.CocktailBase;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,10 +63,10 @@ class CocktailApiAppApplicationTests {
 	@DisplayName("Random cocktail retrieved from a search by ingredient (vodka) actually does contain vodka when searched for")
 	void testRandomVodkaCocktail()
 	{
-		final List<Cocktail> vodkaCocktails = api.listCocktailsByIngredient("vodka");
+		final List<CocktailBase> vodkaCocktails = api.listCocktailsByIngredient("vodka");
 		final int index = (int) (Math.random() * vodkaCocktails.size());
 
-		final Cocktail randomCocktail = vodkaCocktails.get(index);
+		final CocktailBase randomCocktail = vodkaCocktails.get(index);
 		final Cocktail randomCocktailFull = api.getCocktailById(randomCocktail.getId());
 
 		boolean vodkaFound = false;
