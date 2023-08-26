@@ -5,6 +5,8 @@ import com.arrowsmith.cocktailapiapp.model.CocktailBase;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -42,11 +44,11 @@ public class DTOMapper {
             {
                 final Ingredient newIngredient = new Ingredient();
 
-                Field ingredientField = CocktailDTO.class.getDeclaredField("strIngredient" + i);
-                final Object ingredient = ingredientField.get(dto);
+                Method ingredientGetter = CocktailDTO.class.getMethod("getStrIngredient" + i);
+                final Object ingredient = ingredientGetter.invoke(dto);
 
-                Field measureField = CocktailDTO.class.getDeclaredField("strMeasure" + i);
-                final Object measure = measureField.get(dto);
+                Method measureGetter = CocktailDTO.class.getMethod("getStrMeasure" + i);
+                final Object measure = measureGetter.invoke(dto);
 
                 if(ingredient != null)
                 {
@@ -61,7 +63,7 @@ public class DTOMapper {
 
                     ingredients.add(newIngredient);
                 }
-            } catch (NoSuchFieldException | IllegalAccessException e) {
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 logger.log(Level.SEVERE, e::getMessage);
             }
 
