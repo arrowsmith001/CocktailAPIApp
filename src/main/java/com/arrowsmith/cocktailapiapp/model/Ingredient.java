@@ -1,6 +1,5 @@
 package com.arrowsmith.cocktailapiapp.model;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 
 // TODO: Image url https://www.thecocktaildb.com/images/ingredients/blueberries-Small.png
 public class Ingredient {

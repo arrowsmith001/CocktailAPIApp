@@ -1,47 +1,68 @@
 package com.arrowsmith.cocktailapiapp.dto;
 
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
+import com.arrowsmith.cocktailapiapp.model.CocktailBase;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DTOMapper {
+    private DTOMapper(){}
+    static Logger logger = Logger.getLogger(DTOMapper.class.getName());
 
-    public static Cocktail cocktailDTOtoModel(CocktailDTO dto) throws NoSuchFieldException, IllegalAccessException {
+    public static CocktailBase cocktailDTOtoBasicModel(CocktailDTO dto) {
+
+        final CocktailBase out = new CocktailBase();
+
+        out.setId(dto.id);
+        out.setName(dto.cocktailName);
+        out.setImageUrl(dto.imageUrl);
+
+        return out;
+    }
+
+    public static Cocktail cocktailDTOtoFullModel(CocktailDTO dto) {
 
         final Cocktail out = new Cocktail();
 
         out.setId(dto.id);
         out.setName(dto.cocktailName);
-        out.setInstructions(dto.instructions);
         out.setImageUrl(dto.imageUrl);
+        out.setInstructions(dto.instructions);
 
-        List<Ingredient> ingredients = new ArrayList<Ingredient>();
+        List<Ingredient> ingredients = new ArrayList<>();
 
         for (int i = 1; i <= 15; i++) {
 
-            final Ingredient newIngredient = new Ingredient();
-
-            Field ingredientField = CocktailDTO.class.getDeclaredField("strIngredient" + i);
-            final Object ingredient = ingredientField.get(dto);
-
-            Field measureField = CocktailDTO.class.getDeclaredField("strMeasure" + i);
-            final Object measure = measureField.get(dto);
-
-            if(ingredient != null)
+            try
             {
-                final String nameString = ((String) ingredient).trim();
-                newIngredient.setName(nameString);
+                final Ingredient newIngredient = new Ingredient();
 
-                if(measure != null)
+                Field ingredientField = CocktailDTO.class.getDeclaredField("strIngredient" + i);
+                final Object ingredient = ingredientField.get(dto);
+
+                Field measureField = CocktailDTO.class.getDeclaredField("strMeasure" + i);
+                final Object measure = measureField.get(dto);
+
+                if(ingredient != null)
                 {
-                    final String measureString = ((String) measure).trim();
-                    newIngredient.setMeasure(measureString);
-                }
+                    final String nameString = ((String) ingredient).trim();
+                    newIngredient.setName(nameString);
 
-                ingredients.add(newIngredient);
+                    if(measure != null)
+                    {
+                        final String measureString = ((String) measure).trim();
+                        newIngredient.setMeasure(measureString);
+                    }
+
+                    ingredients.add(newIngredient);
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                logger.log(Level.SEVERE, e::getMessage);
             }
 
         }
@@ -50,7 +71,8 @@ public class DTOMapper {
 
         return out;
     }
-    public static Ingredient ingredientDTOtoModel(IngredientDTO dto) throws NoSuchFieldException, IllegalAccessException {
+
+    public static Ingredient ingredientDTOtoModel(IngredientDTO dto) {
 
         final Ingredient out = new Ingredient();
 

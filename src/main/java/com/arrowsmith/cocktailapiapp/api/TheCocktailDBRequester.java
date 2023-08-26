@@ -1,25 +1,28 @@
 package com.arrowsmith.cocktailapiapp.api;
 
-
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.logging.*;
 
 class TheCocktailDBRequester implements CocktailApiRequester {
+    static Logger logger = Logger.getLogger(TheCocktailDBRequester.class.getName());
+
     public TheCocktailDBRequester(String apiKey) {
         this.apiKey = apiKey;
     }
 
     private final String apiKey;
-    private final String baseUrl = "https://www.thecocktaildb.com/api/json/v1/";
-    private final String random = "/random.php";
-    private final String baseSearchByFirstLetter = "/search.php?f=";
-    private final String baseSearchIngredientByName = "/search.php?i=";
-    private final String baseSearchCocktailByName = "/search.php?s=";
-    private final String baseCocktailByIdLookup = "/lookup.php?i=";
-    private final String baseCocktailSearchByIngredientName = "/filter.php?i=";
-    private final String baseLookupIngredientById = "/lookup.php?iid=";
+    private static final String baseUrl = "https://www.thecocktaildb.com/api/json/v1/";
+    private static final String random = "/random.php";
+    private static final String baseSearchByFirstLetter = "/search.php?f=";
+    private static final String baseSearchIngredientByName = "/search.php?i=";
+    private static final String baseSearchCocktailByName = "/search.php?s=";
+    private static final String baseCocktailByIdLookup = "/lookup.php?i=";
+    private static final String baseCocktailSearchByIngredientName = "/filter.php?i=";
+    private static final String baseLookupIngredientById = "/lookup.php?iid=";
 
     private String replaceWhitespace(String term)
     {
@@ -73,10 +76,14 @@ class TheCocktailDBRequester implements CocktailApiRequester {
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
         }
-        catch (Exception e)
-        {
-            // TODO: Log
-            return null;
+        catch (IOException e) {
+            logger.log(Level.SEVERE, e::getMessage);
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            logger.log(Level.WARNING, e::getMessage);
+            Thread.currentThread().interrupt();
         }
+
+        return null;
     }
 }

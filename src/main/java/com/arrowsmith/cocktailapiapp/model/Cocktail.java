@@ -1,25 +1,12 @@
 package com.arrowsmith.cocktailapiapp.model;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-
 import java.util.List;
 
-public class Cocktail
+public class Cocktail extends CocktailBase
 {
-    public Integer getId() {
-        return id;
-    }
+    private String instructions;
+    private List<Ingredient> ingredients;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getInstructions() {
         return instructions;
@@ -29,13 +16,6 @@ public class Cocktail
         this.instructions = instructions;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 
     public List<Ingredient> getIngredients() {
         return ingredients;
@@ -44,12 +24,6 @@ public class Cocktail
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
-
-    private Integer id;
-    private String name;
-    private String instructions;
-    private String imageUrl;
-    private List<Ingredient> ingredients;
 
 
 }

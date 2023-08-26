@@ -2,15 +2,29 @@ package com.arrowsmith.cocktailapiapp.api;
 
 import com.arrowsmith.cocktailapiapp.dto.CocktailDTO;
 import com.arrowsmith.cocktailapiapp.dto.IngredientDTO;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-@JsonSerialize
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class CocktailApiResponse {
 
-    public CocktailDTO[] drinks;
+    private CocktailDTO[] drinks;
 
-    public IngredientDTO[] ingredients;
+    private IngredientDTO[] ingredients;
+
+    public CocktailDTO[] getDrinks() {
+        return drinks;
+    }
+
+    public void setDrinks(CocktailDTO[] drinks) {
+        this.drinks = drinks;
+    }
+
+    public IngredientDTO[] getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(IngredientDTO[] ingredients) {
+        this.ingredients = ingredients;
+    }
+
 
 }

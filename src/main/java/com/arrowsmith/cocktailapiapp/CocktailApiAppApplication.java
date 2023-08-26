@@ -3,8 +3,8 @@ package com.arrowsmith.cocktailapiapp;
 import com.arrowsmith.cocktailapiapp.api.CocktailApi;
 import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
+import com.arrowsmith.cocktailapiapp.model.CocktailBase;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
-import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
 import com.hubspot.jinjava.Jinjava;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -25,22 +25,21 @@ import java.util.logging.Logger;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 @RestController
 public class CocktailApiAppApplication {
-	public static final String COCKTAIL = "cocktail";
-	public static final String COCKTAILS = "cocktails";
-
-	private static CocktailApi api;
-
 	static Logger logger = Logger.getLogger(CocktailApiAppApplication.class.getName());
 
-	public static void main(String[] args) {
+	private static final String COCKTAIL = "cocktail";
+	private static final String COCKTAILS = "cocktails";
+	private static final String INDEX = "index";
 
-		api = new CocktailApiImpl(args[0]);
+	private static final CocktailApi api = new CocktailApiImpl(System.getenv("THE_COCKTAIL_DB_API_KEY"));;
+
+	public static void main(String[] args) {
 
 		SpringApplication.run(CocktailApiAppApplication.class, args);
 
 	}
 
-	final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	@GetMapping("/")
 	public String home() {
@@ -48,7 +47,7 @@ public class CocktailApiAppApplication {
 		final String[] index = getIndex();
 
 		Map<String, Object> context = Maps.newHashMap();
-		context.put("index", index);
+		context.put(INDEX, index);
 
 		return renderTemplate("home", context);
 	}
@@ -95,18 +94,18 @@ public class CocktailApiAppApplication {
 		final List<Cocktail> cocktails = api.getCocktailsStartingWithLetter(letter);
 
 		Map<String, Object> context = Maps.newHashMap();
-		context.put("index", index);
+		context.put(INDEX, index);
 		context.put("letter", letter);
 		context.put(COCKTAILS, cocktails);
 
-		return renderTemplate("index", context);
+		return renderTemplate(INDEX, context);
 	}
 	//
 	@GetMapping("/ingredient")
 	public String goToIngredientAndCocktailList(@RequestParam String term) {
 
 		final Ingredient ingredient = api.searchForIngredientByName(term).get(0);
-		final List<Cocktail> cocktails = api.listCocktailsByIngredient(ingredient);
+		final List<CocktailBase> cocktails = api.listCocktailsByIngredient(ingredient);
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("term", term);
@@ -120,7 +119,7 @@ public class CocktailApiAppApplication {
 	@GetMapping("/cocktailsByIngredient")
 	public String listCocktailsByIngredient(@RequestParam String ingredientName) {
 
-		final List<Cocktail> cocktails = api.listCocktailsByIngredient(ingredientName);
+		final List<CocktailBase> cocktails = api.listCocktailsByIngredient(ingredientName);
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("ingredientName", ingredientName);
@@ -130,9 +129,9 @@ public class CocktailApiAppApplication {
 	}
 
 	private String[] getIndex() {
-		final String[] index = new String[alphabet.length()];
-		for (int i = 0; i < alphabet.length(); i++) {
-			index[i] = Character.toString(alphabet.charAt(i));
+		final String[] index = new String[ALPHABET.length()];
+		for (int i = 0; i < ALPHABET.length(); i++) {
+			index[i] = Character.toString(ALPHABET.charAt(i));
 		}
 		return index;
 	}
@@ -144,7 +143,7 @@ public class CocktailApiAppApplication {
 
 		try
 		{
-			String template =  Resources.toString(Resources.getResource(templateName + ".html"), Charsets.UTF_8);
+			String template =  Resources.toString(Resources.getResource(templateName + ".html"), StandardCharsets.UTF_8);
 			return jinjava.render(template, context);
 		}
 		catch (Exception e)

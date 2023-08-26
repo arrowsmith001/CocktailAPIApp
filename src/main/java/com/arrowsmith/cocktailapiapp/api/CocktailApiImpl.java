@@ -1,29 +1,31 @@
 package com.arrowsmith.cocktailapiapp.api;
 
-import com.arrowsmith.cocktailapiapp.CocktailApiAppApplication;
 import com.arrowsmith.cocktailapiapp.dto.CocktailDTO;
 import com.arrowsmith.cocktailapiapp.dto.DTOMapper;
 import com.arrowsmith.cocktailapiapp.dto.IngredientDTO;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
+import com.arrowsmith.cocktailapiapp.model.CocktailBase;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CocktailApiImpl implements CocktailApi {
-    static Logger logger = Logger.getLogger(CocktailApiAppApplication.class.getName());
+    static Logger logger = Logger.getLogger(CocktailApiImpl.class.getName());
+    final private ObjectMapper mapper = new ObjectMapper();
+
 
     public CocktailApiImpl(String apiKey)
     {
         requester = new TheCocktailDBRequester(apiKey);
     }
 
-    final CocktailApiRequester requester;
-    final ObjectMapper mapper = new ObjectMapper();
-
+    final private CocktailApiRequester requester;
 
 
     @Override
@@ -33,12 +35,12 @@ public class CocktailApiImpl implements CocktailApi {
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
-            final CocktailDTO dto = cocktailApiResponse.drinks[0];
+            final CocktailDTO dto = cocktailApiResponse.getDrinks()[0];
 
-            return DTOMapper.cocktailDTOtoModel(dto);
+            return DTOMapper.cocktailDTOtoFullModel(dto);
 
         } catch (Exception e) {
-            System.out.println(e);
+            logger.log(Level.SEVERE, e::getMessage);
             return null;
         }
 
@@ -56,17 +58,13 @@ public class CocktailApiImpl implements CocktailApi {
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
-            return Arrays.stream(cocktailApiResponse.drinks).map(dto -> {
-                try {
-                    return DTOMapper.cocktailDTOtoModel(dto);
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }).toList();
+            return Arrays.stream(cocktailApiResponse.getDrinks())
+                    .map(DTOMapper::cocktailDTOtoFullModel)
+                    .toList();
 
         } catch (Exception e) {
-            System.out.println(e);
-            return null;
+            logger.log(Level.SEVERE, e::getMessage);
+            return new ArrayList<>();
         }
     }
 
@@ -77,12 +75,12 @@ public class CocktailApiImpl implements CocktailApi {
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
-            final CocktailDTO dto = cocktailApiResponse.drinks[0];
+            final CocktailDTO dto = cocktailApiResponse.getDrinks()[0];
 
-            return DTOMapper.cocktailDTOtoModel(dto);
+            return DTOMapper.cocktailDTOtoFullModel(dto);
 
         } catch (Exception e) {
-            System.out.println(e);
+            logger.log(Level.SEVERE, e::getMessage);
             return null;
         }
     }
@@ -94,12 +92,12 @@ public class CocktailApiImpl implements CocktailApi {
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
-            final IngredientDTO dto = cocktailApiResponse.ingredients[0];
+            final IngredientDTO dto = cocktailApiResponse.getIngredients()[0];
 
             return DTOMapper.ingredientDTOtoModel(dto);
 
         } catch (Exception e) {
-            System.out.println(e);
+            logger.log(Level.SEVERE, e::getMessage);
             return null;
         }
     }
@@ -112,17 +110,13 @@ public class CocktailApiImpl implements CocktailApi {
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
-            return Arrays.stream(cocktailApiResponse.drinks).map(dto -> {
-                try {
-                    return DTOMapper.cocktailDTOtoModel(dto);
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }).toList();
+            return Arrays.stream(cocktailApiResponse.getDrinks())
+                    .map(DTOMapper::cocktailDTOtoFullModel)
+                    .toList();
 
         } catch (Exception e) {
-            System.out.println(e);
-            return null;
+            logger.log(Level.SEVERE, e::getMessage);
+            return new ArrayList<>();
         }
     }
 
@@ -130,48 +124,40 @@ public class CocktailApiImpl implements CocktailApi {
     public List<Ingredient> searchForIngredientByName(String term) {
         try {
 
-            final String response =requester.getIngredientByName(term);
+            final String response = requester.getIngredientByName(term);
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
-            return Arrays.stream(cocktailApiResponse.ingredients).map(dto -> {
-                try {
-                    return DTOMapper.ingredientDTOtoModel(dto);
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }).toList();
+            return Arrays.stream(cocktailApiResponse.getIngredients())
+                    .map(DTOMapper::ingredientDTOtoModel)
+                    .toList();
 
         } catch (Exception e) {
-            System.out.println(e);
-            return null;
+            logger.log(Level.SEVERE, e::getMessage);
+            return new ArrayList<>();
         }
     }
 
     @Override
-    public List<Cocktail> listCocktailsByIngredient(Object ingredient) {
+    public List<CocktailBase> listCocktailsByIngredient(Object o) {
         try {
             String ingredientName;
 
-            if(ingredient instanceof Ingredient) ingredientName = ((Ingredient) ingredient).getName();
-            else if(ingredient instanceof String) ingredientName = (String) ingredient;
-            else ingredientName = ingredient.toString();
+            if(o instanceof Ingredient ingredient) ingredientName = ingredient.getName();
+            else if(o instanceof String name) ingredientName = name;
+            else ingredientName = o.toString();
 
             final String response = requester.searchCocktailsByIngredientName(ingredientName);
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
-            return Arrays.stream(cocktailApiResponse.drinks).map(dto -> {
-                try {
-                    return DTOMapper.cocktailDTOtoModel(dto);
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }).toList();
+            return Arrays.stream(cocktailApiResponse.getDrinks())
+                    .map(DTOMapper::cocktailDTOtoBasicModel)
+                    .toList();
 
         } catch (Exception e) {
-            System.out.println(e);
-            return null;
+            logger.log(Level.SEVERE, e::getMessage);
+            return new ArrayList<>();
         }
     }
 
