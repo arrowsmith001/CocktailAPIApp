@@ -15,14 +15,14 @@ class TheCocktailDBRequester implements CocktailApiRequester {
     }
 
     private final String apiKey;
-    private static final String baseUrl = "https://www.thecocktaildb.com/api/json/v1/";
-    private static final String random = "/random.php";
-    private static final String baseSearchByFirstLetter = "/search.php?f=";
-    private static final String baseSearchIngredientByName = "/search.php?i=";
-    private static final String baseSearchCocktailByName = "/search.php?s=";
-    private static final String baseCocktailByIdLookup = "/lookup.php?i=";
-    private static final String baseCocktailSearchByIngredientName = "/filter.php?i=";
-    private static final String baseLookupIngredientById = "/lookup.php?iid=";
+    private static final String BASE_URL = "https://www.thecocktaildb.com/api/json/v1/";
+    private static final String RANDOM = "/random.php";
+    private static final String BASE_SEARCH_BY_FIRST_LETTER = "/search.php?f=";
+    private static final String BASE_SEARCH_INGREDIENT_BY_NAME = "/search.php?i=";
+    private static final String BASE_SEARCH_COCKTAIL_BY_NAME = "/search.php?s=";
+    private static final String BASE_COCKTAIL_BY_ID_LOOKUP = "/lookup.php?i=";
+    private static final String BASE_COCKTAIL_SEARCH_BY_INGREDIENT_NAME = "/filter.php?i=";
+    private static final String BASE_LOOKUP_INGREDIENT_BY_ID = "/lookup.php?iid=";
 
     private String replaceWhitespace(String term)
     {
@@ -31,38 +31,38 @@ class TheCocktailDBRequester implements CocktailApiRequester {
 
     @Override
     public String getRandomCocktail() {
-        return makeGetRequest(baseUrl + apiKey + random);
+        return makeGetRequest(BASE_URL + apiKey + RANDOM);
     }
 
     @Override
     public String searchCocktailsByLetter(char startingLetter) {
-        return makeGetRequest(baseUrl + apiKey + baseSearchByFirstLetter + startingLetter);
+        return makeGetRequest(BASE_URL + apiKey + BASE_SEARCH_BY_FIRST_LETTER + startingLetter);
     }
 
     @Override
     public String getCocktailById(Object id) {
-        return makeGetRequest(baseUrl + apiKey + baseCocktailByIdLookup + id);
+        return makeGetRequest(BASE_URL + apiKey + BASE_COCKTAIL_BY_ID_LOOKUP + id);
     }
 
     @Override
     public String getIngredientById(Object id) {
-        return makeGetRequest(baseUrl + apiKey + baseLookupIngredientById + id);
+        return makeGetRequest(BASE_URL + apiKey + BASE_LOOKUP_INGREDIENT_BY_ID + id);
     }
 
     @Override
     public String searchCocktailByName(String term) {
-        return makeGetRequest(baseUrl + apiKey + baseSearchCocktailByName + replaceWhitespace(term));
+        return makeGetRequest(BASE_URL + apiKey + BASE_SEARCH_COCKTAIL_BY_NAME + replaceWhitespace(term));
     }
 
     @Override
     public String getIngredientByName(String term) {
-        return makeGetRequest(baseUrl + apiKey + baseSearchIngredientByName + replaceWhitespace(term));
+        return makeGetRequest(BASE_URL + apiKey + BASE_SEARCH_INGREDIENT_BY_NAME + replaceWhitespace(term));
     }
 
 
     @Override
     public String searchCocktailsByIngredientName(String ingredientName) {
-        return makeGetRequest(baseUrl + apiKey + baseCocktailSearchByIngredientName + replaceWhitespace(ingredientName));
+        return makeGetRequest(BASE_URL + apiKey + BASE_COCKTAIL_SEARCH_BY_INGREDIENT_NAME + replaceWhitespace(ingredientName));
     }
 
     private String makeGetRequest(String url) {
@@ -78,9 +78,8 @@ class TheCocktailDBRequester implements CocktailApiRequester {
         }
         catch (IOException e) {
             logger.log(Level.SEVERE, e::getMessage);
-            throw new RuntimeException(e);
         } catch (InterruptedException e) {
-            logger.log(Level.WARNING, e::getMessage);
+            logger.log(Level.SEVERE, e::getMessage);
             Thread.currentThread().interrupt();
         }
 

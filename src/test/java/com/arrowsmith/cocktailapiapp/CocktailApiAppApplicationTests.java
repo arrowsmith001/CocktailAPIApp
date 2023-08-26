@@ -5,6 +5,7 @@ import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
 import com.arrowsmith.cocktailapiapp.model.CocktailBase;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
+import io.cucumber.java.sl.In;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -126,5 +127,51 @@ class CocktailApiAppApplicationTests {
 
 	}
 
+	@Test
+	@DisplayName("Ingredient getters should work")
+	void testIngredientGetters()
+	{
+		final Ingredient ingredient = new Ingredient();
+
+		ingredient.setId(0);
+		ingredient.setName("Some Random Ingredient");
+		ingredient.setMeasure("Some amount");
+		ingredient.setDescription("Some description");
+
+		assertEquals("Id doesn't match", ingredient.getId(), 0);
+		assertEquals("Name doesn't match", ingredient.getName(), "Some Random Ingredient");
+		assertEquals("Measure doesn't match", ingredient.getMeasure(), "Some amount");
+		assertEquals("Search term doesn't match", ingredient.getSearchTerm(), "Some+Random+Ingredient");
+
+	}
+	@Test
+	@DisplayName("Ingredient getters should work")
+	void testCocktailGetters()
+	{
+		final Cocktail cocktail = new Cocktail();
+
+		cocktail.setId(0);
+		cocktail.setName("Some Random Cocktail");
+		cocktail.setInstructions("Some instructions");
+
+		assertEquals("Id doesn't match", cocktail.getId(), 0);
+		assertEquals("Name doesn't match", cocktail.getName(), "Some Random Cocktail");
+		assertEquals("Instructions don't match", cocktail.getInstructions(), "Some instructions");
+
+	}
+
+
+	@Test
+	@DisplayName("Cocktail template page should contain the name of the cocktail")
+	void testCocktailPageRenderedTemplate()
+	{
+		final Cocktail cocktail = api.getRandomCocktail();
+
+		final CocktailApiAppApplication app = new CocktailApiAppApplication();
+		final String renderedTemplate = app.getCocktailById(cocktail.getId());
+
+		assertTrue("The following template does not contain '" + cocktail.getName() + "': \n\n" + renderedTemplate,
+				renderedTemplate.contains(cocktail.getName()));
+	}
 
 }
