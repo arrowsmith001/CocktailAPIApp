@@ -44,8 +44,6 @@ public class CocktailApiAppApplication {
 	@GetMapping("/")
 	public String home() {
 
-		final String[] index = getIndex();
-
 		Map<String, Object> context = Maps.newHashMap();
 
 		return renderTemplate("home", context);
@@ -89,7 +87,6 @@ public class CocktailApiAppApplication {
 	@GetMapping("/index")
 	public String listCocktailsByLetter(@RequestParam Character letter) {
 
-		final String[] index = getIndex();
 		final List<Cocktail> cocktails = api.getCocktailsStartingWithLetter(letter);
 
 		Map<String, Object> context = Maps.newHashMap();
@@ -124,14 +121,6 @@ public class CocktailApiAppApplication {
 		context.put(COCKTAILS, cocktails);
 
 		return renderTemplate("listing", context);
-	}
-
-	private String[] getIndex() {
-		final String[] index = new String[ALPHABET.length()];
-		for (int i = 0; i < ALPHABET.length(); i++) {
-			index[i] = Character.toString(ALPHABET.charAt(i));
-		}
-		return index;
 	}
 
 

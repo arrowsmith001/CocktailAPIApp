@@ -4,14 +4,14 @@ public class Instructions {
 
     public Instructions() {}
 
-    public Instructions(String instructions, Language language)
+    public Instructions(String instructionString, Language language)
     {
-        setInstructions(instructions);
+        setInstructionString(instructionString);
         setLanguage(language);
     }
 
 
-    private String instructions;
+    private String instructionString;
 
     private LanguageData languageData;
 
@@ -45,12 +45,12 @@ public class Instructions {
         this.languageData = languageData;
     }
 
-    public String getInstructions() {
-        return instructions;
+    public String getInstructionString() {
+        return instructionString;
     }
 
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
+    public void setInstructionString(String instructionString) {
+        this.instructionString = instructionString;
     }
 
 }
