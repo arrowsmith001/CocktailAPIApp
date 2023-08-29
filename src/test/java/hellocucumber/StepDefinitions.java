@@ -17,7 +17,7 @@ class IsItVodka {
 
 public class StepDefinitions {
 
-    private CocktailApi api = new CocktailApiImpl(System.getenv("THE_COCKTAIL_DB_API_KEY"));
+    private final CocktailApi api = new CocktailApiImpl(System.getenv("THE_COCKTAIL_DB_API_KEY"));
     private Ingredient ingredient;
     private List<CocktailBase> basicCocktails;
     private Cocktail selectedCocktail;
@@ -43,7 +43,7 @@ public class StepDefinitions {
 
     @Then("vodka should be included in the ingredients")
     public void vodkaShouldBeIncludedInTheIngredients() {
-        final boolean hasVodka = selectedCocktail.getMeasuredIngredients().stream().anyMatch((ing) -> ing.getIngredient().getName().equalsIgnoreCase("vodka"));
+        final boolean hasVodka = selectedCocktail.getMeasuredIngredients().stream().anyMatch((ing) -> ing.getName().equalsIgnoreCase("vodka"));
         assertTrue(selectedCocktail.getName() + " does not have vodka", hasVodka);
     }
 }
