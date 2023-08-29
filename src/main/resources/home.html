@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% set index = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"] %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,36 +17,70 @@
 
 <main>
 
-<img class="decoration" src="https://ginsociety.com/wp-content/uploads/2020/12/Classic-American-Cocktails.jpg">
-
-<h2>Browse Cocktails by Letter:</h2>
+<img class="decoration topRounded" src="https://ginsociety.com/wp-content/uploads/2020/12/Classic-American-Cocktails.jpg">
 
 
-    <ul class="letterList">
-        {% for letter in index %}
-
-        <li>
-            <a href="/index?letter={{ letter }}">
-                <p class="letter">{{ letter }}</p>
-            </a>
-        </li>
-
-        {% endfor %}
-    </ul>
+    <inner>
 
 
-    <h2>Search Cocktail by Name:</h2>
 
-    <form action="search" method="get">
-        <input type="text" name="term">
-        <button type="submit" >Search</button>
-    </form>
+        <div class="row">
 
-    <h2>Get Random Cocktail:</h2>
 
-    <form action="random" method="get">
-        <button type="submit" >Surprise me</button>
-    </form>
+            <div class="column">
+            <h2>Browse Cocktails by Letter:</h2>
+                <ul class="letterList">
+
+                    {% for letter in index %}
+
+                    <li class="letter">
+
+                        <a href="/index?letter={{ letter }}">
+                            <p>{{ letter }}</p>
+                        </a>
+
+                    </li>
+
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="column">
+                <h2>Search for Cocktail by Name:</h2>
+
+                <form action="search" method="get">
+                    <input style="width: 200px;" type="text" name="term">
+                    <button  style="margin-left: 10px;" type="submit" >Search</button>
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <div class="row">
+
+            <ul style="justify-content: center; align-items: center;">
+                <li>
+                    <h2>Get Random Cocktail:</h2>
+
+                </li>
+                <li>
+                    <form action="random" method="get">
+                        <button style="font-size: 24px; padding: 10px 20px 10px 20px;" type="submit" >Surprise me 🍸</button>
+                    </form>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+
+
+
+
+    </inner>
 
 </main>
 

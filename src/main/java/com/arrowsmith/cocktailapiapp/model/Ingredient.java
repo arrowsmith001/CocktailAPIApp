@@ -1,8 +1,7 @@
 package com.arrowsmith.cocktailapiapp.model;
 
 
-// TODO: Image url https://www.thecocktaildb.com/images/ingredients/blueberries-Small.png
-public class Ingredient {
+public class Ingredient extends IngredientBase {
 
     public Ingredient(){}
 
@@ -12,20 +11,20 @@ public class Ingredient {
     }
 
     private int id;
-    private String name;
     private String measure;
     private String description;
+    private String type;
+
+    private boolean isAlcoholic;
+    private double abv;
+
 
     public String getSearchTerm(){
-        return String.join("+", name.split(" "));
+        return String.join("+", getName().split(" "));
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public boolean isAlcoholic() {
+        return isAlcoholic;
     }
 
     public String getMeasure() {
@@ -50,5 +49,26 @@ public class Ingredient {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
+    public void setAlcoholic(boolean alcoholic) {
+        isAlcoholic = alcoholic;
+    }
+
+    public double getAbv() {
+        return abv;
+    }
+
+    public void setAbv(double abv) {
+        this.abv = abv;
     }
 }

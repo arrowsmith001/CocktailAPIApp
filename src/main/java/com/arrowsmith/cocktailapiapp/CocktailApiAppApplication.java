@@ -31,7 +31,7 @@ public class CocktailApiAppApplication {
 	private static final String COCKTAILS = "cocktails";
 	private static final String INDEX = "index";
 
-	private static final CocktailApi api = new CocktailApiImpl(System.getenv("THE_COCKTAIL_DB_API_KEY"));;
+	private static final CocktailApi api = new CocktailApiImpl(System.getenv("THE_COCKTAIL_DB_API_KEY"));
 
 	public static void main(String[] args) {
 
@@ -47,7 +47,6 @@ public class CocktailApiAppApplication {
 		final String[] index = getIndex();
 
 		Map<String, Object> context = Maps.newHashMap();
-		context.put(INDEX, index);
 
 		return renderTemplate("home", context);
 	}
@@ -94,7 +93,6 @@ public class CocktailApiAppApplication {
 		final List<Cocktail> cocktails = api.getCocktailsStartingWithLetter(letter);
 
 		Map<String, Object> context = Maps.newHashMap();
-		context.put(INDEX, index);
 		context.put("letter", letter);
 		context.put(COCKTAILS, cocktails);
 

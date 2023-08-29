@@ -1,10 +1,8 @@
 package com.arrowsmith.cocktailapiapp.dto;
 
-import com.arrowsmith.cocktailapiapp.model.Cocktail;
-import com.arrowsmith.cocktailapiapp.model.CocktailBase;
-import com.arrowsmith.cocktailapiapp.model.Ingredient;
+import com.arrowsmith.cocktailapiapp.model.*;
+import com.arrowsmith.cocktailapiapp.model.instructions.*;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -20,9 +18,7 @@ public class DTOMapper {
 
         final CocktailBase out = new CocktailBase();
 
-        out.setId(dto.id);
-        out.setName(dto.cocktailName);
-        out.setImageUrl(dto.imageUrl);
+        setBasicCocktailInfo(out, dto);
 
         return out;
     }
@@ -31,18 +27,92 @@ public class DTOMapper {
 
         final Cocktail out = new Cocktail();
 
-        out.setId(dto.id);
-        out.setName(dto.cocktailName);
-        out.setImageUrl(dto.imageUrl);
-        out.setInstructions(dto.instructions);
+        // Info
+        setBasicCocktailInfo(out, dto);
+        setAdditionalCocktailInfo(out, dto);
 
-        List<Ingredient> ingredients = new ArrayList<>();
+        // Instructions
+        setCocktailInstructions(out, dto);
+
+        // Ingredients
+        setCocktailIngredients(out, dto);
+
+        return out;
+    }
+
+    public static Ingredient ingredientDTOtoFullModel(IngredientDTO dto) {
+
+        final Ingredient out = new Ingredient();
+
+        out.setId(dto.id);
+        out.setName(dto.ingredientName);
+        out.setDescription(dto.description);
+        out.setAlcoholic(dto.alcoholicYesOrNo.equalsIgnoreCase("Yes"));
+        out.setType(dto.type);
+        out.setAbv(dto.abv);
+
+        return out;
+    }
+
+    private static void setBasicCocktailInfo(CocktailBase cocktailBase, CocktailDTO dto) {
+        cocktailBase.setId(dto.getId());
+        cocktailBase.setName(dto.getCocktailName());
+        cocktailBase.setImageUrl(dto.getImageUrl());
+    }
+
+    private static void setAdditionalCocktailInfo(Cocktail cocktail, CocktailDTO dto) {
+        cocktail.setGlass(dto.getGlass());
+        cocktail.setCategory(dto.getCategory());
+        cocktail.setAlcoholic(dto.getAlcoholic());
+    }
+
+    private static void setCocktailInstructions(Cocktail cocktail, CocktailDTO dto) {
+
+        List<InstructionsInLanguage> instructions = new ArrayList<>();
+
+        final String englishInstructions = dto.getInstructionsInEnglish();
+
+        if(englishInstructions != null)
+        {
+            instructions.add(new EnglishInstructions(englishInstructions));
+        }
+
+        final String frenchInstructions = dto.getInstructionsInFrench();
+        if(frenchInstructions != null)
+        {
+            instructions.add(new FrenchInstructions(frenchInstructions));
+        }
+
+        final String spanishInstructions = dto.getInstructionsInSpanish();
+        if(spanishInstructions != null)
+        {
+            instructions.add(new SpanishInstructions(spanishInstructions));
+        }
+
+        final String germanInstructions = dto.getInstructionsInGerman();
+        if(germanInstructions != null)
+        {
+            instructions.add(new GermanInstructions(germanInstructions));
+        }
+
+        final String italianInstructions = dto.getInstructionsInItalian();
+        if(italianInstructions != null)
+        {
+            instructions.add(new ItalianInstructions(italianInstructions));
+        }
+
+        cocktail.setInstructions(instructions);
+
+    }
+
+    private static void setCocktailIngredients(Cocktail cocktail, CocktailDTO dto) {
+
+        List<MeasuredIngredient> ingredients = new ArrayList<>();
 
         for (int i = 1; i <= 15; i++) {
 
             try
             {
-                final Ingredient newIngredient = new Ingredient();
 
                 Method ingredientGetter = CocktailDTO.class.getMethod("getStrIngredient" + i);
                 final Object ingredient = ingredientGetter.invoke(dto);
@@ -52,36 +122,27 @@ public class DTOMapper {
 
                 if(ingredient != null)
                 {
-                    final String nameString = ((String) ingredient).trim();
-                    newIngredient.setName(nameString);
+                    final String ingredientName = ((String) ingredient).trim();
+                    final MeasuredIngredient measuredIngredient = new MeasuredIngredient(ingredientName);
 
                     if(measure != null)
                     {
                         final String measureString = ((String) measure).trim();
-                        newIngredient.setMeasure(measureString);
+                        measuredIngredient.setMeasure(measureString);
                     }
 
-                    ingredients.add(newIngredient);
+                    ingredients.add(measuredIngredient);
                 }
+
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 logger.log(Level.SEVERE, e::getMessage);
             }
 
         }
 
-        out.setIngredients(ingredients);
-
-        return out;
+        cocktail.setMeasuredIngredients(ingredients);
     }
 
-    public static Ingredient ingredientDTOtoModel(IngredientDTO dto) {
 
-        final Ingredient out = new Ingredient();
 
-        out.setId(dto.id);
-        out.setName(dto.ingredientName);
-        out.setDescription(dto.description);
-
-        return out;
-    }
 }

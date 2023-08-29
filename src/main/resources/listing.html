@@ -10,32 +10,49 @@
 <body>
 
 <header>
+    <h2>Search results for: "{{ term }}"</h2>
 </header>
 
-<h2>Search results for: {{ term }}</h2>
-
-    {% for cocktail in cocktails %}
-
-
-    <a href="cocktail?id={{ cocktail.id }}">
-
-        <li>
-            <p>{{ cocktail.name }}</p>
-            <img src="{{ cocktail.imageUrl }}">
-        </li>
-
-    </a>
-
-
-
-    {% endfor %}
-
-
-
 <main>
-    {% block content %}
-    <!-- Default content goes here -->
-    {% endblock %}
+
+    <div style="position: relative; width: 0; height: 0">
+        <div style="position: absolute; right: 50px;">
+            <a href="/">
+                <img width="60px" height="60px" style="display: inline;" src="https://www.pngkit.com/png/full/335-3354041_clipart-of-home-button-icon-twitter-icon-black.png">
+            </a>
+        </div>
+    </div>
+
+    <inner>
+
+        {% if cocktails|length > 0 %}
+
+            <ul class="cocktailList">
+
+                {% for cocktail in cocktails %}
+
+                <a href="cocktail?id={{ cocktail.id }}">
+
+                    <li class="cocktailListItem">
+                        <h3>{{ cocktail.name }}</h3>
+                        <img class="cocktailThumbnail" src="{{ cocktail.imageUrl }}">
+                    </li>
+
+                </a>
+
+                {% endfor %}
+            </ul>
+
+        {% else %}
+
+            <h1>No Results</h1>
+
+        {% endif %}
+
+
+
+
+    </inner>
 </main>
 
 <footer>

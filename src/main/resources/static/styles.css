@@ -1,11 +1,44 @@
+@import url(https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap);
+
+* {
+  /*font-family:  Arial, Helvetica, sans-serif;*/
+  font-family: 'Didact Gothic';
+  color: #ffffff;
+}
+
+
+a, a:hover, a:visited, a:active {
+  color: inherit;
+ }
+
+input, select, textarea, button {
+    color: #000000;
+}
+
+input {
+    padding: 20px;
+    border-radius: 25px;
+}
+
+
+button {
+    padding: 10px;
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 8px;
+}
 
 header {
     color: rgba(255,255,255,1);
-    background-color: rgba(0,0,0,1);
+    background-color: #1c1c1c;
     padding: 25px;
-    margin-bottom: 25px;
     font-size: 36;
     text-align-last: center;
+   margin-bottom: 25px;
+}
+
+.topRounded {
+  border-radius: 25px 25px 0px 0px;
 }
 
 
@@ -14,11 +47,17 @@ body {
 }
 
 main {
-   background-color: rgba(235,235,235, 0.75);
+  border-radius: 25px;
+   background-color: rgba(50,50,50, 0.875);
    margin-left: 20%;
    margin-right: 20%;
-   padding: 50px;
+   margin-top: 50px;
    text-align-last: center;
+}
+
+inner {
+   padding: 25px;
+   display: block;
 }
 
 ul {
@@ -32,22 +71,19 @@ li {
    margin-right: 10px;
 }
 
-img {
-   width: 300px;
-   height: 300px;
+.cocktailThumbnail {
+   width: 250px;
+   height: 250px;
+  border: 2px solid #ffffff;
+}
+
+.cocktailImg {
+   width: 500px;
+  border: 5px solid #ffffff;
 }
 
 .decoration {
     max-width: 100%;
-}
-
-.letter {
-    margin-right: 3px;
-    margin-left: 3px;
-    font-size: 24px;
-    padding: 8px;
-    background-color : #d1d1d1;
-    text-align: center;
 }
 
 .letterList {
@@ -55,15 +91,110 @@ img {
       justify-content: center;
     list-style-type: none;
     flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.letter {
+    width: 35px;
+    height: 35px;
+    margin-right: 2px;
+    margin-left: 2px;
+    margin-bottom: 2px;
+    font-size: 20px;
+    padding: 4px;
+    border-radius: 4px;
+    background-color : #000000;
+    color: #ffffff;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.selectedLetter {
+    background-color: #8f8f8f
+}
+
+
+
+.cocktailList {
+     justify-content: center;
+    list-style-type: none;
+    flex-wrap: wrap;
 }
 
 .cocktailListItem {
 
-   display: block;
-   margin-left: 20px;
+   display: inline-block;
+   margin-left: 10px;
    margin-right: 10px;
+   margin-bottom: 10px;
+   padding: 0px 25px 25px 25px;
+    background-color: #1c1c1c;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+
+.ingredientList {
+    display: block;
+    justify-content: left;
+    list-style-type: none;
+}
+
+.ingredientListItem {
+    margin-top: 16px;
+}
+
+.flagList {
+     justify-content: center;
+    list-style-type: none;
+    flex-wrap: wrap;
 }
 
 .inline{
    display: inline;
+}
+
+
+
+.flag {
+    width: 50px;
+    height: 45px;
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.flagThumb {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.tab {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.selected {
+    opacity: 1;
+}
+
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+.column3 {
+  float: left;
+  width: 33.33%;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% set index = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"] %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,18 +10,33 @@
 </head>
 <body>
 
+
+
 <header>
     <h1>{{ letter }}</h1>
 </header>
 
+
 <main>
 
+
+    <div style="position: relative; width: 0; height: 0">
+        <div style="position: absolute; right: 50px;">
+            <a href="/">
+                <img width="60px" height="60px" style="display: inline;" src="https://www.pngkit.com/png/full/335-3354041_clipart-of-home-button-icon-twitter-icon-black.png">
+            </a>
+        </div>
+    </div>
+
+<inner>
+
     <ul class="letterList">
-        {% for letter in index %}
+
+        {% for indexLetter in index %}
 
         <li>
-            <a href="/index?letter={{ letter }}">
-                <p class="letter">{{ letter }}</p>
+            <a href="/index?letter={{ indexLetter }}">
+                <p class="letter {% if indexLetter == letter %} selectedLetter {% endif %}">{{ indexLetter }}</p>
             </a>
         </li>
 
@@ -28,23 +44,23 @@
     </ul>
 
 
-    <ul>
+
+    <ul class="cocktailList">
         {% for cocktail in cocktails %}
 
         <a href="cocktail?id={{ cocktail.id }}">
 
             <li class="cocktailListItem">
-                <p>{{ cocktail.name }}</p>
-                <img src="{{ cocktail.imageUrl }}">
+                <h3>{{ cocktail.name }}</h3>
+                <img class="cocktailThumbnail" src="{{ cocktail.imageUrl }}">
             </li>
 
         </a>
         {% endfor %}
-</ul>
+    </ul>
 
-    {% block content %}
-    <!-- Default content goes here -->
-    {% endblock %}
+</inner>
+
 </main>
 
 <footer>

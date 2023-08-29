@@ -9,37 +9,124 @@
 </head>
 <body>
 
+
 <main>
 
-<header>
-    <h1>{{ cocktail.name }}</h1>
-</header>
-
-<img src="{{ cocktail.imageUrl }}">
-
-<h2>Ingredients</h2>
-
-{% for ingredient in cocktail.ingredients %}
-<ul>
-    <li>
-        <div class="parent">
-            <a class="child inline" href="/ingredient?term={{ ingredient.name }}">{{ ingredient.name }}</a>
-            <p class="child inline" > ({{ ingredient.measure }})</p>
+    <div style="position: relative; width: 0; height: 0">
+        <div style="position: absolute; right: 50px;">
+            <a href="/">
+                <img width="60px" height="60px" style="display: inline;" src="https://www.pngkit.com/png/full/335-3354041_clipart-of-home-button-icon-twitter-icon-black.png">
+            </a>
         </div>
-    </li>
-</ul>
-{% endfor %}
+    </div>
+    <header class="topRounded">
+        <h1>{{ cocktail.name }}</h1>
+    </header>
 
 
-<h2>Preparation</h2>
+    <inner>
 
-    <p>{{ cocktail.instructions }}</p>
+
+        <img class="cocktailImg" src="{{ cocktail.imageUrl }}">
+        <p>{{ cocktail.category }}, {{ cocktail.alcoholic }}</p>
+
+
+        <div class="row">
+
+
+            <div class="column">
+
+                <h2>Ingredients</h2>
+
+                <ul class="ingredientList">
+
+                    {% for ingredient in cocktail.measuredIngredients %}
+
+                    <li class="ingredientListItem">
+
+                        <a href="/ingredient?term={{ ingredient.name }}">{{ ingredient.name }}</a>
+
+                        {%if ingredient.measure != null %}
+                        <p style="display: inline;">({{ ingredient.measure }})</p>
+                        {% endif %}
+
+                    </li>
+
+                    {% endfor %}
+                </ul>
+
+                <p>Served in a: {{ cocktail.glass }}</p>
+
+            </div>
+
+
+            <div class="column">
+
+                <h2>Preparation</h2>
+
+
+                <div class="tabs">
+
+                    <ul class="flagList">
+
+                        {% for instruction in cocktail.instructions %}
+
+                        <div class="flag {% if loop.first %} selected {% endif %}"
+                                id="flag-{{ instruction.getLanguageAbbreviated() }}"
+                                onclick="showTab('{{ instruction.getLanguageAbbreviated() }}')">
+
+                            <img class="flagThumb" src="{{ instruction.getThumbnailUrl() }}" alt="{{ instruction.getLanguage() }}">
+                        </div>
+
+                        {% endfor %}
+
+                    </ul>
+
+                    {% for instruction in cocktail.instructions %}
+                    <div class="tab {% if loop.first %} active {% endif %}"  id="{{ instruction.getLanguageAbbreviated() }}">
+
+                        <div>
+                            <p>{{ instruction.getInstructions() }}</p>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+        </div>
+
+    </inner>
+
+
+
 
 </main>
 
 <footer>
 
 </footer>
+<script>
+
+        function showTab(tabId) {
+            const tabs = document.querySelectorAll('.tab');
+            const flags = document.querySelectorAll('.flag');
+
+            tabs.forEach(tab => {
+                tab.style.display = 'none';
+            });
+            flags.forEach(flag => {
+                flag.classList.remove("selected");
+            });
+
+            const activeTab = document.getElementById(tabId);
+            activeTab.style.display = 'block';
+
+            const activeFlag = document.getElementById('flag-' + tabId);
+            activeFlag.classList.add("selected");
+        }
+</script>
 </body>
 </html>
 

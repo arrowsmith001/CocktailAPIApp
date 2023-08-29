@@ -7,8 +7,6 @@ import com.arrowsmith.cocktailapiapp.model.CocktailBase;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
 import io.cucumber.java.en.*;
 
-import org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 
 import static org.springframework.test.util.AssertionErrors.assertTrue;
@@ -45,7 +43,7 @@ public class StepDefinitions {
 
     @Then("vodka should be included in the ingredients")
     public void vodkaShouldBeIncludedInTheIngredients() {
-        final boolean hasVodka = selectedCocktail.getIngredients().stream().anyMatch((ing) -> ing.getName().equalsIgnoreCase("vodka"));
+        final boolean hasVodka = selectedCocktail.getMeasuredIngredients().stream().anyMatch((ing) -> ing.getIngredient().getName().equalsIgnoreCase("vodka"));
         assertTrue(selectedCocktail.getName() + " does not have vodka", hasVodka);
     }
 }

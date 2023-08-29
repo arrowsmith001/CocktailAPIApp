@@ -17,15 +17,15 @@ import java.util.logging.Logger;
 
 public class CocktailApiImpl implements CocktailApi {
     static Logger logger = Logger.getLogger(CocktailApiImpl.class.getName());
-    final private ObjectMapper mapper = new ObjectMapper();
 
 
     public CocktailApiImpl(String apiKey)
     {
         requester = new TheCocktailDBRequester(apiKey);
     }
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    final private CocktailApiRequester requester;
+    private final CocktailApiRequester requester;
 
 
     @Override
@@ -57,6 +57,8 @@ public class CocktailApiImpl implements CocktailApi {
             final String response =  requester.searchCocktailsByLetter(startingLetter);
 
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
+
+            if(cocktailApiResponse.getDrinks() == null) return new ArrayList<>();
 
             return Arrays.stream(cocktailApiResponse.getDrinks())
                     .map(DTOMapper::cocktailDTOtoFullModel)
@@ -94,7 +96,7 @@ public class CocktailApiImpl implements CocktailApi {
 
             final IngredientDTO dto = cocktailApiResponse.getIngredients()[0];
 
-            return DTOMapper.ingredientDTOtoModel(dto);
+            return DTOMapper.ingredientDTOtoFullModel(dto);
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, e::getMessage);
@@ -129,7 +131,7 @@ public class CocktailApiImpl implements CocktailApi {
             final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
 
             return Arrays.stream(cocktailApiResponse.getIngredients())
-                    .map(DTOMapper::ingredientDTOtoModel)
+                    .map(DTOMapper::ingredientDTOtoFullModel)
                     .toList();
 
         } catch (Exception e) {

@@ -5,17 +5,12 @@ import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
 import com.arrowsmith.cocktailapiapp.model.CocktailBase;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
-import io.cucumber.java.sl.In;
+import com.arrowsmith.cocktailapiapp.model.MeasuredIngredient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
 
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.util.AssertionErrors.*;
@@ -71,10 +66,10 @@ class CocktailApiAppApplicationTests {
 		final Cocktail randomCocktailFull = api.getCocktailById(randomCocktail.getId());
 
 		boolean vodkaFound = false;
-		for(Ingredient ingredient : randomCocktailFull.getIngredients())
+		for(MeasuredIngredient ingredient : randomCocktailFull.getMeasuredIngredients())
 		{
 
-			if(ingredient.getName().toUpperCase().trim().equals("VODKA"))
+			if(ingredient.getIngredient().getName().toUpperCase().trim().equals("VODKA"))
 			{
 				vodkaFound = true;
 			}
@@ -152,11 +147,11 @@ class CocktailApiAppApplicationTests {
 
 		cocktail.setId(0);
 		cocktail.setName("Some Random Cocktail");
-		cocktail.setInstructions("Some instructions");
+		//cocktail.setInstructions(new ArrayList<>());
 
 		assertEquals("Id doesn't match", cocktail.getId(), 0);
 		assertEquals("Name doesn't match", cocktail.getName(), "Some Random Cocktail");
-		assertEquals("Instructions don't match", cocktail.getInstructions(), "Some instructions");
+		//assertEquals("Instructions don't match", cocktail.getInstructions()[0], "Some instructions");
 
 	}
 

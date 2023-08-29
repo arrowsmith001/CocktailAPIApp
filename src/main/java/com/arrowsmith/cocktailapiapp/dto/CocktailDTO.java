@@ -8,17 +8,69 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CocktailDTO {
 
     @JsonProperty("idDrink")
-    public int id;
+    private int id;
 
     @JsonProperty("strDrink")
     // Drink name
-    public String cocktailName;
+    private String cocktailName;
 
     @JsonProperty("strDrinkThumb")
-    public String imageUrl;
+    private String imageUrl;
 
     @JsonProperty("strInstructions")
-    public String instructions;
+    private String instructionsInEnglish;
+
+    @JsonProperty("strInstructionsES")
+    private String instructionsInSpanish;
+    @JsonProperty("strInstructionsDE")
+    private String instructionsInGerman;
+    @JsonProperty("strInstructionsFR")
+    private String instructionsInFrench;
+    @JsonProperty("strInstructionsIT")
+    private String instructionsInItalian;
+
+    @JsonProperty("strGlass")
+    private String glass;
+    @JsonProperty("strAlcoholic")
+    private String alcoholic;
+
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCocktailName() {
+        return cocktailName;
+    }
+
+    public void setCocktailName(String cocktailName) {
+        this.cocktailName = cocktailName;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    @JsonProperty("strCategory")
+    private String category;
 
 
     // The ingredients for this drink (up to 15)
@@ -296,5 +348,61 @@ public class CocktailDTO {
         this.strMeasure15 = strMeasure15;
     }
 
+
+    public String getInstructionsInEnglish() {
+        return instructionsInEnglish;
+    }
+
+    public void setInstructionsInEnglish(String instructionsInEnglish) {
+        this.instructionsInEnglish = instructionsInEnglish;
+    }
+
+    public String getInstructionsInSpanish() {
+        return instructionsInSpanish;
+    }
+
+    public void setInstructionsInSpanish(String instructionsInSpanish) {
+        this.instructionsInSpanish = instructionsInSpanish;
+    }
+
+    public String getInstructionsInGerman() {
+        return instructionsInGerman;
+    }
+
+    public void setInstructionsInGerman(String instructionsInGerman) {
+        this.instructionsInGerman = instructionsInGerman;
+    }
+
+    public String getInstructionsInFrench() {
+        return instructionsInFrench;
+    }
+
+    public void setInstructionsInFrench(String instructionsInFrench) {
+        this.instructionsInFrench = instructionsInFrench;
+    }
+
+    public String getInstructionsInItalian() {
+        return instructionsInItalian;
+    }
+
+    public void setInstructionsInItalian(String instructionsInItalian) {
+        this.instructionsInItalian = instructionsInItalian;
+    }
+
+    public String getGlass() {
+        return glass;
+    }
+
+    public void setGlass(String glass) {
+        this.glass = glass;
+    }
+
+    public String getAlcoholic() {
+        return alcoholic;
+    }
+
+    public void setAlcoholic(String alcoholic) {
+        this.alcoholic = alcoholic;
+    }
 
 }
