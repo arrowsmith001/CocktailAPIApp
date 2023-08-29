@@ -1,5 +1,7 @@
 package com.arrowsmith.cocktailapiapp.model;
 
+import java.util.Objects;
+
 public class LanguageData {
 
     public static final String ENGLISH_ICON = "https://img.icons8.com/?size=512&id=n5cRfdV5J7nI&format=png";
@@ -63,14 +65,15 @@ public class LanguageData {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(obj instanceof LanguageData data)
-        {
-            return language.equals(data.language)
-                    && languageAbbreviated.equals(data.languageAbbreviated)
-                    && iconUrl.equals(data.iconUrl);
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LanguageData that = (LanguageData) o;
+        return Objects.equals(language, that.language) && Objects.equals(languageAbbreviated, that.languageAbbreviated) && Objects.equals(iconUrl, that.iconUrl);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(language, languageAbbreviated, iconUrl);
+    }
 }
