@@ -1,12 +1,10 @@
 package com.arrowsmith.cocktailapiapp.model;
 
-import com.arrowsmith.cocktailapiapp.model.instructions.InstructionsInLanguage;
-
 import java.util.List;
 
 public class Cocktail extends CocktailBase
 {
-    private List<InstructionsInLanguage> instructions;
+    private List<Instructions> instructions;
     private List<MeasuredIngredient> measuredIngredients;
 
     private String glass;
@@ -39,11 +37,11 @@ public class Cocktail extends CocktailBase
         return alcoholic;
     }
 
-    public List<InstructionsInLanguage> getInstructions() {
+    public List<Instructions> getInstructions() {
         return instructions;
     }
 
-    public void setInstructions(List<InstructionsInLanguage> instructions) {
+    public void setInstructions(List<Instructions> instructions) {
         this.instructions = instructions;
     }
 

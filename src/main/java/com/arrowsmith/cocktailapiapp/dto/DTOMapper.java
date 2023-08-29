@@ -1,7 +1,6 @@
 package com.arrowsmith.cocktailapiapp.dto;
 
 import com.arrowsmith.cocktailapiapp.model.*;
-import com.arrowsmith.cocktailapiapp.model.instructions.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -68,37 +67,37 @@ public class DTOMapper {
 
     private static void setCocktailInstructions(Cocktail cocktail, CocktailDTO dto) {
 
-        List<InstructionsInLanguage> instructions = new ArrayList<>();
+        List<Instructions> instructions = new ArrayList<>();
 
         final String englishInstructions = dto.getInstructionsInEnglish();
 
         if(englishInstructions != null)
         {
-            instructions.add(new EnglishInstructions(englishInstructions));
+            instructions.add(new Instructions(englishInstructions, Language.ENGLISH));
         }
 
         final String frenchInstructions = dto.getInstructionsInFrench();
         if(frenchInstructions != null)
         {
-            instructions.add(new FrenchInstructions(frenchInstructions));
+            instructions.add(new Instructions(frenchInstructions, Language.FRENCH));
         }
 
         final String spanishInstructions = dto.getInstructionsInSpanish();
         if(spanishInstructions != null)
         {
-            instructions.add(new SpanishInstructions(spanishInstructions));
+            instructions.add(new Instructions(spanishInstructions, Language.SPANISH));
         }
 
         final String germanInstructions = dto.getInstructionsInGerman();
         if(germanInstructions != null)
         {
-            instructions.add(new GermanInstructions(germanInstructions));
+            instructions.add(new Instructions(germanInstructions, Language.GERMAN));
         }
 
         final String italianInstructions = dto.getInstructionsInItalian();
         if(italianInstructions != null)
         {
-            instructions.add(new ItalianInstructions(italianInstructions));
+            instructions.add(new Instructions(italianInstructions, Language.ITALIAN));
         }
 
         cocktail.setInstructions(instructions);

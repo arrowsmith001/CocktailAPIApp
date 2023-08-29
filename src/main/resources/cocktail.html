@@ -72,10 +72,10 @@
                         {% for instruction in cocktail.instructions %}
 
                         <div class="flag {% if loop.first %} selected {% endif %}"
-                                id="flag-{{ instruction.getLanguageAbbreviated() }}"
-                                onclick="showTab('{{ instruction.getLanguageAbbreviated() }}')">
+                                id="flag-{{ instruction.languageData.languageAbbreviated }}"
+                                onclick="showTab('{{ instruction.languageData.languageAbbreviated }}')">
 
-                            <img class="flagThumb" src="{{ instruction.getThumbnailUrl() }}" alt="{{ instruction.getLanguage() }}">
+                            <img class="flagThumb" src="{{ instruction.languageData.iconUrl }}" alt="{{ instruction.languageData.language }}">
                         </div>
 
                         {% endfor %}
@@ -83,10 +83,10 @@
                     </ul>
 
                     {% for instruction in cocktail.instructions %}
-                    <div class="tab {% if loop.first %} active {% endif %}"  id="{{ instruction.getLanguageAbbreviated() }}">
+                    <div class="tab {% if loop.first %} active {% endif %}"  id="{{ instruction.languageData.languageAbbreviated }}">
 
                         <div>
-                            <p>{{ instruction.getInstructions() }}</p>
+                            <p>{{ instruction.instructions }}</p>
                         </div>
 
                     </div>
