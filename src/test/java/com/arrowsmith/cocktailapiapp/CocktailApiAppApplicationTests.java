@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.util.AssertionErrors.*;
 
 @SpringBootTest
@@ -69,9 +68,10 @@ class CocktailApiAppApplicationTests {
 		for(MeasuredIngredient ingredient : randomCocktailFull.getMeasuredIngredients())
 		{
 
-			if(ingredient.getIngredient().getName().toUpperCase().trim().equals("VODKA"))
+			if(ingredient.getName().toUpperCase().trim().equals("VODKA"))
 			{
 				vodkaFound = true;
+				break;
 			}
 		}
 		assertTrue("Vodka not found", vodkaFound);
@@ -79,22 +79,25 @@ class CocktailApiAppApplicationTests {
 
 
 	@Test
-	@DisplayName("Searching for margarita should return cocktails with the word margarita in their name")
+	@DisplayName("Searching for 'margarita' should return cocktails with the word margarita in their name")
 	void testSearchForMargaritas()
 	{
 		final List<Cocktail> margaritas = api.searchForCocktailByName("margarita");
 
+		String nonMargaritaCocktail = "";
 		boolean nonMargaritaCocktailFound = false;
+
 		for(Cocktail cocktail : margaritas)
 		{
-			if(cocktail.getName().toUpperCase().trim().contains("MARGARITA"))
-			{
-				// Cocktail is a margarita
-			}
-			else nonMargaritaCocktailFound = true;
+			final boolean containsMargarita = cocktail.getName().toUpperCase().trim().contains("MARGARITA");
+            if (!containsMargarita) {
+				nonMargaritaCocktail = cocktail.getName();
+                nonMargaritaCocktailFound = true;
+                break;
+            }
 		}
 
-		assertFalse("Non-margarita cocktail found", nonMargaritaCocktailFound);
+		assertFalse("Non-margarita cocktail found: " + nonMargaritaCocktail, nonMargaritaCocktailFound);
 	}
 
 	@Test
