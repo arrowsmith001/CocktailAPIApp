@@ -19,21 +19,11 @@ public class Instructions {
     public void setLanguage(Language language) {
         switch (language)
         {
-            case ENGLISH -> {
-                languageData = LanguageData.englishData;
-            }
-            case FRENCH -> {
-                languageData = LanguageData.frenchData;
-            }
-            case SPANISH -> {
-                languageData = LanguageData.spanishData;
-            }
-            case GERMAN -> {
-                languageData = LanguageData.germanData;
-            }
-            case ITALIAN -> {
-                languageData = LanguageData.italianData;
-            }
+            case ENGLISH -> setLanguageData(LanguageData.englishData());
+            case FRENCH -> setLanguageData(LanguageData.frenchData());
+            case SPANISH -> setLanguageData(LanguageData.spanishData());
+            case GERMAN  -> setLanguageData(LanguageData.germanData());
+            case ITALIAN -> setLanguageData(LanguageData.italianData());
         }
     }
 

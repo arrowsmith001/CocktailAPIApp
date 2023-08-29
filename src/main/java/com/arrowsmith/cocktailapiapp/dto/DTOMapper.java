@@ -1,14 +1,9 @@
 package com.arrowsmith.cocktailapiapp.dto;
 
 import com.arrowsmith.cocktailapiapp.model.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DTOMapper {
@@ -98,6 +93,9 @@ public class DTOMapper {
                 case "ES" -> instructions.add(new Instructions(instructionString, Language.SPANISH));
                 case "DE" -> instructions.add(new Instructions(instructionString, Language.GERMAN));
                 case "IT" -> instructions.add(new Instructions(instructionString, Language.ITALIAN));
+                default -> {
+
+                }
             }
         }
 
