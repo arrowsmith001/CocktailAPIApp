@@ -16,10 +16,10 @@ class InstructionsTest {
     {
         final Instructions instruction = new Instructions("", Language.ENGLISH);
 
-        assertEquals("Language data not equal to English", LanguageData.englishData, instruction.getLanguageData());
+        assertEquals("Language data not equal to English", LanguageData.englishData(), instruction.getLanguageData());
 
         instruction.setLanguage(Language.FRENCH);
 
-        assertEquals("Language data not equal to French", LanguageData.frenchData, instruction.getLanguageData());
+        assertEquals("Language data not equal to French", LanguageData.frenchData(), instruction.getLanguageData());
     }
 }
