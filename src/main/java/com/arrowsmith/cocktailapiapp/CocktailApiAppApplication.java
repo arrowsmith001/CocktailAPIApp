@@ -2,6 +2,7 @@ package com.arrowsmith.cocktailapiapp;
 
 import com.arrowsmith.cocktailapiapp.api.CocktailApi;
 import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
+import com.arrowsmith.cocktailapiapp.api.TheCocktailDBRequester;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
 import com.arrowsmith.cocktailapiapp.model.CocktailBase;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
@@ -31,12 +32,11 @@ public class CocktailApiAppApplication {
 	private static final String COCKTAILS = "cocktails";
 	private static final String INDEX = "index";
 
-	private static final CocktailApi api = new CocktailApiImpl(System.getenv("THE_COCKTAIL_DB_API_KEY"));
+	private static final CocktailApi api = new CocktailApiImpl(new TheCocktailDBRequester(System.getenv("THE_COCKTAIL_DB_API_KEY")));
 
 	public static void main(String[] args) {
 
 		SpringApplication.run(CocktailApiAppApplication.class, args);
-
 	}
 
 	private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

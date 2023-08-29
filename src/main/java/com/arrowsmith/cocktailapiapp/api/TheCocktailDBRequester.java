@@ -7,62 +7,58 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.logging.*;
 
-class TheCocktailDBRequester implements CocktailApiRequester {
+public class TheCocktailDBRequester implements CocktailApiRequester {
     static Logger logger = Logger.getLogger(TheCocktailDBRequester.class.getName());
 
     public TheCocktailDBRequester(String apiKey) {
-        this.apiKey = apiKey;
+
+        urls = new TheCocktailDBUrls(apiKey);
     }
 
-    private final String apiKey;
-    private static final String BASE_URL = "https://www.thecocktaildb.com/api/json/v1/";
-    private static final String RANDOM = "/random.php";
-    private static final String BASE_SEARCH_BY_FIRST_LETTER = "/search.php?f=";
-    private static final String BASE_SEARCH_INGREDIENT_BY_NAME = "/search.php?i=";
-    private static final String BASE_SEARCH_COCKTAIL_BY_NAME = "/search.php?s=";
-    private static final String BASE_COCKTAIL_BY_ID_LOOKUP = "/lookup.php?i=";
-    private static final String BASE_COCKTAIL_SEARCH_BY_INGREDIENT_NAME = "/filter.php?i=";
-    private static final String BASE_LOOKUP_INGREDIENT_BY_ID = "/lookup.php?iid=";
+    private final TheCocktailDBUrls urls;
 
-    private String replaceWhitespace(String term)
-    {
-        return String.join("+", term.split(" "));
-    }
 
     @Override
     public String getRandomCocktail() {
-        return makeGetRequest(BASE_URL + apiKey + RANDOM);
+        final String url = urls.getRandomCocktailUrl();
+        return makeGetRequest(url);
     }
 
     @Override
     public String searchCocktailsByLetter(char startingLetter) {
-        return makeGetRequest(BASE_URL + apiKey + BASE_SEARCH_BY_FIRST_LETTER + startingLetter);
+        final String url = urls.searchCocktailsByLetterUrl(startingLetter);
+        return makeGetRequest(url);
     }
 
     @Override
     public String getCocktailById(Object id) {
-        return makeGetRequest(BASE_URL + apiKey + BASE_COCKTAIL_BY_ID_LOOKUP + id);
+        final String url = urls.getCocktailByIdUrl(id);
+        return makeGetRequest(url);
     }
 
     @Override
     public String getIngredientById(Object id) {
-        return makeGetRequest(BASE_URL + apiKey + BASE_LOOKUP_INGREDIENT_BY_ID + id);
+        final String url = urls.getIngredientByIdUrl(id);
+        return makeGetRequest(url);
     }
 
     @Override
     public String searchCocktailByName(String term) {
-        return makeGetRequest(BASE_URL + apiKey + BASE_SEARCH_COCKTAIL_BY_NAME + replaceWhitespace(term));
+        final String url = urls.searchCocktailByNameUrl(term);
+        return makeGetRequest(url);
     }
 
     @Override
     public String getIngredientByName(String term) {
-        return makeGetRequest(BASE_URL + apiKey + BASE_SEARCH_INGREDIENT_BY_NAME + replaceWhitespace(term));
+        final String url = urls.getIngredientByNameUrl(term);
+        return makeGetRequest(url);
     }
 
 
     @Override
     public String searchCocktailsByIngredientName(String ingredientName) {
-        return makeGetRequest(BASE_URL + apiKey + BASE_COCKTAIL_SEARCH_BY_INGREDIENT_NAME + replaceWhitespace(ingredientName));
+        final String url = urls.searchCocktailsByIngredientNameUrl(ingredientName);
+        return makeGetRequest(url);
     }
 
     private String makeGetRequest(String url) {

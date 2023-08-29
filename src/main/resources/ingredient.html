@@ -21,8 +21,11 @@
 
     <header class="topRounded" style="position: relative;">
 
-        <div style="right: 25px; position: absolute;">
+        <div style="right: 25px; position: absolute; text-align: right;">
+
+            {% if ingredient.type != null %}
             <h3>Type: {{ ingredient.type }}</h3>
+            {% endif %}
 
             {% if ingredient.isAlcoholic() == true %}
             <h3>ABV: {{ ingredient.abv }}%</h3>

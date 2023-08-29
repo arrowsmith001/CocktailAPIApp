@@ -45,7 +45,10 @@
 
 
 
+    {% if cocktails|length > 0 %}
+
     <ul class="cocktailList">
+
         {% for cocktail in cocktails %}
 
         <a href="cocktail?id={{ cocktail.id }}">
@@ -56,8 +59,16 @@
             </li>
 
         </a>
+
         {% endfor %}
     </ul>
+
+    {% else %}
+
+    <h2>No Results</h2>
+
+    {% endif %}
+
 
 </inner>
 

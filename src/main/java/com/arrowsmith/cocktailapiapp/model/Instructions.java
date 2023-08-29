@@ -2,6 +2,8 @@ package com.arrowsmith.cocktailapiapp.model;
 
 public class Instructions {
 
+    public Instructions() {}
+
     public Instructions(String instructions, Language language)
     {
         setInstructions(instructions);
@@ -13,11 +15,12 @@ public class Instructions {
 
     private LanguageData languageData;
 
+
     public void setLanguage(Language language) {
         switch (language)
         {
             case ENGLISH -> {
-                    languageData = LanguageData.englishData;
+                languageData = LanguageData.englishData;
             }
             case FRENCH -> {
                 languageData = LanguageData.frenchData;
@@ -36,6 +39,10 @@ public class Instructions {
 
     public LanguageData getLanguageData() {
         return languageData;
+    }
+
+    public void setLanguageData(LanguageData languageData) {
+        this.languageData = languageData;
     }
 
     public String getInstructions() {

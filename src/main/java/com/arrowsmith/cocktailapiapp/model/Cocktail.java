@@ -14,7 +14,6 @@ public class Cocktail extends CocktailBase
     private String alcoholic;
 
 
-
     public List<MeasuredIngredient> getMeasuredIngredients() {
         return measuredIngredients;
     }

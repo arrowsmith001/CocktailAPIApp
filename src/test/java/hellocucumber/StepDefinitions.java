@@ -1,7 +1,9 @@
 package hellocucumber;
 
+import com.arrowsmith.cocktailapiapp.CocktailApiAppApplication;
 import com.arrowsmith.cocktailapiapp.api.CocktailApi;
 import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
+import com.arrowsmith.cocktailapiapp.api.TheCocktailDBRequester;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
 import com.arrowsmith.cocktailapiapp.model.CocktailBase;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
@@ -17,7 +19,11 @@ class IsItVodka {
 
 public class StepDefinitions {
 
-    private final CocktailApi api = new CocktailApiImpl(System.getenv("THE_COCKTAIL_DB_API_KEY"));
+    private String getApiKey(){
+        return System.getenv().get("THE_COCKTAIL_DB_API_KEY");
+    }
+
+    final CocktailApi api = new CocktailApiImpl(new TheCocktailDBRequester(getApiKey()));
     private Ingredient ingredient;
     private List<CocktailBase> basicCocktails;
     private Cocktail selectedCocktail;
@@ -29,9 +35,9 @@ public class StepDefinitions {
     }
 
     @When("I search for cocktails containing vodka")
-    public void iSearchForCocktailsContainingVodka() {
+    public void iSearchForCocktailsContainingVodka()
+    {
         basicCocktails = api.listCocktailsByIngredient(ingredient);
-
     }
 
     @When("I select a cocktail from that list")

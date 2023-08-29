@@ -8,6 +8,8 @@ public class LanguageData {
     public static String GERMAN_ICON = "https://img.icons8.com/?size=512&id=PEPe9YoyNSe6&format=png";
     public static String ITALIAN_ICON = "https://img.icons8.com/?size=512&id=6QSlwHlcIbQk&format=png";
 
+    public LanguageData() {}
+
     public LanguageData(String language, String languageAbbreviated, String iconUrl) {
         this.language = language;
         this.languageAbbreviated = languageAbbreviated;
@@ -20,9 +22,11 @@ public class LanguageData {
     public static LanguageData spanishData = new LanguageData("Español", "ES", SPANISH_ICON);
     public static LanguageData italianData = new LanguageData("Italiano", "IT", ITALIAN_ICON);
 
+
     private String language;
     private String languageAbbreviated;
     private String iconUrl;
+
 
     public String getLanguage() {
         return language;
@@ -48,5 +52,15 @@ public class LanguageData {
         this.iconUrl = iconUrl;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof LanguageData data)
+        {
+            return language.equals(data.language)
+                    && languageAbbreviated.equals(data.languageAbbreviated)
+                    && iconUrl.equals(data.iconUrl);
+        }
+        return false;
+    }
 
 }

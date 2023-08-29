@@ -9,21 +9,21 @@ import com.arrowsmith.cocktailapiapp.model.Ingredient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 public class CocktailApiImpl implements CocktailApi {
     static Logger logger = Logger.getLogger(CocktailApiImpl.class.getName());
 
 
-    public CocktailApiImpl(String apiKey)
+    public CocktailApiImpl(CocktailApiRequester requester)
     {
-        requester = new TheCocktailDBRequester(apiKey);
+        this.requester = requester;
     }
     private final ObjectMapper mapper = new ObjectMapper();
+
 
     private final CocktailApiRequester requester;
 
@@ -60,15 +60,20 @@ public class CocktailApiImpl implements CocktailApi {
 
             if(cocktailApiResponse.getDrinks() == null) return new ArrayList<>();
 
-            return Arrays.stream(cocktailApiResponse.getDrinks())
+            List<Cocktail> cocktails = new ArrayList<>(Arrays.stream(cocktailApiResponse.getDrinks())
                     .map(DTOMapper::cocktailDTOtoFullModel)
-                    .toList();
+                    .toList());
+
+            sortAlphabetically(cocktails);
+
+            return cocktails;
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, e::getMessage);
             return new ArrayList<>();
         }
     }
+
 
     @Override
     public Cocktail getCocktailById(Object id) {
@@ -165,5 +170,8 @@ public class CocktailApiImpl implements CocktailApi {
 
 
 
+    private static void sortAlphabetically(List<Cocktail> cocktails) {
+        cocktails.sort(Comparator.comparing(CocktailBase::getName));
+    }
 
 }
