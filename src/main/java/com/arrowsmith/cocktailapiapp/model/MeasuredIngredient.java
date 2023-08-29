@@ -2,8 +2,9 @@ package com.arrowsmith.cocktailapiapp.model;
 
 public class MeasuredIngredient extends IngredientBase {
 
-    public MeasuredIngredient(String ingredientName) {
+    public MeasuredIngredient(String ingredientName, String ingredientMeasure) {
         setName(ingredientName);
+        setMeasure(ingredientMeasure);
     }
 
     private String measure;

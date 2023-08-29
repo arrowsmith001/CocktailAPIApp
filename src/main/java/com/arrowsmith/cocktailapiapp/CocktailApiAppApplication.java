@@ -39,8 +39,6 @@ public class CocktailApiAppApplication {
 		SpringApplication.run(CocktailApiAppApplication.class, args);
 	}
 
-	private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
 	@GetMapping("/")
 	public String home() {
 

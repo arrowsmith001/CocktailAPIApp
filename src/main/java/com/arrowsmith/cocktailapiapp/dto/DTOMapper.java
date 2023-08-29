@@ -1,11 +1,13 @@
 package com.arrowsmith.cocktailapiapp.dto;
 
 import com.arrowsmith.cocktailapiapp.model.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,78 +67,67 @@ public class DTOMapper {
         cocktail.setAlcoholic(dto.getAlcoholic());
     }
 
+    private static final String STR_INSTRUCTIONS = "strInstructions";
+
     private static void setCocktailInstructions(Cocktail cocktail, CocktailDTO dto) {
 
         List<Instructions> instructions = new ArrayList<>();
 
-        final String englishInstructions = dto.getInstructionsInEnglish();
+        final Map<String, String> fields = dto.getInstructions();
 
-        if(englishInstructions != null)
+        // Add English
+        if(fields.containsKey(STR_INSTRUCTIONS))
         {
+            final String englishInstructions = (String) fields.get(STR_INSTRUCTIONS);
             instructions.add(new Instructions(englishInstructions, Language.ENGLISH));
         }
 
-        final String frenchInstructions = dto.getInstructionsInFrench();
-        if(frenchInstructions != null)
-        {
-            instructions.add(new Instructions(frenchInstructions, Language.FRENCH));
-        }
+        final List<String> instructionsKeys = fields.keySet().stream()
+                .filter(s -> s.startsWith(STR_INSTRUCTIONS) && !s.equals(STR_INSTRUCTIONS))
+                .toList();
 
-        final String spanishInstructions = dto.getInstructionsInSpanish();
-        if(spanishInstructions != null)
+        for(String instructionKey : instructionsKeys)
         {
-            instructions.add(new Instructions(spanishInstructions, Language.SPANISH));
-        }
+            final String languageAbbreviated = instructionKey.replaceFirst(STR_INSTRUCTIONS, "");
+            final String instructionString = fields.get(instructionKey);
 
-        final String germanInstructions = dto.getInstructionsInGerman();
-        if(germanInstructions != null)
-        {
-            instructions.add(new Instructions(germanInstructions, Language.GERMAN));
-        }
+            if(instructionString == null) continue;
 
-        final String italianInstructions = dto.getInstructionsInItalian();
-        if(italianInstructions != null)
-        {
-            instructions.add(new Instructions(italianInstructions, Language.ITALIAN));
+            switch (languageAbbreviated) {
+                case "FR" -> instructions.add(new Instructions(instructionString, Language.FRENCH));
+                case "ES" -> instructions.add(new Instructions(instructionString, Language.SPANISH));
+                case "DE" -> instructions.add(new Instructions(instructionString, Language.GERMAN));
+                case "IT" -> instructions.add(new Instructions(instructionString, Language.ITALIAN));
+            }
         }
 
         cocktail.setInstructions(instructions);
-
     }
 
     private static void setCocktailIngredients(Cocktail cocktail, CocktailDTO dto) {
 
         List<MeasuredIngredient> ingredients = new ArrayList<>();
 
-        for (int i = 1; i <= 15; i++) {
+        final Map<String, String> names = dto.getIngredientNames();
+        final Map<String, String> measures = dto.getIngredientMeasures();
 
-            try
-            {
+        int i = 1;
+        String nameKey = "strIngredient" + i;
+        String measureKey = "strMeasure" + i;
 
-                Method ingredientGetter = CocktailDTO.class.getMethod("getStrIngredient" + i);
-                final Object ingredient = ingredientGetter.invoke(dto);
+        while(names.containsKey(nameKey) && measures.containsKey(measureKey))
+        {
+            final String ingredientName = names.get(nameKey);
+            final String ingredientMeasure = measures.get(measureKey);
 
-                Method measureGetter = CocktailDTO.class.getMethod("getStrMeasure" + i);
-                final Object measure = measureGetter.invoke(dto);
+            if(ingredientName == null) break;
 
-                if(ingredient != null)
-                {
-                    final String ingredientName = ((String) ingredient).trim();
-                    final MeasuredIngredient measuredIngredient = new MeasuredIngredient(ingredientName);
+            MeasuredIngredient measured = new MeasuredIngredient(ingredientName, ingredientMeasure);
+            ingredients.add(measured);
 
-                    if(measure != null)
-                    {
-                        final String measureString = ((String) measure).trim();
-                        measuredIngredient.setMeasure(measureString);
-                    }
-
-                    ingredients.add(measuredIngredient);
-                }
-
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                logger.log(Level.SEVERE, e::getMessage);
-            }
-
+            i++;
+            nameKey = "strIngredient" + i;
+            measureKey = "strMeasure" + i;
         }
 
         cocktail.setMeasuredIngredients(ingredients);
