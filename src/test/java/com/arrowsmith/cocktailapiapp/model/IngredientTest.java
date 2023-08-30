@@ -19,12 +19,11 @@ class IngredientTest {
 
         ingredient.setId(0);
         ingredient.setName("Some Random Ingredient");
-        ingredient.setMeasure("Some amount");
         ingredient.setDescription("Some description");
 
         assertEquals("Id doesn't match", ingredient.getId(), 0);
         assertEquals("Name doesn't match", ingredient.getName(), "Some Random Ingredient");
-        assertEquals("Measure doesn't match", ingredient.getMeasure(), "Some amount");
+        assertEquals("Description doesn't match", ingredient.getDescription(), "Some description");
         assertEquals("Search term doesn't match", ingredient.getSearchTerm(), "Some+Random+Ingredient");
 
     }

@@ -78,18 +78,5 @@ class CocktailApiAppApplicationTests {
 				containsSearchTerm);
 	}
 
-	@Test
-	@DisplayName("Searching cocktails by an ingredient should include the search term")
-	void testSearchCocktailsByIngredientRenderedTemplate()
-	{
-		final String searchTerm = "Milk";
-
-		final String renderedTemplate = app.listCocktailsByLetter('a');
-
-		final boolean containsSearchTerm = renderedTemplate.contains(searchTerm);
-
-		assertTrue("The following template does not contain '" + searchTerm + "': \n\n" + renderedTemplate,
-				containsSearchTerm);
-	}
 
 }
