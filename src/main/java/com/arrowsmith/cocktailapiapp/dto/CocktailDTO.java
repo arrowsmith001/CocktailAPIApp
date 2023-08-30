@@ -1,9 +1,12 @@
 package com.arrowsmith.cocktailapiapp.dto;
 
+import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -27,9 +30,9 @@ public class CocktailDTO {
     @JsonProperty("strCategory")
     private String category;
 
-    private Map<String, String> ingredientNames = new HashMap<>();
-    private Map<String, String> ingredientMeasures = new HashMap<>();
-    private Map<String, String> instructions = new HashMap<>();
+    private final Map<String, String> ingredientNames = new HashMap<>();
+    private final Map<String, String> ingredientMeasures = new HashMap<>();
+    private final Map<String, String> instructions = new HashMap<>();
 
     @JsonAnySetter
     public void setOtherField(String name, Object value) {

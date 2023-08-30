@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RestAssuredTests.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jacoco.exec</a> &gt; <a href="index.source.html" class="el_package">com.arrowsmith.cocktailapiapp</a> &gt; <span class="el_source">RestAssuredTests.java</span></div><h1>RestAssuredTests.java</h1><pre class="source lang-java linenums">package com.arrowsmith.cocktailapiapp;
+
+import com.arrowsmith.cocktailapiapp.api.*;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import io.restassured.RestAssured;
+import org.testng.annotations.Test;
+
+import static org.junit.Assert.assertEquals;
+
+
+@SpringBootTest
+<span class="nc" id="L13">public class RestAssuredTests {</span>
+
+    private String getApiKey(){
+<span class="nc" id="L16">        return System.getenv().get(&quot;THE_COCKTAIL_DB_API_KEY&quot;);</span>
+    }
+
+<span class="nc" id="L19">    final TheCocktailDBUrls urls = new TheCocktailDBUrls(getApiKey());</span>
+
+    @Test
+    public void testGetRandom() {
+
+<span class="nc" id="L24">        RestAssured.given()</span>
+<span class="nc" id="L25">                .get(urls.getRandomCocktailUrl())</span>
+<span class="nc" id="L26">                .then()</span>
+<span class="nc" id="L27">                .statusCode(200);</span>
+<span class="nc" id="L28">    }</span>
+
+    @Test
+    public void testGetIngredientByName() {
+
+<span class="nc" id="L33">        RestAssured.given()</span>
+<span class="nc" id="L34">                .get(urls.getIngredientByNameUrl(&quot;&quot;))</span>
+<span class="nc" id="L35">                .then()</span>
+<span class="nc" id="L36">                .statusCode(200);</span>
+
+<span class="nc" id="L38">    }</span>
+    @Test
+    public void testGetIngredientById() {
+
+<span class="nc" id="L42">        RestAssured.given()</span>
+<span class="nc" id="L43">                .get(urls.getIngredientByIdUrl(0))</span>
+<span class="nc" id="L44">                .then()</span>
+<span class="nc" id="L45">                .statusCode(200);</span>
+
+<span class="nc" id="L47">    }</span>
+    @Test
+    public void testGetCocktailById() {
+
+<span class="nc" id="L51">        RestAssured.given()</span>
+<span class="nc" id="L52">                .get(urls.getCocktailByIdUrl(0))</span>
+<span class="nc" id="L53">                .then()</span>
+<span class="nc" id="L54">                .statusCode(200);</span>
+
+<span class="nc" id="L56">    }</span>
+    @Test
+    public void testListCocktailsByIngredient() {
+
+<span class="nc" id="L60">        RestAssured.given()</span>
+<span class="nc" id="L61">                .get(urls.listCocktailsByIngredientUrl(&quot;&quot;))</span>
+<span class="nc" id="L62">                .then()</span>
+<span class="nc" id="L63">                .statusCode(200);</span>
+
+<span class="nc" id="L65">    }</span>
+    @Test
+    public void testListCocktailsByStartingLetter() {
+
+<span class="nc" id="L69">        RestAssured.given()</span>
+<span class="nc" id="L70">                .get(urls.listCocktailsByStartingLetterUrl(' '))</span>
+<span class="nc" id="L71">                .then()</span>
+<span class="nc" id="L72">                .statusCode(200);</span>
+
+<span class="nc" id="L74">    }</span>
+    @Test
+    public void testListCocktailsByName() {
+
+<span class="nc" id="L78">        RestAssured.given()</span>
+<span class="nc" id="L79">                .get(urls.listCocktailsByNameUrl(&quot;&quot;))</span>
+<span class="nc" id="L80">                .then()</span>
+<span class="nc" id="L81">                .statusCode(200);</span>
+
+<span class="nc" id="L83">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,37 +1,34 @@
 package hellocucumber;
 
-import com.arrowsmith.cocktailapiapp.CocktailApiAppApplication;
 import com.arrowsmith.cocktailapiapp.api.CocktailApi;
 import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.arrowsmith.cocktailapiapp.api.TheCocktailDBRequester;
-import com.arrowsmith.cocktailapiapp.model.Cocktail;
-import com.arrowsmith.cocktailapiapp.model.CocktailBase;
-import com.arrowsmith.cocktailapiapp.model.Ingredient;
+import com.arrowsmith.cocktailapiapp.model.*;
 import io.cucumber.java.en.*;
 
 import java.util.List;
 
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
-class IsItVodka {
-    public static final Ingredient vodka = new Ingredient("vodka");
-}
 
-public class StepDefinitions {
+public class VodkaCocktailsContainVodkaTest {
+
+    public static final Ingredient vodka = new Ingredient("vodka");
 
     private String getApiKey(){
         return System.getenv().get("THE_COCKTAIL_DB_API_KEY");
     }
 
     final CocktailApi api = new CocktailApiImpl(new TheCocktailDBRequester(getApiKey()));
+
     private Ingredient ingredient;
-    private List<CocktailBase> basicCocktails;
+    private List<BasicCocktail> basicCocktails;
     private Cocktail selectedCocktail;
 
 
     @Given("the ingredient of vodka")
     public void theIngredientOfVodka() {
-        this.ingredient = IsItVodka.vodka;
+        this.ingredient = vodka;
     }
 
     @When("I search for cocktails containing vodka")
@@ -43,7 +40,7 @@ public class StepDefinitions {
     @When("I select a cocktail from that list")
     public void iSelectACocktailFromThatList() {
         final int randomIndex = (int) (Math.random() * basicCocktails.size());
-        final CocktailBase basicCocktail = basicCocktails.get(randomIndex);
+        final BasicCocktail basicCocktail = basicCocktails.get(randomIndex);
         selectedCocktail = api.getCocktailById(basicCocktail.getId());
     }
 
@@ -52,4 +49,9 @@ public class StepDefinitions {
         final boolean hasVodka = selectedCocktail.getMeasuredIngredients().stream().anyMatch((ing) -> ing.getName().equalsIgnoreCase("vodka"));
         assertTrue(selectedCocktail.getName() + " does not have vodka", hasVodka);
     }
+
+
+
 }
+
+

@@ -1,10 +1,10 @@
 package com.arrowsmith.cocktailapiapp.model;
 
-public class IngredientBase {
+public class BasicIngredient {
 
-    public IngredientBase() {}
+    public BasicIngredient() {}
 
-    public IngredientBase(String name) {
+    public BasicIngredient(String name) {
         setName(name);
     }
 

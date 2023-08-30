@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TheCocktailDBRequesterMock.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jacoco.exec</a> &gt; <a href="index.source.html" class="el_package">mocks</a> &gt; <span class="el_source">TheCocktailDBRequesterMock.java</span></div><h1>TheCocktailDBRequesterMock.java</h1><pre class="source lang-java linenums">package mocks;
+
+import com.arrowsmith.cocktailapiapp.api.CocktailApiRequester;
+import org.apache.maven.wagon.resource.Resource;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
+<span class="nc" id="L10">public class TheCocktailDBRequesterMock implements CocktailApiRequester {</span>
+
+    private static final String BASE_URL = &quot;src/test/resources/api_mock_data/&quot;;
+
+    @Override
+    public String getRandomCocktail() {
+<span class="nc" id="L16">        return readFromFile( &quot;mojito.json&quot;);</span>
+    }
+
+    @Override
+    public String listCocktailsStartingWithLetter(char startingLetter) {
+<span class="nc" id="L21">       return readFromFile( &quot;letter_a.json&quot;);</span>
+    }
+
+    @Override
+    public String getCocktailById(Object id) {
+<span class="nc" id="L26">        return readFromFile( &quot;mojito.json&quot;);</span>
+    }
+
+    @Override
+    public String getIngredientById(Object id) {
+<span class="nc" id="L31">        return readFromFile( &quot;baileys.json&quot;);</span>
+    }
+
+    @Override
+    public String getIngredientByName(String term) {
+<span class="nc" id="L36">        return readFromFile( &quot;baileys.json&quot;);</span>
+    }
+
+    @Override
+    public String listCocktailsByName(String term) {
+<span class="nc" id="L41">        return readFromFile( &quot;search_mojito.json&quot;);</span>
+    }
+
+    @Override
+    public String listCocktailsByIngredient(String ingredientName) {
+<span class="nc" id="L46">        return readFromFile( &quot;search_milk.json&quot;);</span>
+    }
+
+
+    private String readFromFile(String fileName)
+    {
+<span class="nc" id="L52">        File file = new File(BASE_URL + fileName);</span>
+
+        try
+        {
+<span class="nc" id="L56">            BufferedReader br = new BufferedReader(new FileReader(file));</span>
+<span class="nc" id="L57">            return br.readLine();</span>
+<span class="nc" id="L58">        }catch(Exception e)</span>
+        {
+<span class="nc" id="L60">            return null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

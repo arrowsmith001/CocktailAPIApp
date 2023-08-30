@@ -1,6 +1,6 @@
 package com.arrowsmith.cocktailapiapp.model;
 
-public class MeasuredIngredient extends IngredientBase {
+public class MeasuredIngredient extends BasicIngredient {
 
     public MeasuredIngredient(String ingredientName, String ingredientMeasure) {
         setName(ingredientName);

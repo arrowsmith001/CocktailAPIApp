@@ -2,18 +2,11 @@ package com.arrowsmith.cocktailapiapp.api;
 
 public interface CocktailApiRequester {
 
-
-    String getRandomCocktail();
-
-    String searchCocktailsByLetter(char startingLetter);
-
     String getCocktailById(Object id);
-
     String getIngredientById(Object id);
-
-    String searchCocktailByName(String term);
-
     String getIngredientByName(String term);
-
-    String searchCocktailsByIngredientName(String ingredientName);
+    String listCocktailsByName(String term);
+    String getRandomCocktail();
+    String listCocktailsStartingWithLetter(char startingLetter);
+    String listCocktailsByIngredient(String ingredientName);
 }

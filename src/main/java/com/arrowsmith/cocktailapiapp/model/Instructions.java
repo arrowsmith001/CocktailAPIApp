@@ -1,5 +1,7 @@
 package com.arrowsmith.cocktailapiapp.model;
 
+import java.util.Objects;
+
 public class Instructions {
 
     public Instructions() {}
@@ -43,5 +45,17 @@ public class Instructions {
         this.instructionString = instructionString;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Instructions that = (Instructions) o;
+        return Objects.equals(instructionString, that.instructionString) && Objects.equals(languageData, that.languageData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(instructionString, languageData);
+    }
 }
 

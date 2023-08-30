@@ -3,7 +3,7 @@ package com.arrowsmith.cocktailapiapp;
 import com.arrowsmith.cocktailapiapp.api.CocktailApi;
 import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.arrowsmith.cocktailapiapp.api.TheCocktailDBRequester;
-import com.arrowsmith.cocktailapiapp.model.*;
+import com.arrowsmith.cocktailapiapp.model.Cocktail;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

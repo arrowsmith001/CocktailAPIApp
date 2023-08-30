@@ -44,11 +44,25 @@
 
                     <li class="ingredientListItem">
 
-                        <a href="/ingredient?term={{ ingredient.name }}">{{ ingredient.name }}</a>
+                        <ul style="justify-content: center; align-items: center;">
 
-                        {%if ingredient.measure != null %}
-                        <p style="display: inline;">({{ ingredient.measure }})</p>
-                        {% endif %}
+                            <li style="justify-content: left; align-items: center;">
+
+                                <a style="display: inline;" href="/ingredient?term={{ ingredient.name }}">
+                                    <p>
+                                        {{ ingredient.name }}
+                                    </p>
+                                </a>
+                            </li>
+                            <li style="justify-content: right; align-items: center;">
+
+                                {%if ingredient.measure != null %}
+                                <p style="display: inline;">({{ ingredient.measure }})</p>
+                                {% endif %}
+                            </li>
+
+
+                        </ul>
 
                     </li>
 
@@ -114,14 +128,15 @@
             const flags = document.querySelectorAll('.flag');
 
             tabs.forEach(tab => {
-                tab.style.display = 'none';
+                tab.classList.remove("active");
             });
+
             flags.forEach(flag => {
                 flag.classList.remove("selected");
             });
 
             const activeTab = document.getElementById(tabId);
-            activeTab.style.display = 'block';
+            activeTab.classList.add("active");
 
             const activeFlag = document.getElementById('flag-' + tabId);
             activeFlag.classList.add("selected");

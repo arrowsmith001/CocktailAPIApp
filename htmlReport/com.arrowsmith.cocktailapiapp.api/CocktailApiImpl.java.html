@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CocktailApiImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jacoco.exec</a> &gt; <a href="index.source.html" class="el_package">com.arrowsmith.cocktailapiapp.api</a> &gt; <span class="el_source">CocktailApiImpl.java</span></div><h1>CocktailApiImpl.java</h1><pre class="source lang-java linenums">package com.arrowsmith.cocktailapiapp.api;
+
+import com.arrowsmith.cocktailapiapp.dto.CocktailDTO;
+import com.arrowsmith.cocktailapiapp.dto.DTOMapper;
+import com.arrowsmith.cocktailapiapp.dto.IngredientDTO;
+import com.arrowsmith.cocktailapiapp.model.Cocktail;
+import com.arrowsmith.cocktailapiapp.model.BasicCocktail;
+import com.arrowsmith.cocktailapiapp.model.Ingredient;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+public class CocktailApiImpl implements CocktailApi {
+<span class="nc" id="L18">    static Logger logger = Logger.getLogger(CocktailApiImpl.class.getName());</span>
+
+
+    public CocktailApiImpl(CocktailApiRequester requester)
+<span class="nc" id="L22">    {</span>
+<span class="nc" id="L23">        this.requester = requester;</span>
+<span class="nc" id="L24">    }</span>
+
+    private final CocktailApiRequester requester;
+
+
+    @Override
+    public Cocktail getRandomCocktail() {
+        try {
+<span class="nc" id="L32">            final String response = requester.getRandomCocktail();</span>
+
+<span class="nc" id="L34">            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);</span>
+
+<span class="nc" id="L36">            final CocktailDTO dto = cocktailApiResponse.getDrinks()[0];</span>
+
+<span class="nc" id="L38">            return DTOMapper.cocktailDTOtoFullModel(dto);</span>
+
+<span class="nc" id="L40">        } catch (Exception e) {</span>
+<span class="nc" id="L41">            logger.log(Level.SEVERE, e::getMessage);</span>
+<span class="nc" id="L42">            return null;</span>
+        }
+
+    }
+
+
+
+    @Override
+    public List&lt;Cocktail&gt; listCocktailsStartingWithLetter(char startingLetter) {
+
+        try {
+<span class="nc" id="L53">            final String response =  requester.listCocktailsStartingWithLetter(startingLetter);</span>
+
+<span class="nc" id="L55">            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);</span>
+
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            if(cocktailApiResponse.getDrinks() == null) return new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L59">            List&lt;Cocktail&gt; cocktails = new ArrayList&lt;&gt;(Arrays.stream(cocktailApiResponse.getDrinks())</span>
+<span class="nc" id="L60">                    .map(DTOMapper::cocktailDTOtoFullModel)</span>
+<span class="nc" id="L61">                    .toList());</span>
+
+<span class="nc" id="L63">            sortAlphabetically(cocktails);</span>
+
+<span class="nc" id="L65">            return cocktails;</span>
+
+<span class="nc" id="L67">        } catch (Exception e) {</span>
+<span class="nc" id="L68">            logger.log(Level.SEVERE, e::getMessage);</span>
+<span class="nc" id="L69">            return new ArrayList&lt;&gt;();</span>
+        }
+    }
+
+
+    @Override
+    public Cocktail getCocktailById(Object id) {
+        try {
+<span class="nc" id="L77">            final String response = requester.getCocktailById(id);</span>
+
+<span class="nc" id="L79">            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);</span>
+
+<span class="nc" id="L81">            final CocktailDTO dto = cocktailApiResponse.getDrinks()[0];</span>
+
+<span class="nc" id="L83">            return DTOMapper.cocktailDTOtoFullModel(dto);</span>
+
+<span class="nc" id="L85">        } catch (Exception e) {</span>
+<span class="nc" id="L86">            logger.log(Level.SEVERE, e::getMessage);</span>
+<span class="nc" id="L87">            return null;</span>
+        }
+    }
+
+    @Override
+    public Ingredient getIngredientById(Object id) {
+        try {
+<span class="nc" id="L94">            final String response = requester.getIngredientById(id);</span>
+
+<span class="nc" id="L96">            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);</span>
+
+<span class="nc" id="L98">            final IngredientDTO dto = cocktailApiResponse.getIngredients()[0];</span>
+
+<span class="nc" id="L100">            return DTOMapper.ingredientDTOtoFullModel(dto);</span>
+
+<span class="nc" id="L102">        } catch (Exception e) {</span>
+<span class="nc" id="L103">            logger.log(Level.SEVERE, e::getMessage);</span>
+<span class="nc" id="L104">            return null;</span>
+        }
+    }
+
+    @Override
+    public List&lt;Cocktail&gt; listCocktailsByName(String term) {
+        try {
+
+<span class="nc" id="L112">            final String response = requester.listCocktailsByName(term);</span>
+
+<span class="nc" id="L114">            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);</span>
+
+<span class="nc" id="L116">            return Arrays.stream(cocktailApiResponse.getDrinks())</span>
+<span class="nc" id="L117">                    .map(DTOMapper::cocktailDTOtoFullModel)</span>
+<span class="nc" id="L118">                    .toList();</span>
+
+<span class="nc" id="L120">        } catch (Exception e) {</span>
+<span class="nc" id="L121">            logger.log(Level.SEVERE, e::getMessage);</span>
+<span class="nc" id="L122">            return new ArrayList&lt;&gt;();</span>
+        }
+    }
+
+    @Override
+    public List&lt;Ingredient&gt; listIngredientsByName(String term) {
+        try {
+
+<span class="nc" id="L130">            final String response = requester.getIngredientByName(term);</span>
+
+<span class="nc" id="L132">            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);</span>
+
+<span class="nc" id="L134">            return Arrays.stream(cocktailApiResponse.getIngredients())</span>
+<span class="nc" id="L135">                    .map(DTOMapper::ingredientDTOtoFullModel)</span>
+<span class="nc" id="L136">                    .toList();</span>
+
+<span class="nc" id="L138">        } catch (Exception e) {</span>
+<span class="nc" id="L139">            logger.log(Level.SEVERE, e::getMessage);</span>
+<span class="nc" id="L140">            return new ArrayList&lt;&gt;();</span>
+        }
+    }
+
+    @Override
+    public List&lt;BasicCocktail&gt; listCocktailsByIngredient(Object o) {
+        try {
+            String ingredientName;
+
+<span class="nc bnc" id="L149" title="All 2 branches missed.">            if(o instanceof Ingredient ingredient) ingredientName = ingredient.getName();</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">            else if(o instanceof String name) ingredientName = name;</span>
+<span class="nc" id="L151">            else ingredientName = o.toString();</span>
+
+<span class="nc" id="L153">            final String response = requester.listCocktailsByIngredient(ingredientName);</span>
+
+<span class="nc" id="L155">            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);</span>
+
+<span class="nc" id="L157">            return Arrays.stream(cocktailApiResponse.getDrinks())</span>
+<span class="nc" id="L158">                    .map(DTOMapper::cocktailDTOtoBasicModel)</span>
+<span class="nc" id="L159">                    .toList();</span>
+
+<span class="nc" id="L161">        } catch (Exception e) {</span>
+<span class="nc" id="L162">            logger.log(Level.SEVERE, e::getMessage);</span>
+<span class="nc" id="L163">            return new ArrayList&lt;&gt;();</span>
+        }
+    }
+
+
+
+    private static void sortAlphabetically(List&lt;Cocktail&gt; cocktails) {
+<span class="nc" id="L170">        cocktails.sort(Comparator.comparing(BasicCocktail::getName));</span>
+<span class="nc" id="L171">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

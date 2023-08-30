@@ -11,9 +11,9 @@ public class DTOMapper {
     private DTOMapper(){}
     static Logger logger = Logger.getLogger(DTOMapper.class.getName());
 
-    public static CocktailBase cocktailDTOtoBasicModel(CocktailDTO dto) {
+    public static BasicCocktail cocktailDTOtoBasicModel(CocktailDTO dto) {
 
-        final CocktailBase out = new CocktailBase();
+        final BasicCocktail out = new BasicCocktail();
 
         setBasicCocktailInfo(out, dto);
 
@@ -51,7 +51,7 @@ public class DTOMapper {
         return out;
     }
 
-    private static void setBasicCocktailInfo(CocktailBase cocktailBase, CocktailDTO dto) {
+    private static void setBasicCocktailInfo(BasicCocktail cocktailBase, CocktailDTO dto) {
         cocktailBase.setId(dto.getId());
         cocktailBase.setName(dto.getCocktailName());
         cocktailBase.setImageUrl(dto.getImageUrl());
@@ -94,9 +94,8 @@ public class DTOMapper {
                 case "ES" -> instructions.add(new Instructions(instructionString, Language.SPANISH));
                 case "DE" -> instructions.add(new Instructions(instructionString, Language.GERMAN));
                 case "IT" -> instructions.add(new Instructions(instructionString, Language.ITALIAN));
-                default -> {
-                    logger.log(Level.INFO, "Unused language: " + languageAbbreviated);
-                }
+                default -> logger.log(Level.INFO, () -> "Unused language: " + languageAbbreviated);
+
             }
         }
 

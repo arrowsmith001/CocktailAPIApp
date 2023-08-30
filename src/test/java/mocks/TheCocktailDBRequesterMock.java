@@ -17,7 +17,7 @@ public class TheCocktailDBRequesterMock implements CocktailApiRequester {
     }
 
     @Override
-    public String searchCocktailsByLetter(char startingLetter) {
+    public String listCocktailsStartingWithLetter(char startingLetter) {
        return readFromFile( "letter_a.json");
     }
 
@@ -37,12 +37,12 @@ public class TheCocktailDBRequesterMock implements CocktailApiRequester {
     }
 
     @Override
-    public String searchCocktailByName(String term) {
+    public String listCocktailsByName(String term) {
         return readFromFile( "search_mojito.json");
     }
 
     @Override
-    public String searchCocktailsByIngredientName(String ingredientName) {
+    public String listCocktailsByIngredient(String ingredientName) {
         return readFromFile( "search_milk.json");
     }
 

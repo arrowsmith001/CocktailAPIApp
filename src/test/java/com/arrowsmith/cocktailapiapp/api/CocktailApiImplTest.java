@@ -1,10 +1,9 @@
 package com.arrowsmith.cocktailapiapp.api;
 
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
-import com.arrowsmith.cocktailapiapp.model.CocktailBase;
+import com.arrowsmith.cocktailapiapp.model.BasicCocktail;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
 import com.arrowsmith.cocktailapiapp.model.MeasuredIngredient;
-import mocks.TheCocktailDBRequesterMock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,15 +22,13 @@ class CocktailApiImplTest {
         return System.getenv().get("THE_COCKTAIL_DB_API_KEY");
     }
 
-    final CocktailApi realApi = new CocktailApiImpl(new TheCocktailDBRequester(getApiKey()));
-    //final CocktailApi mockApi = new CocktailApiImpl(new TheCocktailDBRequesterMock());
-
+    final CocktailApi api = new CocktailApiImpl(new TheCocktailDBRequester(getApiKey()));
 
     @Test
     @DisplayName("Random cocktail returns a cocktail with a valid name")
     void testRandomCocktail()
     {
-        final Cocktail randomCocktail = realApi.getRandomCocktail();
+        final Cocktail randomCocktail = api.getRandomCocktail();
 
         assertNotNull("Random cocktail is null", randomCocktail);
         assertNotNull("Random cocktail name is null", randomCocktail.getName());
@@ -41,8 +38,8 @@ class CocktailApiImplTest {
     @DisplayName("Search for the id of a random cocktail returns the same cocktail")
     void testCocktailById()
     {
-        final Cocktail randomCocktail = realApi.getRandomCocktail();
-        final Cocktail sameCocktail = realApi.getCocktailById(randomCocktail.getId());
+        final Cocktail randomCocktail = api.getRandomCocktail();
+        final Cocktail sameCocktail = api.getCocktailById(randomCocktail.getId());
 
         assertEquals("Cocktail names not equal", randomCocktail.getName(), sameCocktail.getName());
     }
@@ -51,7 +48,7 @@ class CocktailApiImplTest {
     @DisplayName("Cocktails retrieved with a starting letter of A do actually begin with A")
     void testLetterA()
     {
-        final List<Cocktail> cocktailsBeginningWithA = realApi.getCocktailsStartingWithLetter('a');
+        final List<Cocktail> cocktailsBeginningWithA = api.listCocktailsStartingWithLetter('a');
 
         assertFalse("Empty list of cocktails", cocktailsBeginningWithA.isEmpty());
 
@@ -68,11 +65,11 @@ class CocktailApiImplTest {
     @DisplayName("Random cocktail retrieved from a search by ingredient (vodka) actually does contain vodka when searched for")
     void testRandomVodkaCocktail()
     {
-        final List<CocktailBase> vodkaCocktails = realApi.listCocktailsByIngredient("vodka");
+        final List<BasicCocktail> vodkaCocktails = api.listCocktailsByIngredient("vodka");
         final int index = (int) (Math.random() * vodkaCocktails.size());
 
-        final CocktailBase randomCocktail = vodkaCocktails.get(index);
-        final Cocktail randomCocktailFull = realApi.getCocktailById(randomCocktail.getId());
+        final BasicCocktail randomCocktail = vodkaCocktails.get(index);
+        final Cocktail randomCocktailFull = api.getCocktailById(randomCocktail.getId());
 
         boolean vodkaFound = false;
         for(MeasuredIngredient ingredient : randomCocktailFull.getMeasuredIngredients())
@@ -92,7 +89,7 @@ class CocktailApiImplTest {
     @DisplayName("Searching for 'margarita' should return cocktails with the word margarita in their name")
     void testSearchForMargaritas()
     {
-        final List<Cocktail> margaritas = realApi.searchForCocktailByName("margarita");
+        final List<Cocktail> margaritas = api.listCocktailsByName("margarita");
 
         String nonMargaritaCocktail = "";
         boolean nonMargaritaCocktailFound = false;
@@ -114,7 +111,7 @@ class CocktailApiImplTest {
     @DisplayName("Searching for ice as an ingredient should return an ingredient called ice")
     void testIngredientByName()
     {
-        final List<Ingredient> ingredient = realApi.searchForIngredientByName("ice");
+        final List<Ingredient> ingredient = api.listIngredientsByName("ice");
 
         final String formattedName = ingredient.get(0).getName().toUpperCase().trim();
 
@@ -126,8 +123,8 @@ class CocktailApiImplTest {
     @DisplayName("Search for the id of a particular ingredient returns the same cocktail")
     void testIngredientById()
     {
-        final Ingredient ingredient = realApi.searchForIngredientByName("ice").get(0);
-        final Ingredient ingredientById = realApi.getIngredientById(ingredient.getId());
+        final Ingredient ingredient = api.listIngredientsByName("ice").get(0);
+        final Ingredient ingredientById = api.getIngredientById(ingredient.getId());
 
         final boolean idsMatch = ingredient.getId() == ingredientById.getId();
 

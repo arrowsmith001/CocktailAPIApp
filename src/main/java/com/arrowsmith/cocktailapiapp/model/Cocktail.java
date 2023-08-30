@@ -1,9 +1,16 @@
 package com.arrowsmith.cocktailapiapp.model;
 
+import com.arrowsmith.cocktailapiapp.dto.CocktailDTO;
+
 import java.util.List;
 
-public class Cocktail extends CocktailBase
+public class Cocktail extends BasicCocktail
 {
+    public Cocktail(){}
+    public Cocktail(String name){
+        setName(name);
+    }
+
     private List<Instructions> instructions;
     private List<MeasuredIngredient> measuredIngredients;
 

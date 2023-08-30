@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CocktailApiAppApplicationTests.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jacoco.exec</a> &gt; <a href="index.source.html" class="el_package">com.arrowsmith.cocktailapiapp</a> &gt; <span class="el_source">CocktailApiAppApplicationTests.java</span></div><h1>CocktailApiAppApplicationTests.java</h1><pre class="source lang-java linenums">package com.arrowsmith.cocktailapiapp;
+
+import com.arrowsmith.cocktailapiapp.api.CocktailApi;
+import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
+import com.arrowsmith.cocktailapiapp.api.TheCocktailDBRequester;
+import com.arrowsmith.cocktailapiapp.model.Cocktail;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+
+import static org.springframework.test.util.AssertionErrors.*;
+
+@SpringBootTest
+<span class="fc" id="L15">class CocktailApiAppApplicationTests {</span>
+
+	private String getApiKey(){
+<span class="fc" id="L18">		return System.getenv().get(&quot;THE_COCKTAIL_DB_API_KEY&quot;);</span>
+	}
+
+<span class="fc" id="L21">	final CocktailApiAppApplication app = new CocktailApiAppApplication();</span>
+
+<span class="fc" id="L23">	final CocktailApi api = new CocktailApiImpl(new TheCocktailDBRequester(getApiKey()));</span>
+
+	@Test
+	@DisplayName(&quot;Cocktail template page should contain the name of the cocktail&quot;)
+	void testCocktailPageRenderedTemplate()
+	{
+<span class="fc" id="L29">		final Cocktail cocktail = api.getRandomCocktail();</span>
+
+<span class="fc" id="L31">		final String renderedTemplate = app.getCocktailById(cocktail.getId());</span>
+
+<span class="fc" id="L33">		assertTrue(&quot;The following template does not contain '&quot; + cocktail.getName() + &quot;': \n\n&quot; + renderedTemplate,</span>
+<span class="fc" id="L34">				renderedTemplate.contains(cocktail.getName()));</span>
+<span class="fc" id="L35">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

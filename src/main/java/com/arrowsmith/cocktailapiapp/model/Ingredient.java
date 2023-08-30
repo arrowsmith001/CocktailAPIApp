@@ -1,7 +1,7 @@
 package com.arrowsmith.cocktailapiapp.model;
 
 
-public class Ingredient extends IngredientBase {
+public class Ingredient extends BasicIngredient {
 
     public Ingredient(){}
 

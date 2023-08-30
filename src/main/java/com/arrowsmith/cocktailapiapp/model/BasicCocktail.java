@@ -1,6 +1,6 @@
 package com.arrowsmith.cocktailapiapp.model;
 
-public class CocktailBase {
+public class BasicCocktail {
 
     public Integer getId() {
         return id;

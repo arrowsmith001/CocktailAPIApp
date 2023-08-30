@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TheCocktailDBUrls.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jacoco.exec</a> &gt; <a href="index.source.html" class="el_package">com.arrowsmith.cocktailapiapp.api</a> &gt; <span class="el_source">TheCocktailDBUrls.java</span></div><h1>TheCocktailDBUrls.java</h1><pre class="source lang-java linenums">package com.arrowsmith.cocktailapiapp.api;
+
+public class TheCocktailDBUrls {
+    public TheCocktailDBUrls(String apiKey)
+<span class="nc" id="L5">    {</span>
+<span class="nc" id="L6">        this.apiKey = apiKey;</span>
+<span class="nc" id="L7">    }</span>
+
+    private final String apiKey;
+
+    private static final String BASE_URL = &quot;https://www.thecocktaildb.com/api/json/v1/&quot;;
+    private static final String RANDOM = &quot;/random.php&quot;;
+    private static final String BASE_SEARCH_BY_FIRST_LETTER = &quot;/search.php?f=&quot;;
+    private static final String BASE_SEARCH_INGREDIENT_BY_NAME = &quot;/search.php?i=&quot;;
+    private static final String BASE_SEARCH_COCKTAIL_BY_NAME = &quot;/search.php?s=&quot;;
+    private static final String BASE_COCKTAIL_BY_ID_LOOKUP = &quot;/lookup.php?i=&quot;;
+    private static final String BASE_COCKTAIL_SEARCH_BY_INGREDIENT_NAME = &quot;/filter.php?i=&quot;;
+    private static final String BASE_LOOKUP_INGREDIENT_BY_ID = &quot;/lookup.php?iid=&quot;;
+
+
+    public String getRandomCocktailUrl() {
+<span class="nc" id="L22">        return BASE_URL + apiKey + RANDOM;</span>
+    }
+
+    public String listCocktailsByStartingLetterUrl(char startingLetter) {
+<span class="nc" id="L26">        return BASE_URL + apiKey + BASE_SEARCH_BY_FIRST_LETTER + startingLetter;</span>
+    }
+
+    public String getCocktailByIdUrl(Object id) {
+<span class="nc" id="L30">        return BASE_URL + apiKey + BASE_COCKTAIL_BY_ID_LOOKUP + id;</span>
+    }
+
+    public String getIngredientByIdUrl(Object id) {
+<span class="nc" id="L34">        return BASE_URL + apiKey + BASE_LOOKUP_INGREDIENT_BY_ID + id;</span>
+    }
+
+    public String listCocktailsByNameUrl(String term) {
+<span class="nc" id="L38">        return BASE_URL + apiKey + BASE_SEARCH_COCKTAIL_BY_NAME + replaceWhitespace(term);</span>
+    }
+
+    public String getIngredientByNameUrl(String term) {
+<span class="nc" id="L42">        return BASE_URL + apiKey + BASE_SEARCH_INGREDIENT_BY_NAME + replaceWhitespace(term);</span>
+    }
+
+    public String listCocktailsByIngredientUrl(String ingredientName) {
+<span class="nc" id="L46">        return BASE_URL + apiKey + BASE_COCKTAIL_SEARCH_BY_INGREDIENT_NAME + replaceWhitespace(ingredientName);</span>
+    }
+
+
+    private String replaceWhitespace(String term)
+    {
+<span class="nc" id="L52">        return String.join(&quot;+&quot;, term.split(&quot; &quot;));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

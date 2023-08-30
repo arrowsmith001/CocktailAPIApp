@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CocktailApiImplTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jacoco.exec</a> &gt; <a href="index.source.html" class="el_package">com.arrowsmith.cocktailapiapp.api</a> &gt; <span class="el_source">CocktailApiImplTest.java</span></div><h1>CocktailApiImplTest.java</h1><pre class="source lang-java linenums">package com.arrowsmith.cocktailapiapp.api;
+
+import com.arrowsmith.cocktailapiapp.model.Cocktail;
+import com.arrowsmith.cocktailapiapp.model.BasicCocktail;
+import com.arrowsmith.cocktailapiapp.model.Ingredient;
+import com.arrowsmith.cocktailapiapp.model.MeasuredIngredient;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+
+import static org.springframework.test.util.AssertionErrors.*;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.test.util.AssertionErrors.assertFalse;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
+
+@SpringBootTest
+<span class="nc" id="L19">class CocktailApiImplTest {</span>
+
+    private String getApiKey(){
+<span class="nc" id="L22">        return System.getenv().get(&quot;THE_COCKTAIL_DB_API_KEY&quot;);</span>
+    }
+
+<span class="nc" id="L25">    final CocktailApi api = new CocktailApiImpl(new TheCocktailDBRequester(getApiKey()));</span>
+
+    @Test
+    @DisplayName(&quot;Random cocktail returns a cocktail with a valid name&quot;)
+    void testRandomCocktail()
+    {
+<span class="nc" id="L31">        final Cocktail randomCocktail = api.getRandomCocktail();</span>
+
+<span class="nc" id="L33">        assertNotNull(&quot;Random cocktail is null&quot;, randomCocktail);</span>
+<span class="nc" id="L34">        assertNotNull(&quot;Random cocktail name is null&quot;, randomCocktail.getName());</span>
+<span class="nc" id="L35">    }</span>
+
+    @Test
+    @DisplayName(&quot;Search for the id of a random cocktail returns the same cocktail&quot;)
+    void testCocktailById()
+    {
+<span class="nc" id="L41">        final Cocktail randomCocktail = api.getRandomCocktail();</span>
+<span class="nc" id="L42">        final Cocktail sameCocktail = api.getCocktailById(randomCocktail.getId());</span>
+
+<span class="nc" id="L44">        assertEquals(&quot;Cocktail names not equal&quot;, randomCocktail.getName(), sameCocktail.getName());</span>
+<span class="nc" id="L45">    }</span>
+
+    @Test
+    @DisplayName(&quot;Cocktails retrieved with a starting letter of A do actually begin with A&quot;)
+    void testLetterA()
+    {
+<span class="nc" id="L51">        final List&lt;Cocktail&gt; cocktailsBeginningWithA = api.listCocktailsStartingWithLetter('a');</span>
+
+<span class="nc" id="L53">        assertFalse(&quot;Empty list of cocktails&quot;, cocktailsBeginningWithA.isEmpty());</span>
+
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        for (Cocktail c : cocktailsBeginningWithA)</span>
+        {
+<span class="nc" id="L57">            final char ch = c.getName().charAt(0);</span>
+<span class="nc" id="L58">            assertEquals(c.getName() + &quot; does not begin with A&quot;, &quot;A&quot;, Character.toString(ch).toUpperCase());</span>
+<span class="nc" id="L59">        }</span>
+
+<span class="nc" id="L61">    }</span>
+
+
+    @Test
+    @DisplayName(&quot;Random cocktail retrieved from a search by ingredient (vodka) actually does contain vodka when searched for&quot;)
+    void testRandomVodkaCocktail()
+    {
+<span class="nc" id="L68">        final List&lt;BasicCocktail&gt; vodkaCocktails = api.listCocktailsByIngredient(&quot;vodka&quot;);</span>
+<span class="nc" id="L69">        final int index = (int) (Math.random() * vodkaCocktails.size());</span>
+
+<span class="nc" id="L71">        final BasicCocktail randomCocktail = vodkaCocktails.get(index);</span>
+<span class="nc" id="L72">        final Cocktail randomCocktailFull = api.getCocktailById(randomCocktail.getId());</span>
+
+<span class="nc" id="L74">        boolean vodkaFound = false;</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        for(MeasuredIngredient ingredient : randomCocktailFull.getMeasuredIngredients())</span>
+        {
+
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            if(ingredient.getName().toUpperCase().trim().equals(&quot;VODKA&quot;))</span>
+            {
+<span class="nc" id="L80">                vodkaFound = true;</span>
+<span class="nc" id="L81">                break;</span>
+            }
+<span class="nc" id="L83">        }</span>
+<span class="nc" id="L84">        assertTrue(&quot;Vodka not found&quot;, vodkaFound);</span>
+<span class="nc" id="L85">    }</span>
+
+
+    @Test
+    @DisplayName(&quot;Searching for 'margarita' should return cocktails with the word margarita in their name&quot;)
+    void testSearchForMargaritas()
+    {
+<span class="nc" id="L92">        final List&lt;Cocktail&gt; margaritas = api.listCocktailsByName(&quot;margarita&quot;);</span>
+
+<span class="nc" id="L94">        String nonMargaritaCocktail = &quot;&quot;;</span>
+<span class="nc" id="L95">        boolean nonMargaritaCocktailFound = false;</span>
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        for(Cocktail cocktail : margaritas)</span>
+        {
+<span class="nc" id="L99">            final boolean containsMargarita = cocktail.getName().toUpperCase().trim().contains(&quot;MARGARITA&quot;);</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (!containsMargarita) {</span>
+<span class="nc" id="L101">                nonMargaritaCocktail = cocktail.getName();</span>
+<span class="nc" id="L102">                nonMargaritaCocktailFound = true;</span>
+<span class="nc" id="L103">                break;</span>
+            }
+<span class="nc" id="L105">        }</span>
+
+<span class="nc" id="L107">        assertFalse(&quot;Non-margarita cocktail found: &quot; + nonMargaritaCocktail, nonMargaritaCocktailFound);</span>
+<span class="nc" id="L108">    }</span>
+
+    @Test
+    @DisplayName(&quot;Searching for ice as an ingredient should return an ingredient called ice&quot;)
+    void testIngredientByName()
+    {
+<span class="nc" id="L114">        final List&lt;Ingredient&gt; ingredient = api.listIngredientsByName(&quot;ice&quot;);</span>
+
+<span class="nc" id="L116">        final String formattedName = ingredient.get(0).getName().toUpperCase().trim();</span>
+
+<span class="nc" id="L118">        assertEquals(&quot;Not ice&quot;, &quot;ICE&quot;, formattedName);</span>
+
+<span class="nc" id="L120">    }</span>
+
+    @Test
+    @DisplayName(&quot;Search for the id of a particular ingredient returns the same cocktail&quot;)
+    void testIngredientById()
+    {
+<span class="nc" id="L126">        final Ingredient ingredient = api.listIngredientsByName(&quot;ice&quot;).get(0);</span>
+<span class="nc" id="L127">        final Ingredient ingredientById = api.getIngredientById(ingredient.getId());</span>
+
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        final boolean idsMatch = ingredient.getId() == ingredientById.getId();</span>
+
+<span class="nc" id="L131">        assertTrue(&quot;Ids don't match&quot;, idsMatch);</span>
+
+<span class="nc" id="L133">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

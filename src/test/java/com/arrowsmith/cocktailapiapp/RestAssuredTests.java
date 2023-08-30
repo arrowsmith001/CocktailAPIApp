@@ -1,11 +1,9 @@
 package com.arrowsmith.cocktailapiapp;
 
 import com.arrowsmith.cocktailapiapp.api.*;
-import org.apache.http.HttpStatus;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -23,14 +21,64 @@ public class RestAssuredTests {
     @Test
     public void testGetRandom() {
 
-        Response response = RestAssured.get(urls.getRandomCocktailUrl());
+        RestAssured.given()
+                .get(urls.getRandomCocktailUrl())
+                .then()
+                .statusCode(200);
+    }
 
-        System.out.println("Response : "+response.asString());
-        System.out.println("Status Code : "+response.getStatusCode ());
-        System.out.println("Body: "+response.getBody().asString());
-        System.out.println("Time taken: "+response.getTime());
-        System.out.println("Header: "+response.getHeader("content-type"));
+    @Test
+    public void testGetIngredientByName() {
 
-        assertEquals("Http status is not OK", HttpStatus.SC_OK, response.getStatusCode());
+        RestAssured.given()
+                .get(urls.getIngredientByNameUrl(""))
+                .then()
+                .statusCode(200);
+
+    }
+    @Test
+    public void testGetIngredientById() {
+
+        RestAssured.given()
+                .get(urls.getIngredientByIdUrl(0))
+                .then()
+                .statusCode(200);
+
+    }
+    @Test
+    public void testGetCocktailById() {
+
+        RestAssured.given()
+                .get(urls.getCocktailByIdUrl(0))
+                .then()
+                .statusCode(200);
+
+    }
+    @Test
+    public void testListCocktailsByIngredient() {
+
+        RestAssured.given()
+                .get(urls.listCocktailsByIngredientUrl(""))
+                .then()
+                .statusCode(200);
+
+    }
+    @Test
+    public void testListCocktailsByStartingLetter() {
+
+        RestAssured.given()
+                .get(urls.listCocktailsByStartingLetterUrl(' '))
+                .then()
+                .statusCode(200);
+
+    }
+    @Test
+    public void testListCocktailsByName() {
+
+        RestAssured.given()
+                .get(urls.listCocktailsByNameUrl(""))
+                .then()
+                .statusCode(200);
+
     }
 }

@@ -4,7 +4,7 @@ import com.arrowsmith.cocktailapiapp.api.CocktailApi;
 import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.arrowsmith.cocktailapiapp.api.TheCocktailDBRequester;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
-import com.arrowsmith.cocktailapiapp.model.CocktailBase;
+import com.arrowsmith.cocktailapiapp.model.BasicCocktail;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
@@ -62,7 +62,7 @@ public class CocktailApiAppApplication {
 	@GetMapping("/search")
 	public String searchForCocktailByName(@RequestParam String term) {
 
-		final List<Cocktail> cocktails = api.searchForCocktailByName(term);
+		final List<Cocktail> cocktails = api.listCocktailsByName(term);
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("term", term);
@@ -85,7 +85,7 @@ public class CocktailApiAppApplication {
 	@GetMapping("/index")
 	public String listCocktailsByLetter(@RequestParam Character letter) {
 
-		final List<Cocktail> cocktails = api.getCocktailsStartingWithLetter(letter);
+		final List<Cocktail> cocktails = api.listCocktailsStartingWithLetter(letter);
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("letter", letter);
@@ -97,8 +97,8 @@ public class CocktailApiAppApplication {
 	@GetMapping("/ingredient")
 	public String goToIngredientAndCocktailList(@RequestParam String term) {
 
-		final Ingredient ingredient = api.searchForIngredientByName(term).get(0);
-		final List<CocktailBase> cocktails = api.listCocktailsByIngredient(ingredient);
+		final Ingredient ingredient = api.listIngredientsByName(term).get(0);
+		final List<BasicCocktail> cocktails = api.listCocktailsByIngredient(ingredient);
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("term", term);
@@ -112,7 +112,7 @@ public class CocktailApiAppApplication {
 	@GetMapping("/cocktailsByIngredient")
 	public String listCocktailsByIngredient(@RequestParam String ingredientName) {
 
-		final List<CocktailBase> cocktails = api.listCocktailsByIngredient(ingredientName);
+		final List<BasicCocktail> cocktails = api.listCocktailsByIngredient(ingredientName);
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("ingredientName", ingredientName);

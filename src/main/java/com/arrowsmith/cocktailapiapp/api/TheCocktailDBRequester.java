@@ -25,8 +25,8 @@ public class TheCocktailDBRequester implements CocktailApiRequester {
     }
 
     @Override
-    public String searchCocktailsByLetter(char startingLetter) {
-        final String url = urls.searchCocktailsByLetterUrl(startingLetter);
+    public String listCocktailsStartingWithLetter(char startingLetter) {
+        final String url = urls.listCocktailsByStartingLetterUrl(startingLetter);
         return makeGetRequest(url);
     }
 
@@ -43,8 +43,8 @@ public class TheCocktailDBRequester implements CocktailApiRequester {
     }
 
     @Override
-    public String searchCocktailByName(String term) {
-        final String url = urls.searchCocktailByNameUrl(term);
+    public String listCocktailsByName(String term) {
+        final String url = urls.listCocktailsByNameUrl(term);
         return makeGetRequest(url);
     }
 
@@ -56,8 +56,8 @@ public class TheCocktailDBRequester implements CocktailApiRequester {
 
 
     @Override
-    public String searchCocktailsByIngredientName(String ingredientName) {
-        final String url = urls.searchCocktailsByIngredientNameUrl(ingredientName);
+    public String listCocktailsByIngredient(String ingredientName) {
+        final String url = urls.listCocktailsByIngredientUrl(ingredientName);
         return makeGetRequest(url);
     }
 

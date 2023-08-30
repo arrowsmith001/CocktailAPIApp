@@ -46,6 +46,10 @@ body {
    background-image: url('https://images.unsplash.com/photo-1597290282695-edc43d0e7129?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2075&q=80');
 }
 
+p {
+    font-size: 20px;
+}
+
 main {
   border-radius: 25px;
    background-color: rgba(50,50,50, 0.875);
@@ -82,9 +86,55 @@ li {
   border: 5px solid #ffffff;
 }
 
-.decoration {
-    max-width: 100%;
+
+.slideshow {
+  overflow: hidden;
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+  position: relative;
 }
+
+.decorationImg {
+  width: 100%;
+  height: 600px;
+  display: none;
+  position: absolute;
+  object-fit: cover;
+  left: 0;
+}
+
+.animate-slide {
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+}
+
+.slide-out {
+  animation-name: slideOut;
+}
+
+.slide-in {
+  animation-name: slideIn;
+}
+
+@keyframes slideOut {
+  from {
+    left: 0;
+  }
+  to {
+    left: -100%;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    left: 100%;
+  }
+  to {
+    left: 0;
+  }
+}
+
 
 .letterList {
       display: flex;
@@ -138,12 +188,13 @@ li {
 
 .ingredientList {
     display: block;
-    justify-content: left;
+    justify-content: center;
     list-style-type: none;
+    line-height: 1em;
 }
 
 .ingredientListItem {
-    margin-top: 16px;
+
 }
 
 .flagList {
@@ -171,12 +222,20 @@ li {
 }
 
 .tab {
-    display: none;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.0s ease, visibility 0.5s ease;
+  pointer-events: none;
 }
 
 .active {
-    display: block;
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
+
 
 .selected {
     opacity: 1;

@@ -17,7 +17,27 @@
 
 <main>
 
-<img class="decoration topRounded" src="https://ginsociety.com/wp-content/uploads/2020/12/Classic-American-Cocktails.jpg">
+<div class="slideshow topRounded">
+
+        <div class="decorationImg">
+            <img style="width: 100%; height: 600px;
+  object-fit: cover;" src="https://ginsociety.com/wp-content/uploads/2020/12/Classic-American-Cocktails.jpg">
+
+        </div>
+        <div class="decorationImg">
+            <img style="width: 100%; height: 600px;
+  object-fit: cover;" src="https://vinepair.com/wp-content/uploads/2016/11/cocktailsubs-internal-header.jpg">
+
+        </div>
+        <div class="decorationImg">
+            <img style="width: 100%; height: 600px;
+  object-fit: cover;"  src="https://media.timeout.com/images/105240415/image.jpg">
+
+        </div>
+
+
+
+</div>
 
 
     <inner>
@@ -78,9 +98,39 @@
 
 </main>
 
-<footer>
+<script>
+    var slideIndex = 0;
+    carousel();
 
-</footer>
+    function carousel() {
+
+      var slides = document.getElementsByClassName("decorationImg");
+      var outgoingSlide = slides[slideIndex];
+
+      slideIndex++;
+      if (slideIndex >= slides.length) {
+        slideIndex = 0;
+      }
+
+      var incomingSlide = slides[slideIndex];
+
+      outgoingSlide.style.display = "block";
+      outgoingSlide.classList.add("animate-slide", "slide-out");
+
+      incomingSlide.style.display = "block";
+      incomingSlide.classList.add("animate-slide", "slide-in");
+
+      setTimeout(function() {
+        outgoingSlide.style.display = "none";
+        outgoingSlide.classList.remove("animate-slide", "slide-out");
+
+        incomingSlide.classList.remove("animate-slide", "slide-in");
+      }, 2000); // Wait for the animation to finish
+
+      setTimeout(carousel, 5000); // Change image every 2 seconds
+    }
+</script>
+
 </body>
 </html>
 

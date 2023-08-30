@@ -4,7 +4,7 @@ import com.arrowsmith.cocktailapiapp.dto.CocktailDTO;
 import com.arrowsmith.cocktailapiapp.dto.DTOMapper;
 import com.arrowsmith.cocktailapiapp.dto.IngredientDTO;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
-import com.arrowsmith.cocktailapiapp.model.CocktailBase;
+import com.arrowsmith.cocktailapiapp.model.BasicCocktail;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,8 +22,6 @@ public class CocktailApiImpl implements CocktailApi {
     {
         this.requester = requester;
     }
-    private final ObjectMapper mapper = new ObjectMapper();
-
 
     private final CocktailApiRequester requester;
 
@@ -33,7 +31,7 @@ public class CocktailApiImpl implements CocktailApi {
         try {
             final String response = requester.getRandomCocktail();
 
-            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
+            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);
 
             final CocktailDTO dto = cocktailApiResponse.getDrinks()[0];
 
@@ -46,17 +44,15 @@ public class CocktailApiImpl implements CocktailApi {
 
     }
 
-    private CocktailApiResponse deserializeResponse(String response) throws JsonProcessingException {
-        return mapper.readValue(response, CocktailApiResponse.class);
-    }
+
 
     @Override
-    public List<Cocktail> getCocktailsStartingWithLetter(char startingLetter) {
+    public List<Cocktail> listCocktailsStartingWithLetter(char startingLetter) {
 
         try {
-            final String response =  requester.searchCocktailsByLetter(startingLetter);
+            final String response =  requester.listCocktailsStartingWithLetter(startingLetter);
 
-            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
+            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);
 
             if(cocktailApiResponse.getDrinks() == null) return new ArrayList<>();
 
@@ -80,7 +76,7 @@ public class CocktailApiImpl implements CocktailApi {
         try {
             final String response = requester.getCocktailById(id);
 
-            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
+            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);
 
             final CocktailDTO dto = cocktailApiResponse.getDrinks()[0];
 
@@ -97,7 +93,7 @@ public class CocktailApiImpl implements CocktailApi {
         try {
             final String response = requester.getIngredientById(id);
 
-            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
+            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);
 
             final IngredientDTO dto = cocktailApiResponse.getIngredients()[0];
 
@@ -110,12 +106,12 @@ public class CocktailApiImpl implements CocktailApi {
     }
 
     @Override
-    public List<Cocktail> searchForCocktailByName(String term) {
+    public List<Cocktail> listCocktailsByName(String term) {
         try {
 
-            final String response = requester.searchCocktailByName(term);
+            final String response = requester.listCocktailsByName(term);
 
-            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
+            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);
 
             return Arrays.stream(cocktailApiResponse.getDrinks())
                     .map(DTOMapper::cocktailDTOtoFullModel)
@@ -128,12 +124,12 @@ public class CocktailApiImpl implements CocktailApi {
     }
 
     @Override
-    public List<Ingredient> searchForIngredientByName(String term) {
+    public List<Ingredient> listIngredientsByName(String term) {
         try {
 
             final String response = requester.getIngredientByName(term);
 
-            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
+            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);
 
             return Arrays.stream(cocktailApiResponse.getIngredients())
                     .map(DTOMapper::ingredientDTOtoFullModel)
@@ -146,7 +142,7 @@ public class CocktailApiImpl implements CocktailApi {
     }
 
     @Override
-    public List<CocktailBase> listCocktailsByIngredient(Object o) {
+    public List<BasicCocktail> listCocktailsByIngredient(Object o) {
         try {
             String ingredientName;
 
@@ -154,9 +150,9 @@ public class CocktailApiImpl implements CocktailApi {
             else if(o instanceof String name) ingredientName = name;
             else ingredientName = o.toString();
 
-            final String response = requester.searchCocktailsByIngredientName(ingredientName);
+            final String response = requester.listCocktailsByIngredient(ingredientName);
 
-            final CocktailApiResponse cocktailApiResponse = deserializeResponse(response);
+            final CocktailApiResponse cocktailApiResponse = CocktailApiResponse.deserialize(response);
 
             return Arrays.stream(cocktailApiResponse.getDrinks())
                     .map(DTOMapper::cocktailDTOtoBasicModel)
@@ -171,7 +167,7 @@ public class CocktailApiImpl implements CocktailApi {
 
 
     private static void sortAlphabetically(List<Cocktail> cocktails) {
-        cocktails.sort(Comparator.comparing(CocktailBase::getName));
+        cocktails.sort(Comparator.comparing(BasicCocktail::getName));
     }
 
 }

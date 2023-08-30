@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LanguageData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jacoco.exec</a> &gt; <a href="index.source.html" class="el_package">com.arrowsmith.cocktailapiapp.model</a> &gt; <span class="el_source">LanguageData.java</span></div><h1>LanguageData.java</h1><pre class="source lang-java linenums">package com.arrowsmith.cocktailapiapp.model;
+
+import java.util.Objects;
+
+public class LanguageData {
+
+    public static final String ENGLISH_ICON = &quot;https://img.icons8.com/?size=512&amp;id=n5cRfdV5J7nI&amp;format=png&quot;;
+    public static final String FRENCH_ICON = &quot;https://img.icons8.com/?size=512&amp;id=1PjSlP5VQF71&amp;format=png&quot;;
+    public static final String SPANISH_ICON = &quot;https://img.icons8.com/?size=512&amp;id=PqPbL71WdPiX&amp;format=png&quot;;
+    public static final String GERMAN_ICON = &quot;https://img.icons8.com/?size=512&amp;id=PEPe9YoyNSe6&amp;format=png&quot;;
+    public static final String ITALIAN_ICON = &quot;https://img.icons8.com/?size=512&amp;id=6QSlwHlcIbQk&amp;format=png&quot;;
+
+<span class="nc" id="L13">    public LanguageData() {}</span>
+
+<span class="nc" id="L15">    public LanguageData(String language, String languageAbbreviated, String iconUrl) {</span>
+<span class="nc" id="L16">        this.language = language;</span>
+<span class="nc" id="L17">        this.languageAbbreviated = languageAbbreviated;</span>
+<span class="nc" id="L18">        this.iconUrl = iconUrl;</span>
+<span class="nc" id="L19">    }</span>
+
+    public static LanguageData englishData() {
+<span class="nc" id="L22">        return new LanguageData(&quot;English&quot;, &quot;EN&quot;, ENGLISH_ICON);</span>
+    }
+    public static LanguageData frenchData() {
+<span class="nc" id="L25">        return new LanguageData(&quot;Français&quot;, &quot;FR&quot;, FRENCH_ICON);</span>
+    }
+    public static LanguageData germanData() {
+<span class="nc" id="L28">        return new LanguageData(&quot;Deutsch&quot;, &quot;DE&quot;, GERMAN_ICON);</span>
+    }
+    public static LanguageData spanishData() {
+<span class="nc" id="L31">        return new LanguageData(&quot;Español&quot;, &quot;ES&quot;, SPANISH_ICON);</span>
+    }
+    public static LanguageData italianData() {
+<span class="nc" id="L34">        return new LanguageData(&quot;Italiano&quot;, &quot;IT&quot;, ITALIAN_ICON);</span>
+    }
+
+
+    private String language;
+    private String languageAbbreviated;
+    private String iconUrl;
+
+
+    public String getLanguage() {
+<span class="nc" id="L44">        return language;</span>
+    }
+
+    public void setLanguage(String language) {
+<span class="nc" id="L48">        this.language = language;</span>
+<span class="nc" id="L49">    }</span>
+
+    public String getLanguageAbbreviated() {
+<span class="nc" id="L52">        return languageAbbreviated;</span>
+    }
+
+    public void setLanguageAbbreviated(String languageAbbreviated) {
+<span class="nc" id="L56">        this.languageAbbreviated = languageAbbreviated;</span>
+<span class="nc" id="L57">    }</span>
+
+    public String getIconUrl() {
+<span class="nc" id="L60">        return iconUrl;</span>
+    }
+
+    public void setIconUrl(String iconUrl) {
+<span class="nc" id="L64">        this.iconUrl = iconUrl;</span>
+<span class="nc" id="L65">    }</span>
+
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L70" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L71">        LanguageData that = (LanguageData) o;</span>
+<span class="nc bnc" id="L72" title="All 6 branches missed.">        return Objects.equals(language, that.language) &amp;&amp; Objects.equals(languageAbbreviated, that.languageAbbreviated) &amp;&amp; Objects.equals(iconUrl, that.iconUrl);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L77">        return Objects.hash(language, languageAbbreviated, iconUrl);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

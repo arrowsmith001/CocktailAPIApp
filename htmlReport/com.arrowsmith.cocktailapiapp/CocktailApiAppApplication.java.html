@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CocktailApiAppApplication.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jacoco.exec</a> &gt; <a href="index.source.html" class="el_package">com.arrowsmith.cocktailapiapp</a> &gt; <span class="el_source">CocktailApiAppApplication.java</span></div><h1>CocktailApiAppApplication.java</h1><pre class="source lang-java linenums">package com.arrowsmith.cocktailapiapp;
+
+import com.arrowsmith.cocktailapiapp.api.CocktailApi;
+import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
+import com.arrowsmith.cocktailapiapp.api.TheCocktailDBRequester;
+import com.arrowsmith.cocktailapiapp.model.Cocktail;
+import com.arrowsmith.cocktailapiapp.model.BasicCocktail;
+import com.arrowsmith.cocktailapiapp.model.Ingredient;
+import com.google.common.collect.Maps;
+import com.google.common.io.Resources;
+import com.hubspot.jinjava.Jinjava;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
+@RestController
+<span class="nc" id="L28">public class CocktailApiAppApplication {</span>
+<span class="nc" id="L29">	static Logger logger = Logger.getLogger(CocktailApiAppApplication.class.getName());</span>
+
+	private static final String COCKTAIL = &quot;cocktail&quot;;
+	private static final String COCKTAILS = &quot;cocktails&quot;;
+	private static final String INDEX = &quot;index&quot;;
+
+<span class="nc" id="L35">	private static final CocktailApi api = new CocktailApiImpl(new TheCocktailDBRequester(System.getenv(&quot;THE_COCKTAIL_DB_API_KEY&quot;)));</span>
+
+	public static void main(String[] args) {
+
+<span class="nc" id="L39">		SpringApplication.run(CocktailApiAppApplication.class, args);</span>
+<span class="nc" id="L40">	}</span>
+
+	@GetMapping(&quot;/&quot;)
+	public String home() {
+
+<span class="nc" id="L45">		Map&lt;String, Object&gt; context = Maps.newHashMap();</span>
+
+<span class="nc" id="L47">		return renderTemplate(&quot;home&quot;, context);</span>
+	}
+
+
+	@GetMapping(&quot;/random&quot;)
+	public String getRandomCocktail() {
+
+<span class="nc" id="L54">		final Cocktail randomCocktail = api.getRandomCocktail();</span>
+
+<span class="nc" id="L56">		Map&lt;String, Object&gt; context = Maps.newHashMap();</span>
+<span class="nc" id="L57">		context.put(COCKTAIL, randomCocktail);</span>
+
+<span class="nc" id="L59">		return renderTemplate(COCKTAIL, context);</span>
+	}
+
+	@GetMapping(&quot;/search&quot;)
+	public String searchForCocktailByName(@RequestParam String term) {
+
+<span class="nc" id="L65">		final List&lt;Cocktail&gt; cocktails = api.listCocktailsByName(term);</span>
+
+<span class="nc" id="L67">		Map&lt;String, Object&gt; context = Maps.newHashMap();</span>
+<span class="nc" id="L68">		context.put(&quot;term&quot;, term);</span>
+<span class="nc" id="L69">		context.put(COCKTAILS, cocktails);</span>
+
+<span class="nc" id="L71">		return renderTemplate(&quot;listing&quot;, context);</span>
+	}
+
+	@GetMapping(&quot;/cocktail&quot;)
+	public String getCocktailById(@RequestParam Integer id) {
+
+<span class="nc" id="L77">		final Cocktail cocktail = api.getCocktailById(id);</span>
+
+<span class="nc" id="L79">		Map&lt;String, Object&gt; context = Maps.newHashMap();</span>
+<span class="nc" id="L80">		context.put(COCKTAIL, cocktail);</span>
+
+<span class="nc" id="L82">		return renderTemplate(COCKTAIL, context);</span>
+	}
+
+	@GetMapping(&quot;/index&quot;)
+	public String listCocktailsByLetter(@RequestParam Character letter) {
+
+<span class="nc" id="L88">		final List&lt;Cocktail&gt; cocktails = api.listCocktailsStartingWithLetter(letter);</span>
+
+<span class="nc" id="L90">		Map&lt;String, Object&gt; context = Maps.newHashMap();</span>
+<span class="nc" id="L91">		context.put(&quot;letter&quot;, letter);</span>
+<span class="nc" id="L92">		context.put(COCKTAILS, cocktails);</span>
+
+<span class="nc" id="L94">		return renderTemplate(INDEX, context);</span>
+	}
+	//
+	@GetMapping(&quot;/ingredient&quot;)
+	public String goToIngredientAndCocktailList(@RequestParam String term) {
+
+<span class="nc" id="L100">		final Ingredient ingredient = api.listIngredientsByName(term).get(0);</span>
+<span class="nc" id="L101">		final List&lt;BasicCocktail&gt; cocktails = api.listCocktailsByIngredient(ingredient);</span>
+
+<span class="nc" id="L103">		Map&lt;String, Object&gt; context = Maps.newHashMap();</span>
+<span class="nc" id="L104">		context.put(&quot;term&quot;, term);</span>
+<span class="nc" id="L105">		context.put(&quot;ingredient&quot;, ingredient);</span>
+<span class="nc" id="L106">		context.put(COCKTAILS, cocktails);</span>
+
+<span class="nc" id="L108">		return renderTemplate(&quot;ingredient&quot;, context);</span>
+	}
+
+
+	@GetMapping(&quot;/cocktailsByIngredient&quot;)
+	public String listCocktailsByIngredient(@RequestParam String ingredientName) {
+
+<span class="nc" id="L115">		final List&lt;BasicCocktail&gt; cocktails = api.listCocktailsByIngredient(ingredientName);</span>
+
+<span class="nc" id="L117">		Map&lt;String, Object&gt; context = Maps.newHashMap();</span>
+<span class="nc" id="L118">		context.put(&quot;ingredientName&quot;, ingredientName);</span>
+<span class="nc" id="L119">		context.put(COCKTAILS, cocktails);</span>
+
+<span class="nc" id="L121">		return renderTemplate(&quot;listing&quot;, context);</span>
+	}
+
+
+	private String renderTemplate(String templateName, Map&lt;String, Object&gt; context) {
+
+<span class="nc" id="L127">		Jinjava jinjava = new Jinjava();</span>
+
+		try
+		{
+<span class="nc" id="L131">			String template =  Resources.toString(Resources.getResource(templateName + &quot;.html&quot;), StandardCharsets.UTF_8);</span>
+<span class="nc" id="L132">			return jinjava.render(template, context);</span>
+		}
+<span class="nc" id="L134">		catch (Exception e)</span>
+		{
+<span class="nc" id="L136">			logger.log(Level.SEVERE, e.toString());</span>
+<span class="nc" id="L137">			return e.toString();</span>
+		}
+	}
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -22,7 +22,7 @@ public class TheCocktailDBUrls {
         return BASE_URL + apiKey + RANDOM;
     }
 
-    public String searchCocktailsByLetterUrl(char startingLetter) {
+    public String listCocktailsByStartingLetterUrl(char startingLetter) {
         return BASE_URL + apiKey + BASE_SEARCH_BY_FIRST_LETTER + startingLetter;
     }
 
@@ -34,7 +34,7 @@ public class TheCocktailDBUrls {
         return BASE_URL + apiKey + BASE_LOOKUP_INGREDIENT_BY_ID + id;
     }
 
-    public String searchCocktailByNameUrl(String term) {
+    public String listCocktailsByNameUrl(String term) {
         return BASE_URL + apiKey + BASE_SEARCH_COCKTAIL_BY_NAME + replaceWhitespace(term);
     }
 
@@ -42,7 +42,7 @@ public class TheCocktailDBUrls {
         return BASE_URL + apiKey + BASE_SEARCH_INGREDIENT_BY_NAME + replaceWhitespace(term);
     }
 
-    public String searchCocktailsByIngredientNameUrl(String ingredientName) {
+    public String listCocktailsByIngredientUrl(String ingredientName) {
         return BASE_URL + apiKey + BASE_COCKTAIL_SEARCH_BY_INGREDIENT_NAME + replaceWhitespace(ingredientName);
     }
 
