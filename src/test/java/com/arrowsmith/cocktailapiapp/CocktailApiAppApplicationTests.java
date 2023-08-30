@@ -78,5 +78,32 @@ class CocktailApiAppApplicationTests {
 				containsSearchTerm);
 	}
 
+	@Test
+	@DisplayName("Searching cocktails by starting letter should include the starting letter")
+	void testSearchCocktailsByLetterRenderedTemplate()
+	{
+		final char letterToSearch = 'A';
+		final String renderedTemplate = app.listCocktailsByLetter(letterToSearch);
+
+		final boolean containsSearchTerm = renderedTemplate.contains(Character.toString(letterToSearch));
+
+		assertTrue("The following template does not contain '" + letterToSearch + "': \n\n" + renderedTemplate,
+				containsSearchTerm);
+	}
+
+	@Test
+	@DisplayName("Home page should contain title")
+	void testHomeRenderedTemplate()
+	{
+		final String title = "The Cocktail DB";
+
+		final String renderedTemplate = app.home();
+
+		final boolean containsSearchTerm = renderedTemplate.contains(title);
+
+		assertTrue("The following template does not contain '" + title + "': \n\n" + renderedTemplate,
+				containsSearchTerm);
+	}
+
 
 }
