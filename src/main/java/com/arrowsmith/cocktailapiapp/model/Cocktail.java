@@ -1,7 +1,5 @@
 package com.arrowsmith.cocktailapiapp.model;
 
-import com.arrowsmith.cocktailapiapp.dto.CocktailDTO;
-
 import java.util.List;
 
 public class Cocktail extends BasicCocktail

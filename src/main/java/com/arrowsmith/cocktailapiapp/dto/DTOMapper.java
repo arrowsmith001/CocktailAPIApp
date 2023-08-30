@@ -113,12 +113,10 @@ public class DTOMapper {
         String nameKey = "strIngredient" + i;
         String measureKey = "strMeasure" + i;
 
-        while(names.containsKey(nameKey) && measures.containsKey(measureKey))
+        while(names.containsKey(nameKey))
         {
             final String ingredientName = names.get(nameKey);
             final String ingredientMeasure = measures.get(measureKey);
-
-            if(ingredientName == null) break;
 
             MeasuredIngredient measured = new MeasuredIngredient(ingredientName, ingredientMeasure);
             ingredients.add(measured);

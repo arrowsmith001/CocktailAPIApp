@@ -3,11 +3,7 @@ package com.arrowsmith.cocktailapiapp.api;
 import com.arrowsmith.cocktailapiapp.dto.CocktailDTO;
 import com.arrowsmith.cocktailapiapp.dto.IngredientDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class CocktailApiResponse {

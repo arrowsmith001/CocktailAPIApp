@@ -1,12 +1,9 @@
 package com.arrowsmith.cocktailapiapp.dto;
 
-import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
