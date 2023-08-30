@@ -11,7 +11,6 @@ public class Ingredient extends BasicIngredient {
     }
 
     private int id;
-    private String measure;
     private String description;
     private String type;
 
@@ -27,13 +26,6 @@ public class Ingredient extends BasicIngredient {
         return isAlcoholic;
     }
 
-    public String getMeasure() {
-        return measure;
-    }
-
-    public void setMeasure(String measure) {
-        this.measure = measure;
-    }
 
     public String getDescription() {
         return description;

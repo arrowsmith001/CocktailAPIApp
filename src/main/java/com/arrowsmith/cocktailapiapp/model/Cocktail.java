@@ -1,6 +1,7 @@
 package com.arrowsmith.cocktailapiapp.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Cocktail extends BasicCocktail
 {
@@ -59,5 +60,19 @@ public class Cocktail extends BasicCocktail
 
     public void setAlcoholic(String alcoholic) {
         this.alcoholic = alcoholic;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Cocktail cocktail = (Cocktail) o;
+        return Objects.equals(instructions, cocktail.instructions) && Objects.equals(measuredIngredients, cocktail.measuredIngredients) && Objects.equals(glass, cocktail.glass) && Objects.equals(category, cocktail.category) && Objects.equals(alcoholic, cocktail.alcoholic);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), instructions, measuredIngredients, glass, category, alcoholic);
     }
 }

@@ -60,7 +60,7 @@ public class CocktailApiAppApplication {
 	}
 
 	@GetMapping("/search")
-	public String searchForCocktailByName(@RequestParam String term) {
+	public String listCocktailsByName(@RequestParam String term) {
 
 		final List<Cocktail> cocktails = api.listCocktailsByName(term);
 
@@ -95,7 +95,7 @@ public class CocktailApiAppApplication {
 	}
 	//
 	@GetMapping("/ingredient")
-	public String goToIngredientAndCocktailList(@RequestParam String term) {
+	public String listIngredientWithCocktails(@RequestParam String term) {
 
 		final Ingredient ingredient = api.listIngredientsByName(term).get(0);
 		final List<BasicCocktail> cocktails = api.listCocktailsByIngredient(ingredient);

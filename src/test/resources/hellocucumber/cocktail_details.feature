@@ -11,3 +11,4 @@ Feature: Exploring detailed cocktail information
     And the cocktail has instructions in multiple languages
     When I select a different language
     Then the selected language should not be the default language
+
