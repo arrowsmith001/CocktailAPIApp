@@ -50,74 +50,121 @@ public class CocktailApiAppApplication {
 
 
 	@GetMapping("/random")
-	public String getRandomCocktail() throws JsonProcessingException {
-
-		final Cocktail randomCocktail = api.getRandomCocktail();
+	public String getRandomCocktail() {
 
 		Map<String, Object> context = Maps.newHashMap();
-		context.put(COCKTAIL, randomCocktail);
+
+		try
+		{
+			final Cocktail randomCocktail = api.getRandomCocktail();
+			context.put(COCKTAIL, randomCocktail);
+
+		}
+		catch(Exception e)
+		{
+			logger.log(Level.SEVERE, "Api call failed");
+		}
 
 		return renderTemplate(COCKTAIL, context);
 	}
 
 	@GetMapping("/search")
-	public String listCocktailsByName(@RequestParam String term) throws JsonProcessingException {
-
-		final List<Cocktail> cocktails = api.listCocktailsByName(term);
+	public String listCocktailsByName(@RequestParam String term)  {
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("term", term);
-		context.put(COCKTAILS, cocktails);
+
+		try
+		{
+			final List<Cocktail> cocktails = api.listCocktailsByName(term);
+
+			context.put(COCKTAILS, cocktails);
+		}
+		catch(Exception e)
+		{
+			logger.log(Level.SEVERE, "Api call failed");
+		}
 
 		return renderTemplate("listing", context);
 	}
 
 	@GetMapping("/cocktail")
-	public String getCocktailById(@RequestParam Integer id) throws JsonProcessingException {
-
-		final Cocktail cocktail = api.getCocktailById(id);
+	public String getCocktailById(@RequestParam Integer id)  {
 
 		Map<String, Object> context = Maps.newHashMap();
-		context.put(COCKTAIL, cocktail);
+
+		try
+		{
+			final Cocktail cocktail = api.getCocktailById(id);
+			context.put(COCKTAIL, cocktail);
+		}
+		catch(Exception e)
+		{
+			logger.log(Level.SEVERE, "Api call failed");
+		}
 
 		return renderTemplate(COCKTAIL, context);
 	}
 
 	@GetMapping("/index")
 	public String listCocktailsByLetter(@RequestParam Character letter) throws JsonProcessingException {
-
-		final List<Cocktail> cocktails = api.listCocktailsStartingWithLetter(letter);
-
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("letter", letter);
-		context.put(COCKTAILS, cocktails);
+
+		try
+		{
+
+			final List<Cocktail> cocktails = api.listCocktailsStartingWithLetter(letter);
+			context.put(COCKTAILS, cocktails);
+
+		}
+		catch(Exception e)
+		{
+			logger.log(Level.SEVERE, "Api call failed");
+		}
 
 		return renderTemplate(INDEX, context);
 	}
-	//
-	@GetMapping("/ingredient")
-	public String listIngredientWithCocktails(@RequestParam String term) throws JsonProcessingException {
 
-		final Ingredient ingredient = api.listIngredientsByName(term).get(0);
-		final List<BasicCocktail> cocktails = api.listCocktailsByIngredient(ingredient);
+	@GetMapping("/ingredient")
+	public String listIngredientWithCocktails(@RequestParam String term) {
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("term", term);
-		context.put("ingredient", ingredient);
-		context.put(COCKTAILS, cocktails);
+
+		try
+		{
+			final Ingredient ingredient = api.listIngredientsByName(term).get(0);
+			final List<BasicCocktail> cocktails = api.listCocktailsByIngredient(ingredient);
+
+			context.put("ingredient", ingredient);
+			context.put(COCKTAILS, cocktails);
+		}
+		catch(Exception e)
+		{
+			logger.log(Level.SEVERE, "Api call failed");
+		}
 
 		return renderTemplate("ingredient", context);
 	}
 
 
 	@GetMapping("/cocktailsByIngredient")
-	public String listCocktailsByIngredient(@RequestParam String ingredientName) throws JsonProcessingException {
-
-		final List<BasicCocktail> cocktails = api.listCocktailsByIngredient(ingredientName);
+	public String listCocktailsByIngredient(@RequestParam String ingredientName)  {
 
 		Map<String, Object> context = Maps.newHashMap();
 		context.put("ingredientName", ingredientName);
-		context.put(COCKTAILS, cocktails);
+
+		try
+		{
+
+			final List<BasicCocktail> cocktails = api.listCocktailsByIngredient(ingredientName);
+			context.put(COCKTAILS, cocktails);
+		}
+		catch(Exception e)
+		{
+			logger.log(Level.SEVERE, "Api call failed");
+		}
 
 		return renderTemplate("listing", context);
 	}
