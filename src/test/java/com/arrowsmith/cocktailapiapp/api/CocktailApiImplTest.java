@@ -131,4 +131,18 @@ class CocktailApiImplTest {
         assertTrue("Ids don't match", idsMatch);
 
     }
+
+    @Test
+    @DisplayName("List cocktails by ingredient accepts either an Ingredient object or name string")
+    void testListCocktailsByIngredient()
+    {
+        final BasicCocktail cocktailByIngredientObject = api.listCocktailsByIngredient("ice").get(0);
+        final BasicCocktail cocktailByIngredientName = api.listCocktailsByIngredient(new Ingredient("ice")).get(0);
+
+        assertNotNull("Cocktail by object null", cocktailByIngredientObject);
+        assertNotNull("Cocktail by name null", cocktailByIngredientName);
+
+        assertEquals("Cocktails not equal", cocktailByIngredientName, cocktailByIngredientObject);
+
+    }
 }
