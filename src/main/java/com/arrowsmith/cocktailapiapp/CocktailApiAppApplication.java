@@ -62,7 +62,7 @@ public class CocktailApiAppApplication {
 		}
 		catch(Exception e)
 		{
-			logger.log(Level.SEVERE, "Api call failed");
+			logger.log(Level.SEVERE, "getRandomCocktail Api call failed");
 		}
 
 		return renderTemplate(COCKTAIL, context);
@@ -82,7 +82,7 @@ public class CocktailApiAppApplication {
 		}
 		catch(Exception e)
 		{
-			logger.log(Level.SEVERE, "Api call failed");
+			logger.log(Level.SEVERE, "listCocktailsByName Api call failed");
 		}
 
 		return renderTemplate("listing", context);
@@ -100,7 +100,7 @@ public class CocktailApiAppApplication {
 		}
 		catch(Exception e)
 		{
-			logger.log(Level.SEVERE, "Api call failed");
+			logger.log(Level.SEVERE, "getCocktailById Api call failed");
 		}
 
 		return renderTemplate(COCKTAIL, context);
@@ -120,7 +120,7 @@ public class CocktailApiAppApplication {
 		}
 		catch(Exception e)
 		{
-			logger.log(Level.SEVERE, "Api call failed");
+			logger.log(Level.SEVERE, "listCocktailsByLetter Api call failed");
 		}
 
 		return renderTemplate(INDEX, context);
@@ -142,7 +142,7 @@ public class CocktailApiAppApplication {
 		}
 		catch(Exception e)
 		{
-			logger.log(Level.SEVERE, "Api call failed");
+			logger.log(Level.SEVERE, "listIngredientWithCocktails Api call failed");
 		}
 
 		return renderTemplate("ingredient", context);
@@ -163,7 +163,7 @@ public class CocktailApiAppApplication {
 		}
 		catch(Exception e)
 		{
-			logger.log(Level.SEVERE, "Api call failed");
+			logger.log(Level.SEVERE, "listCocktailsByIngredient Api call failed");
 		}
 
 		return renderTemplate("listing", context);
