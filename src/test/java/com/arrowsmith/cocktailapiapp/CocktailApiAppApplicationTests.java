@@ -4,6 +4,7 @@ import com.arrowsmith.cocktailapiapp.api.CocktailApi;
 import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.arrowsmith.cocktailapiapp.api.TheCocktailDBRequester;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,8 +25,7 @@ class CocktailApiAppApplicationTests {
 
 	@Test
 	@DisplayName("Cocktail template page should contain the name of the cocktail")
-	void testCocktailPageRenderedTemplate()
-	{
+	void testCocktailPageRenderedTemplate() throws JsonProcessingException {
 		final Cocktail cocktail = api.getRandomCocktail();
 
 		final String renderedTemplate = app.getCocktailById(cocktail.getId());
@@ -38,8 +38,7 @@ class CocktailApiAppApplicationTests {
 
 	@Test
 	@DisplayName("Cocktail by ingredient page should contain the name of the ingredient")
-	void testCocktailByLetterPageRenderedTemplate()
-	{
+	void testCocktailByLetterPageRenderedTemplate() throws JsonProcessingException {
 		final String ingredientName = "Gin";
 
 		final String renderedTemplate = app.listCocktailsByIngredient(ingredientName);
@@ -52,8 +51,7 @@ class CocktailApiAppApplicationTests {
 
 	@Test
 	@DisplayName("Searching cocktails by name should include the search term")
-	void testSearchCocktailsByNameRenderedTemplate()
-	{
+	void testSearchCocktailsByNameRenderedTemplate() throws JsonProcessingException {
 		final String searchTerm = "Marg";
 
 		final String renderedTemplate = app.listCocktailsByName(searchTerm);
@@ -66,8 +64,7 @@ class CocktailApiAppApplicationTests {
 
 	@Test
 	@DisplayName("Searching cocktails by an ingredient should include the search term")
-	void testSearchCocktailsByIngredientRenderedTemplate()
-	{
+	void testSearchCocktailsByIngredientRenderedTemplate() throws JsonProcessingException {
 		final String searchTerm = "Milk";
 
 		final String renderedTemplate = app.listIngredientWithCocktails(searchTerm);
@@ -80,8 +77,7 @@ class CocktailApiAppApplicationTests {
 
 	@Test
 	@DisplayName("Searching cocktails by starting letter should include the starting letter")
-	void testSearchCocktailsByLetterRenderedTemplate()
-	{
+	void testSearchCocktailsByLetterRenderedTemplate() throws JsonProcessingException {
 		final char letterToSearch = 'A';
 		final String renderedTemplate = app.listCocktailsByLetter(letterToSearch);
 

@@ -4,6 +4,7 @@ import com.arrowsmith.cocktailapiapp.api.CocktailApi;
 import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.arrowsmith.cocktailapiapp.api.TheCocktailDBRequester;
 import com.arrowsmith.cocktailapiapp.model.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.*;
 
 import java.util.List;
@@ -32,13 +33,12 @@ public class VodkaCocktailsContainVodkaTest {
     }
 
     @When("I search for cocktails containing vodka")
-    public void iSearchForCocktailsContainingVodka()
-    {
+    public void iSearchForCocktailsContainingVodka() throws JsonProcessingException {
         basicCocktails = api.listCocktailsByIngredient(ingredient);
     }
 
     @When("I select a cocktail from that list")
-    public void iSelectACocktailFromThatList() {
+    public void iSelectACocktailFromThatList() throws JsonProcessingException {
         final int randomIndex = (int) (Math.random() * basicCocktails.size());
         final BasicCocktail basicCocktail = basicCocktails.get(randomIndex);
         selectedCocktail = api.getCocktailById(basicCocktail.getId());

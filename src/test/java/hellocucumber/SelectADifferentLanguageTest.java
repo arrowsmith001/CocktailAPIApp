@@ -5,6 +5,7 @@ import com.arrowsmith.cocktailapiapp.api.CocktailApiImpl;
 import com.arrowsmith.cocktailapiapp.api.TheCocktailDBRequester;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
 import com.arrowsmith.cocktailapiapp.model.Instructions;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -28,7 +29,7 @@ public class SelectADifferentLanguageTest {
 
 
     @Given("I select a cocktail with the default language")
-    public void iSelectACocktailWithTheDefaultLanguage() {
+    public void iSelectACocktailWithTheDefaultLanguage() throws JsonProcessingException {
         selectedCocktail = api.getRandomCocktail();
         selectedInstructions = selectedCocktail.getInstructions().get(0);
     }

@@ -12,3 +12,4 @@ Feature: Exploring detailed cocktail information
     When I select a different language
     Then the selected language should not be the default language
 
+  Scenario:

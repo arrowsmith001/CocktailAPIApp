@@ -6,6 +6,7 @@ import com.arrowsmith.cocktailapiapp.api.TheCocktailDBRequester;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
 import com.arrowsmith.cocktailapiapp.model.BasicCocktail;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
 import com.hubspot.jinjava.Jinjava;
@@ -49,7 +50,7 @@ public class CocktailApiAppApplication {
 
 
 	@GetMapping("/random")
-	public String getRandomCocktail() {
+	public String getRandomCocktail() throws JsonProcessingException {
 
 		final Cocktail randomCocktail = api.getRandomCocktail();
 
@@ -60,7 +61,7 @@ public class CocktailApiAppApplication {
 	}
 
 	@GetMapping("/search")
-	public String listCocktailsByName(@RequestParam String term) {
+	public String listCocktailsByName(@RequestParam String term) throws JsonProcessingException {
 
 		final List<Cocktail> cocktails = api.listCocktailsByName(term);
 
@@ -72,7 +73,7 @@ public class CocktailApiAppApplication {
 	}
 
 	@GetMapping("/cocktail")
-	public String getCocktailById(@RequestParam Integer id) {
+	public String getCocktailById(@RequestParam Integer id) throws JsonProcessingException {
 
 		final Cocktail cocktail = api.getCocktailById(id);
 
@@ -83,7 +84,7 @@ public class CocktailApiAppApplication {
 	}
 
 	@GetMapping("/index")
-	public String listCocktailsByLetter(@RequestParam Character letter) {
+	public String listCocktailsByLetter(@RequestParam Character letter) throws JsonProcessingException {
 
 		final List<Cocktail> cocktails = api.listCocktailsStartingWithLetter(letter);
 
@@ -95,7 +96,7 @@ public class CocktailApiAppApplication {
 	}
 	//
 	@GetMapping("/ingredient")
-	public String listIngredientWithCocktails(@RequestParam String term) {
+	public String listIngredientWithCocktails(@RequestParam String term) throws JsonProcessingException {
 
 		final Ingredient ingredient = api.listIngredientsByName(term).get(0);
 		final List<BasicCocktail> cocktails = api.listCocktailsByIngredient(ingredient);
@@ -110,7 +111,7 @@ public class CocktailApiAppApplication {
 
 
 	@GetMapping("/cocktailsByIngredient")
-	public String listCocktailsByIngredient(@RequestParam String ingredientName) {
+	public String listCocktailsByIngredient(@RequestParam String ingredientName) throws JsonProcessingException {
 
 		final List<BasicCocktail> cocktails = api.listCocktailsByIngredient(ingredientName);
 

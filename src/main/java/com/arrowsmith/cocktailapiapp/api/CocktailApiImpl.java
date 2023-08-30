@@ -6,6 +6,7 @@ import com.arrowsmith.cocktailapiapp.dto.IngredientDTO;
 import com.arrowsmith.cocktailapiapp.model.Cocktail;
 import com.arrowsmith.cocktailapiapp.model.BasicCocktail;
 import com.arrowsmith.cocktailapiapp.model.Ingredient;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -25,7 +26,7 @@ public class CocktailApiImpl implements CocktailApi {
 
 
     @Override
-    public Cocktail getRandomCocktail() {
+    public Cocktail getRandomCocktail() throws JsonProcessingException {
         try {
             final String response = requester.getRandomCocktail();
 
@@ -36,8 +37,7 @@ public class CocktailApiImpl implements CocktailApi {
             return DTOMapper.cocktailDTOtoFullModel(dto);
 
         } catch (Exception e) {
-            logger.log(Level.SEVERE, e::getMessage);
-            return null;
+            throw e;
         }
 
     }
@@ -45,7 +45,7 @@ public class CocktailApiImpl implements CocktailApi {
 
 
     @Override
-    public List<Cocktail> listCocktailsStartingWithLetter(char startingLetter) {
+    public List<Cocktail> listCocktailsStartingWithLetter(char startingLetter) throws JsonProcessingException {
 
         try {
             final String response =  requester.listCocktailsStartingWithLetter(startingLetter);
@@ -63,14 +63,13 @@ public class CocktailApiImpl implements CocktailApi {
             return cocktails;
 
         } catch (Exception e) {
-            logger.log(Level.SEVERE, e::getMessage);
-            return new ArrayList<>();
+            throw e;
         }
     }
 
 
     @Override
-    public Cocktail getCocktailById(Object id) {
+    public Cocktail getCocktailById(Object id) throws JsonProcessingException {
         try {
             final String response = requester.getCocktailById(id);
 
@@ -81,13 +80,12 @@ public class CocktailApiImpl implements CocktailApi {
             return DTOMapper.cocktailDTOtoFullModel(dto);
 
         } catch (Exception e) {
-            logger.log(Level.SEVERE, e::getMessage);
-            return null;
+            throw e;
         }
     }
 
     @Override
-    public Ingredient getIngredientById(Object id) {
+    public Ingredient getIngredientById(Object id) throws JsonProcessingException {
         try {
             final String response = requester.getIngredientById(id);
 
@@ -98,13 +96,12 @@ public class CocktailApiImpl implements CocktailApi {
             return DTOMapper.ingredientDTOtoFullModel(dto);
 
         } catch (Exception e) {
-            logger.log(Level.SEVERE, e::getMessage);
-            return null;
+            throw e;
         }
     }
 
     @Override
-    public List<Cocktail> listCocktailsByName(String term) {
+    public List<Cocktail> listCocktailsByName(String term) throws JsonProcessingException {
         try {
 
             final String response = requester.listCocktailsByName(term);
@@ -116,13 +113,12 @@ public class CocktailApiImpl implements CocktailApi {
                     .toList();
 
         } catch (Exception e) {
-            logger.log(Level.SEVERE, e::getMessage);
-            return new ArrayList<>();
+            throw e;
         }
     }
 
     @Override
-    public List<Ingredient> listIngredientsByName(String term) {
+    public List<Ingredient> listIngredientsByName(String term) throws JsonProcessingException {
         try {
 
             final String response = requester.getIngredientByName(term);
@@ -134,13 +130,12 @@ public class CocktailApiImpl implements CocktailApi {
                     .toList();
 
         } catch (Exception e) {
-            logger.log(Level.SEVERE, e::getMessage);
-            return new ArrayList<>();
+            throw e;
         }
     }
 
     @Override
-    public List<BasicCocktail> listCocktailsByIngredient(Object o) {
+    public List<BasicCocktail> listCocktailsByIngredient(Object o) throws JsonProcessingException {
         try {
             String ingredientName;
 
@@ -157,8 +152,7 @@ public class CocktailApiImpl implements CocktailApi {
                     .toList();
 
         } catch (Exception e) {
-            logger.log(Level.SEVERE, e::getMessage);
-            return new ArrayList<>();
+            throw e;
         }
     }
 
